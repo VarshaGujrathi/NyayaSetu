@@ -1,0 +1,58 @@
+[
+  {
+    "Field_Name": "Licensor Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "licensor.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "Owner / Licensor / Lessor"
+  },
+  {
+    "Field_Name": "Licensee Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "licensees.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "May include multiple licensees"
+  },
+  {
+    "Field_Name": "Execution Date",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "execution.date",
+    "Min_Count": 1,
+    "Allow_Partial": false,
+    "Notes": "Must be explicit"
+  },
+  {
+    "Field_Name": "Execution Place",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "execution.place",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "Usually city name"
+  },
+  {
+    "Field_Name": "Stamp & Registration",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "stamp_registration.stamp_present",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "GRN / Reg No / Franking / E-stamp acceptable"
+  },
+  {
+    "Field_Name": "Signatures",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "signatures.present",
+    "Min_Count": 2,
+    "Allow_Partial": true,
+    "Notes": "Digital or physical signature allowed"
+  },
+  {
+    "Field_Name": "Witnesses",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "witnesses.names",
+    "Min_Count": 2,
+    "Allow_Partial": true,
+    "Notes": "Thumb verified / UIDAI allowed"
+  }
+]

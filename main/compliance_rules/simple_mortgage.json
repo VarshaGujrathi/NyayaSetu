@@ -1,0 +1,44 @@
+[
+  {
+    "Field_Name": "Mortgagor Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "mortgagor.names",
+    "Min_Count": 1,
+    "Allow_Partial": true
+  },
+  {
+    "Field_Name": "Mortgagee Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "mortgagee.names",
+    "Min_Count": 1,
+    "Allow_Partial": true
+  },
+  {
+    "Field_Name": "Loan Amount",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "consideration.amount",
+    "Min_Count": 1,
+    "Allow_Partial": true
+  },
+  {
+    "Field_Name": "Execution Date",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "execution.date",
+    "Min_Count": 1,
+    "Allow_Partial": false
+  },
+  {
+    "Field_Name": "Stamp Duty",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "stamp_registration.stamp_present",
+    "Min_Count": 1,
+    "Allow_Partial": true
+  },
+  {
+    "Field_Name": "Witnesses",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "witnesses.names",
+    "Min_Count": 2,
+    "Allow_Partial": true
+  }
+]

@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Legal Simplifier | NyayaSetu</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f6fa;
+        color: #2e4053;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 850px;
+        margin: 60px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px 50px;
+        text-align: center;
+      }
+
+      h1 {
+        color: #b5953d;
+        font-size: 32px;
+        margin-bottom: 15px;
+      }
+
+      p.subtext {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 30px;
+        font-style: italic;
+      }
+
+      form {
+        background: #fafafa;
+        border: 2px dashed #b5953d;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 40px;
+        transition: all 0.3s ease;
+      }
+
+      form:hover {
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(181, 149, 61, 0.15);
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        border: none;
+        font-size: 16px;
+        color: black;
+      }
+
+      button {
+        background-color: #b5953d;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #8e7630;
+        transform: scale(1.05);
+      }
+
+      .output-box {
+        background: #fdfdfd;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+      }
+
+      .output-box h2 {
+        color: #2e4053;
+        font-size: 22px;
+        margin-bottom: 15px;
+      }
+
+      .output-box h3 {
+        color: #b5953d;
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      .output-box p {
+        font-size: 16px;
+        color: #444;
+        line-height: 1.6;
+      }
+
+      .risky {
+        background: #fff5cc; /* Soft yellow background for visibility */
+        color: #3b2f0b; /* Dark brownish text for good readability */
+        padding: 14px 16px;
+        border-left: 6px solid #ffc107; /* Bright gold warning border */
+        border-radius: 10px;
+        margin-top: 12px;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 1.5;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(255, 193, 7, 0.15);
+      }
+
+      .risky:hover {
+        transform: translateY(-2px);
+        background: #fffae6; /* lighter yellow glow on hover */
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
+        color: #2e2e2e; /* slightly darker for stronger contrast on hover */
+      }
+
+      /* Fade-in animation */
+      .fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          width: 90%;
+          padding: 30px 20px;
+        }
+        h1 {
+          font-size: 26px;
+        }
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container fade-in">
+      <h1>🧾 Legal Simplifier</h1>
+      <p class="subtext">
+        Upload any legal document — our AI will simplify complex terms and flag
+        risky clauses instantly.
+      </p>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" accept=".pdf,.docx,.txt" required />
+        <br />
+        <button type="submit">Simplify Document</button>
+      </form>
+
+      {% if filename %}
+      <div class="output-box fade-in">
+        <h2>📄 File: <span style="color: #b5953d">{{ filename }}</span></h2>
+
+        <h3>Simplified Summary</h3>
+        <p>{{ summary }}</p>
+
+        {% if risky %}
+        <h3>Risky Clauses Detected</h3>
+        {% for clause in risky %}
+        <div class="risky">{{ clause }}</div>
+        {% endfor %} {% else %}
+        <p>No risky clauses found.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Compliance Alerts</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        background: #f5f6fa;
+      }
+      .alert {
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+      .Critical {
+        background: #ffe6e6;
+        border-left: 6px solid red;
+      }
+      .Optional {
+        background: #fff8e6;
+        border-left: 6px solid orange;
+      }
+      .Review {
+        background: #e6f0ff;
+        border-left: 6px solid blue;
+      }
+      .Info {
+        background: #f0f0f0;
+        border-left: 6px solid #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Compliance Alerts – {{ document_type }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <select name="document_type" required>
+        <option value="agreement_of_assignment">Agreement of Assignment</option>
+        <option value="leave_and_licence">Leave & Licence</option>
+        <option value="sale_deed_agri">Sale Deed (Agricultural)</option>
+        <option value="development_agreement">Development Agreement</option>
+        <option value="simple_mortgage">Simple Mortgage</option>
+        <option value="transfer_deed_flat">Transfer Deed (Flat)</option>
+      </select>
+      <input type="file" name="document" required />
+      <button type="submit">Analyze</button>
+    </form>
+
+    <hr />
+
+    {% if extracted %}
+    <h3>Detected Document Summary</h3>
+    <ul>
+      <li><strong>Execution Date:</strong> {{ extracted.execution.date }}</li>
+      <li><strong>Execution Place:</strong> {{ extracted.execution.place }}</li>
+      <li>
+        <strong>Execution Method:</strong> {{ extracted.execution.method }}
+      </li>
+      <li>
+        <strong>Licensor(s):</strong> {{ extracted.licensor.names|join:", " }}
+      </li>
+      <li>
+        <strong>Licensee(s):</strong> {{ extracted.licensees.names|join:", " }}
+      </li>
+      <li>
+        <strong>Witness(es):</strong> {{ extracted.witnesses.names|join:", " }}
+      </li>
+    </ul>
+    {% endif %} {% if alerts|length == 0 %}
+    <div
+      class="alert Review"
+      style="border-left-color: green; background: #e6ffed"
+    >
+      <strong>PASS</strong><br />
+      No compulsory compliance issues detected.
+    </div>
+    {% endif %} {% for alert in alerts %}
+    <div class="alert {{ alert.severity }}">
+      <strong>{{ alert.severity }}</strong><br />
+      {{ alert.message }}
+    </div>
+    {% endfor %}
+
+    <p style="margin-top: 20px; font-size: 12px; color: #555">
+      ⚠ This tool provides automated compliance assistance and does not replace
+      legal advice.
+    </p>
+  </body>
+</html>

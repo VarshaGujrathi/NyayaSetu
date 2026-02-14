@@ -1,0 +1,318 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NyayaSetu - Legal Empowerment</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="container">
+      <nav class="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+        </ul>
+
+        <div class="login-icon">
+          <img src="{% static 'images/login.png' %}" alt="Login Icon" />
+        </div>
+        <div class="logo">
+          <img src="{% static 'images/logo.png' %}" alt="NyayaSetu Logo" />
+        </div>
+      </nav>
+
+      <!-- Home Content -->
+      <div class="content" id="home">
+        <p class="quote">
+          “Where <span>law</span> meets <span>clarity</span>,<br />
+          and citizens meet <span>empowerment.</span>”
+        </p>
+        <button class="explore-btn" onclick="scrollToSection('about')">
+          Explore
+        </button>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="about-container">
+        <div class="about-image">
+          <img src="{% static 'images/about.jpg' %}" alt="About NyayaSetu" />
+        </div>
+        <div class="about-text">
+          <h2>About <span>NyayaSetu</span>:</h2>
+          <p>
+            Many legal documents are complex and hard to understand, especially
+            for rural citizens. NyayaSetu simplifies these documents into plain
+            language, highlights risky clauses, and provides audio explanations
+            in regional languages. Our mission is to empower everyone to
+            understand their rights and make informed decisions with confidence.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="features-grid">
+      <!-- 🌟 Row 1 -->
+      <div class="features-row">
+        <!-- Feature 1: Legal Simplifier -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'legal_simplifier' %}'"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/auction.png' %}"
+                alt="Legal Simplification"
+              />
+              <h3>Legal Simplification</h3>
+              <p>“Turning legal jargon into simple, everyday language.”</p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                Complex legal terms are automatically simplified into clear,
+                easy-to-understand sentences, making every citizen legally aware
+                and empowered.
+              </p>
+              <button class="learn-more-btn">Explore</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: Clause Risk Indicator -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'clause_risk_indicator' %}'"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/complaints.png' %}"
+                alt="Clause Risk Indicator"
+              />
+              <h3>Clause Risk Indicator</h3>
+              <p>
+                “Know the risks before you sign — AI highlights what could harm
+                you.”
+              </p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                AI scans your document and color-codes risky or unfair clauses
+                (🔴 High, 🟡 Medium, 🟢 Safe), ensuring you understand potential
+                legal dangers before signing.
+              </p>
+              <button class="learn-more-btn">Explore</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: Regional Law Mapping -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/consultation.png' %}"
+                alt="Regional Law Mapping"
+              />
+              <h3>Regional Law Mapping</h3>
+              <p>“Your document, your state laws — explained clearly.”</p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                Detects which state or regional laws apply to your contract and
+                presents simplified explanations based on local regulations.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 4: Voice & Text Interaction -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'voice_text_interaction' %}'"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/court.png' %}"
+                alt="Voice & Text Interaction"
+              />
+              <h3>Voice & Text Interaction</h3>
+              <p>
+                “Talk or type — NyayaSetu listens, understands, and explains.”
+              </p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                Interact naturally through voice or text. Ask legal questions,
+                upload documents, and get instant explanations in your preferred
+                language — spoken or written.
+              </p>
+              <button class="learn-more-btn">Explore</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🌟 Row 2 -->
+      <div class="features-row">
+        <!-- Feature 5: Compliance Alerts -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'compliance_alerts' %}'"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/justice.png' %}"
+                alt="Compliance Alerts"
+              />
+              <h3>Compliance Alerts</h3>
+              <p>“Never miss a signature, stamp, or important detail again.”</p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                The system automatically flags missing legal essentials like
+                signatures, witnesses, stamp duty, or dates to help you stay
+                compliant.
+              </p>
+              <button class="learn-more-btn">Explore</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 6: Legal Helpline Integration -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/expert.png' %}"
+                alt="Legal Helpline Integration"
+              />
+              <h3>Legal Helpline Integration</h3>
+              <p>“One click connects you to real legal help.”</p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                Seamlessly connect with verified lawyers, NGOs, or legal
+                advisors directly through NyayaSetu for trusted, human
+                assistance.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 7: Smart Legal Form Auto-Fill -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'smart_form_autofill' %}'"
+          style="cursor: pointer"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/page.png' %}"
+                alt="Smart Legal Form Auto-Fill"
+              />
+              <h3>Smart Legal Form Auto-Fill</h3>
+              <p>
+                “Your details, automatically filled — faster, safer, smarter.”
+              </p>
+            </div>
+
+            <div class="flip-card-back">
+              <p>
+                Automatically extracts key details from documents (like names,
+                dates, and property info) to pre-fill legal or government forms
+                securely.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 8: Document Comparison -->
+        <div
+          class="flip-card"
+          onclick="window.location.href='{% url 'document_comparison' %}'"
+          style="cursor: pointer"
+        >
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img
+                src="{% static 'images/legal-document.png' %}"
+                alt="Document Comparison"
+              />
+              <h3>Document Comparison</h3>
+              <p>“Spot every change — even the ones you didn’t notice.”</p>
+            </div>
+            <div class="flip-card-back">
+              <p>
+                Compare two versions of a document to instantly detect added,
+                removed, or modified clauses — ensuring complete transparency.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="footer-overlay">
+        <h2>Reach Out for Support</h2>
+        <div class="footer-content">
+          <div class="footer-left">
+            <p>
+              📍 <b>Address:</b><br />
+              NyayaSetu Project, Department of AI & DS, K J Somaiya Institute of
+              Technology, Mumbai.
+            </p>
+            <p>📞 <b>Phone:</b><br />+91 XXXXXXXX</p>
+            <p>
+              📧 <b>Email:</b><br />
+              contact@nyayasetu.in or nyayasetu.ai@gmail.com
+            </p>
+            <p>🕒 <b>Working Hours:</b><br />Mon - Sat | 9:00 AM - 6:00 PM</p>
+            <p>🌐 <b>Social Links:</b> LinkedIn | Instagram | Twitter</p>
+            <br />
+            <h4>Project Owners</h4>
+            <p>
+              Yash Parab:
+              <a href="mailto:yash.parab@somaiya.edu">yash.parab@somaiya.edu</a
+              ><br />
+              Jinay Patel:
+              <a href="mailto:jinay.patel@somaiya.edu"
+                >jinay.patel@somaiya.edu</a
+              ><br />
+              Varsha Gujrathi:
+              <a href="mailto:varsha.g@somaiya.edu">varsha.g@somaiya.edu</a>
+            </p>
+          </div>
+
+          <div class="footer-right">
+            <textarea
+              placeholder="Enter your query here..."
+              rows="6"
+            ></textarea>
+            <button class="query-btn">Submit Your Query</button>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    </script>
+  </body>
+</html>

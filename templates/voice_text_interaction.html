@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice & Text Interaction | NyayaSetu</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      body {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        background-color: #f8f9fa;
+        padding: 50px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #b5953d;
+        margin-bottom: 40px;
+      }
+
+      .interaction-box {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      textarea {
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        resize: none;
+      }
+
+      button {
+        background-color: #b5953d;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 25px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #e0c46a;
+      }
+
+      .mic-btn {
+        margin-top: 15px;
+        background-color: #333;
+      }
+
+      .output-box {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff3cd;
+        border-radius: 10px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎙️ Voice & Text Interaction</h1>
+
+    <div class="interaction-box">
+      <form method="POST">
+        {% csrf_token %}
+        <textarea
+          name="user_input"
+          placeholder="Type your question or statement..."
+        ></textarea
+        ><br />
+        <button type="submit">Submit Text</button>
+        <button type="button" class="mic-btn">🎤 Speak</button>
+      </form>
+
+      {% if response %}
+      <div class="output-box">
+        <h3>🧩 Response:</h3>
+        <p>{{ response }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

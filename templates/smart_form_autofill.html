@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Smart Form Filling</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Georgia", serif;
+      }
+
+      body {
+        margin: 0;
+        background-color: #f5f6fa;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Main Card */
+      .alerts-container {
+        background: #ffffff;
+        width: 90%;
+        max-width: 900px;
+        padding: 70px 60px;
+        border-radius: 28px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        text-align: center;
+      }
+
+      /* Title */
+      .alerts-title {
+        font-size: 36px;
+        color: #b5953d;
+        margin-bottom: 18px;
+      }
+
+      /* Subtitle */
+      .alerts-subtitle {
+        font-size: 17px;
+        color: #555;
+        font-style: italic;
+        margin-bottom: 60px;
+      }
+
+      /* Dotted Box */
+      .alerts-upload-box {
+        border: 2px dashed #b5953d;
+        border-radius: 18px;
+        padding: 40px;
+      }
+
+      /* Trigger */
+      .dropdown-label {
+        display: block;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid #b5953d;
+        cursor: pointer;
+        background: #fff;
+        font-size: 16px;
+      }
+
+      /* Hide checkbox */
+      #dropdown-toggle {
+        display: none;
+      }
+
+      /* Dropdown */
+      .dropdown {
+        display: none;
+        margin-top: 15px;
+        border-radius: 14px;
+        border: 1px solid #e0d3a3;
+        background: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        padding: 15px;
+        text-align: left;
+      }
+
+      /* Open on click */
+      #dropdown-toggle:checked ~ .dropdown {
+        display: flex;
+      }
+
+      /* Main menu */
+      .main-menu {
+        width: 100%;
+      }
+
+      /* GROUP WRAPPER (IMPORTANT) */
+      .menu-group {
+        display: flex;
+      }
+
+      /* Main item */
+      .main-item {
+        width: 45%;
+        padding: 12px;
+        cursor: pointer;
+        border-radius: 8px;
+        color: #b5953d;
+        font-weight: bold;
+      }
+
+      .menu-group:hover .main-item {
+        background: #f7f3e5;
+      }
+
+      /* Sub menu */
+      .sub-menu {
+        width: 55%;
+        padding-left: 15px;
+        display: none;
+      }
+
+      .menu-group:hover .sub-menu {
+        display: block;
+      }
+
+      .sub-menu span {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .sub-menu span:hover {
+        background-color: #f7f3e5;
+      }
+
+      /* Button */
+      .alerts-btn {
+        background-color: #b5953d;
+        color: white;
+        border: none;
+        padding: 12px 34px;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 30px;
+      }
+
+      .alerts-btn:hover {
+        background-color: #8e7630;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="alerts-container">
+      <h1 class="alerts-title">Smart Form Filling</h1>
+      <p class="alerts-subtitle">
+        Select a legal document type — we’ll generate an intelligent,
+        voice-assisted form for you.
+      </p>
+
+      <div class="alerts-upload-box">
+        <label for="dropdown-toggle" class="dropdown-label">
+          Select Legal Document Type
+        </label>
+        <input type="checkbox" id="dropdown-toggle" />
+
+        <div class="dropdown">
+          <div class="main-menu">
+            <div class="menu-group">
+              <div class="main-item">🏠 Property & Occupancy</div>
+              <div class="sub-menu">
+                <span>Agreement of Leave & License</span>
+                <span>Sale Deed (Agricultural Land)</span>
+                <span>Transfer Deed for Flat / Unit</span>
+              </div>
+            </div>
+
+            <div class="menu-group">
+              <div class="main-item">🤝 Core Agreements</div>
+              <div class="sub-menu">
+                <span>Agreement of Assignment</span>
+                <span>Agreement of Development</span>
+                <span>Deed of Conveyance (Urban Property)</span>
+                <span>Deed of Conveyance (Urban Land)</span>
+              </div>
+            </div>
+
+            <div class="menu-group">
+              <div class="main-item">🧾 Affidavits & Declarations</div>
+              <div class="sub-menu">
+                <span>Affidavit (₹100 Stamp Paper)</span>
+                <span>Affidavit – General Format</span>
+                <span>Authority Letter Format</span>
+                <span>Declaration Format</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="alerts-btn">✍️ Fill Form</button>
+      </div>
+    </div>
+  </body>
+</html>

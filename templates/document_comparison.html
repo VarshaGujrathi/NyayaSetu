@@ -1,0 +1,192 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document Comparison</title>
+
+    <style>
+      /* ================= BASE ================= */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f6f7fb;
+        font-family: "Georgia", serif;
+        color: #333;
+      }
+
+      /* ============== CENTER PAGE ============== */
+      .outer-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+      }
+
+      /* ============== MAIN CARD ============== */
+      .main-card {
+        background: #ffffff;
+        width: 100%;
+        max-width: 900px;
+        padding: 60px 50px;
+        border-radius: 30px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+        text-align: center;
+      }
+
+      /* ============== TITLE ============== */
+      .main-card h1 {
+        margin: 0;
+        font-size: 36px;
+        color: #b5943c;
+      }
+
+      .subtitle {
+        margin-top: 10px;
+        font-style: italic;
+        color: #555;
+        font-size: 15px;
+      }
+
+      /* ============== DOTTED BOX ============== */
+      .inner-box {
+        margin-top: 35px;
+        padding: 35px;
+        border: 2px dashed #caa24d;
+        border-radius: 22px;
+      }
+
+      /* ============== INPUTS ============== */
+      .input-group {
+        margin-bottom: 22px;
+      }
+
+      .input-group input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #caa24d;
+        border-radius: 12px;
+        font-family: inherit;
+      }
+
+      /* ============== BUTTON ============== */
+      .action-btn {
+        background: #b5943c;
+        color: white;
+        border: none;
+        padding: 12px 36px;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .action-btn:hover {
+        background: #9f7f2c;
+      }
+
+      /* ============== RESULTS ============== */
+      .results {
+        margin-top: 45px;
+        text-align: left;
+      }
+
+      .version {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+
+      /* ============== DIFF BLOCKS ============== */
+      .diff {
+        padding: 20px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+      }
+
+      .diff h4 {
+        margin-top: 0;
+      }
+
+      .added {
+        background: #e9fff2;
+        border-left: 6px solid #2ecc71;
+      }
+
+      .removed {
+        background: #ffecec;
+        border-left: 6px solid #e74c3c;
+      }
+
+      .modified {
+        background: #fff6db;
+        border-left: 6px solid #f1c40f;
+      }
+
+      .diff p {
+        margin: 8px 0;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="outer-wrapper">
+      <div class="main-card">
+        <h1>Document Comparison</h1>
+        <p class="subtitle">
+          Upload two versions of a legal document — we’ll highlight every
+          change.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="inner-box">
+          {% csrf_token %}
+
+          <div class="input-group">
+            <input type="file" name="doc1" required />
+          </div>
+
+          <div class="input-group">
+            <input type="file" name="doc2" required />
+          </div>
+
+          <button type="submit" class="action-btn">🔍 Show Changes</button>
+        </form>
+
+        {% if changes %}
+        <div class="results">
+          <div class="version">{{ version }}</div>
+
+          {% if changes.added %}
+          <div class="diff added">
+            <h4>Added</h4>
+            {% for a in changes.added %}
+            <p>{{ a }}</p>
+            {% endfor %}
+          </div>
+          {% endif %} {% if changes.removed %}
+          <div class="diff removed">
+            <h4>Removed</h4>
+            {% for r in changes.removed %}
+            <p>{{ r }}</p>
+            {% endfor %}
+          </div>
+          {% endif %} {% if changes.modified %}
+          <div class="diff modified">
+            <h4>Modified</h4>
+            {% for m in changes.modified %}
+            <p><strong>Old:</strong> {{ m.from }}</p>
+            <p><strong>New:</strong> {{ m.to }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

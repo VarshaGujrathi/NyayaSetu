@@ -1,0 +1,50 @@
+[
+  {
+    "Field_Name": "Owner Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "licensor.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "Owner / Land Owner / Hereinafter called Owner"
+  },
+  {
+    "Field_Name": "Developer Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "assignee.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "Developer / Builder entity"
+  },
+  {
+    "Field_Name": "Date of Execution",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "execution.date",
+    "Min_Count": 1,
+    "Allow_Partial": false,
+    "Notes": "Must be clearly stated"
+  },
+  {
+    "Field_Name": "Development Consideration",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "consideration.amount",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "May be monetary or development rights based"
+  },
+  {
+    "Field_Name": "Signatures",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "signatures.present",
+    "Min_Count": 2,
+    "Allow_Partial": true,
+    "Notes": "Digital / physical / thumb impression allowed"
+  },
+  {
+    "Field_Name": "Witnesses",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "witnesses.names",
+    "Min_Count": 2,
+    "Allow_Partial": true,
+    "Notes": "Two witnesses preferred"
+  }
+]

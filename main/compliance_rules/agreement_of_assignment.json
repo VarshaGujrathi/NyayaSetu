@@ -1,0 +1,26 @@
+[
+  {
+    "Field_Name": "Assignor Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "assignor.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "May appear as Assignor / Transferor / Vendor / Hereinafter called"
+  },
+  {
+    "Field_Name": "Assignee Name",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "assignee.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "May appear as Assignee / Transferee / Purchaser"
+  },
+  {
+    "Field_Name": "Witnesses",
+    "Requirement": "Compulsory",
+    "Evidence_Key": "witnesses.names",
+    "Min_Count": 1,
+    "Allow_Partial": true,
+    "Notes": "At least one witness required for execution"
+  }
+]
