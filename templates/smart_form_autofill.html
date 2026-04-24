@@ -1,205 +1,1303 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Smart Form Filling</title>
+<head>
+<meta charset="UTF-8" />
+<title>Smart Form Filling</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-        font-family: "Georgia", serif;
-      }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Georgia", serif;
+}
 
-      body {
-        margin: 0;
-        background-color: #f5f6fa;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+body {
+  margin: 0;
+  background-color: #f5f6fa;
+}
 
-      /* Main Card */
-      .alerts-container {
-        background: #ffffff;
-        width: 90%;
-        max-width: 900px;
-        padding: 70px 60px;
-        border-radius: 28px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        text-align: center;
-      }
+.alerts-container {
+  background: #ffffff;
+  width: 90%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 50px;
+  border-radius: 28px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
 
-      /* Title */
-      .alerts-title {
-        font-size: 36px;
-        color: #b5953d;
-        margin-bottom: 18px;
-      }
+.alerts-title {
+  text-align: center;
+  font-size: 36px;
+  color: #b5953d;
+}
 
-      /* Subtitle */
-      .alerts-subtitle {
-        font-size: 17px;
-        color: #555;
-        font-style: italic;
-        margin-bottom: 60px;
-      }
+.alerts-subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 40px;
+}
 
-      /* Dotted Box */
-      .alerts-upload-box {
-        border: 2px dashed #b5953d;
-        border-radius: 18px;
-        padding: 40px;
-      }
+/* DROPDOWN */
+.alerts-upload-box {
+  border: 2px dashed #b5953d;
+  border-radius: 18px;
+  padding: 30px;
+}
 
-      /* Trigger */
-      .dropdown-label {
-        display: block;
-        padding: 14px;
-        border-radius: 10px;
-        border: 1px solid #b5953d;
-        cursor: pointer;
-        background: #fff;
-        font-size: 16px;
-      }
+.dropdown-label {
+  display: block;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #b5953d;
+  cursor: pointer;
+  text-align: center;
+}
 
-      /* Hide checkbox */
-      #dropdown-toggle {
-        display: none;
-      }
+#dropdown-toggle {
+  display: none;
+}
 
-      /* Dropdown */
-      .dropdown {
-        display: none;
-        margin-top: 15px;
-        border-radius: 14px;
-        border: 1px solid #e0d3a3;
-        background: #fff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-        padding: 15px;
-        text-align: left;
-      }
+.dropdown {
+  display: none;
+  margin-top: 15px;
+  border-radius: 14px;
+  border: 1px solid #e0d3a3;
+  padding: 15px;
+  flex-direction: column;
+  gap: 10px;
+}
 
-      /* Open on click */
-      #dropdown-toggle:checked ~ .dropdown {
-        display: flex;
-      }
+#dropdown-toggle:checked ~ .dropdown {
+  display: flex;
+}
 
-      /* Main menu */
-      .main-menu {
-        width: 100%;
-      }
+.menu-group {
+  display: flex;
+}
 
-      /* GROUP WRAPPER (IMPORTANT) */
-      .menu-group {
-        display: flex;
-      }
+.main-item {
+  width: 45%;
+  padding: 10px;
+  font-weight: bold;
+  color: #b5953d;
+}
 
-      /* Main item */
-      .main-item {
-        width: 45%;
-        padding: 12px;
-        cursor: pointer;
-        border-radius: 8px;
-        color: #b5953d;
-        font-weight: bold;
-      }
+.sub-menu {
+  width: 55%;
+  display: none;
+}
 
-      .menu-group:hover .main-item {
-        background: #f7f3e5;
-      }
+.menu-group:hover .sub-menu {
+  display: block;
+}
 
-      /* Sub menu */
-      .sub-menu {
-        width: 55%;
-        padding-left: 15px;
-        display: none;
-      }
+.sub-menu span {
+  display: block;
+  padding: 8px;
+  cursor: pointer;
+}
 
-      .menu-group:hover .sub-menu {
-        display: block;
-      }
+.sub-menu span:hover {
+  background: #f7f3e5;
+}
 
-      .sub-menu span {
-        display: block;
-        padding: 8px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-      }
+.alerts-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #b5953d;
+  color: white;
+  cursor: pointer;
+}
 
-      .sub-menu span:hover {
-        background-color: #f7f3e5;
-      }
+/* FORM */
+.form-section {
+  display: none;
+  margin-top: 30px;
+}
 
-      /* Button */
-      .alerts-btn {
-        background-color: #b5953d;
-        color: white;
-        border: none;
-        padding: 12px 34px;
-        border-radius: 12px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 30px;
-      }
+.form-section h3 {
+  margin-top: 25px;
+  color: #b5953d;
+}
 
-      .alerts-btn:hover {
-        background-color: #8e7630;
-        transform: scale(1.05);
-      }
-    </style>
-  </head>
+.form-section input,
+.form-section textarea,
+.form-section select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
 
+.submit-btn {
+  background: #2ecc71;
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+  border: none;
+}
+</style>
   <body>
-    <div class="alerts-container">
-      <h1 class="alerts-title">Smart Form Filling</h1>
-      <p class="alerts-subtitle">
-        Select a legal document type — we’ll generate an intelligent,
-        voice-assisted form for you.
-      </p>
 
-      <div class="alerts-upload-box">
-        <label for="dropdown-toggle" class="dropdown-label">
-          Select Legal Document Type
-        </label>
-        <input type="checkbox" id="dropdown-toggle" />
+<div class="alerts-container">
+<h1 class="alerts-title">Smart Form Filling</h1>
+<p class="alerts-subtitle">
+Select a legal document type — we’ll generate a smart form.
+</p>
 
-        <div class="dropdown">
-          <div class="main-menu">
-            <div class="menu-group">
-              <div class="main-item">🏠 Property & Occupancy</div>
-              <div class="sub-menu">
-                <span>Agreement of Leave & License</span>
-                <span>Sale Deed (Agricultural Land)</span>
-                <span>Transfer Deed for Flat / Unit</span>
-              </div>
-            </div>
+<!-- DROPDOWN -->
+<div class="alerts-upload-box" id="selectionBox">
 
-            <div class="menu-group">
-              <div class="main-item">🤝 Core Agreements</div>
-              <div class="sub-menu">
-                <span>Agreement of Assignment</span>
-                <span>Agreement of Development</span>
-                <span>Deed of Conveyance (Urban Property)</span>
-                <span>Deed of Conveyance (Urban Land)</span>
-              </div>
-            </div>
+<label for="dropdown-toggle" class="dropdown-label">
+Select Legal Document Type
+</label>
 
-            <div class="menu-group">
-              <div class="main-item">🧾 Affidavits & Declarations</div>
-              <div class="sub-menu">
-                <span>Affidavit (₹100 Stamp Paper)</span>
-                <span>Affidavit – General Format</span>
-                <span>Authority Letter Format</span>
-                <span>Declaration Format</span>
-              </div>
-            </div>
-          </div>
-        </div>
+<input type="checkbox" id="dropdown-toggle" />
 
-        <button class="alerts-btn">✍️ Fill Form</button>
+<div class="dropdown">
+
+<!-- PROPERTY -->
+<div class="menu-group">
+  <div class="main-item">🏠 Property</div>
+  <div class="sub-menu">
+    <span onclick="loadForm()">Leave & License</span>
+    <span onclick="loadSaleDeedForm()">Sale Deed</span>
+    <span onclick="loadTransferDeedForm()">Transfer Deed</span>
+  </div>
+</div>
+
+<!-- CORE AGREEMENTS -->
+<div class="menu-group">
+  <div class="main-item">🤝 Core Agreements</div>
+  <div class="sub-menu">
+    <span onclick="loadAssignment()">Agreement of Assignment</span>
+    <span onclick="loadDevelopmentForm()">Agreement of Development</span>
+    <span onclick="loadConveyanceForm()">Deed of Conveyance</span>
+  </div>
+</div>
+
+<!-- AFFIDAVITS -->
+<div class="menu-group">
+  <div class="main-item">🧾 Affidavits & Declarations</div>
+  <div class="sub-menu">
+    <span onclick="loadAffidavitForm()">Affidavit</span>
+    <span onclick="loadAuthorityLetterForm()">Authority Letter</span>
+    <span onclick="loadDeclarationForm()">Declaration</span>
+  </div>
+</div>
+
+</div>
+
+<button class="alerts-btn">✍️ Fill Form</button>
+
+</div>
+
+      <!-- LEAVE FORM -->
+      <div class="form-section" id="formSection">
+        <h2>Leave & License</h2>
+        <input placeholder="Owner Name" />
+        <input placeholder="Email" />
+        <input placeholder="Phone" />
+        <input placeholder="Occupant Name" />
+        <textarea placeholder="Address"></textarea>
+        <input type="date" />
+        <input type="date" />
+        <select>
+          <option>Residential</option>
+          <option>Commercial</option>
+        </select>
+        <input placeholder="Rent" />
+        <h3>Uploads</h3>
+        <input type="file" />
+        <input type="file" />
+        <button class="submit-btn">Submit</button>
+      </div>
+
+      <!-- SALE DEED -->
+      <div class="form-section" id="saleDeedForm">
+        <h2>Sale Deed</h2>
+
+        <h3>Basic Info</h3>
+        <input placeholder="Location" />
+        <input type="date" />
+
+        <h3>Vendor</h3>
+        <input placeholder="Name" />
+        <input placeholder="Age" />
+        <input placeholder="Address" />
+
+        <h3>Purchaser</h3>
+        <input placeholder="Name" />
+        <input placeholder="Age" />
+
+        <button class="submit-btn">Submit</button>
+      </div>
+
+      <!-- TRANSFER DEED FORM -->
+      <div class="form-section" id="transferDeedForm">
+        <h2>Transfer Deed (Flat / Unit)</h2>
+
+        <h3>Basic Info</h3>
+        <input placeholder="Execution City" />
+        <input type="date" />
+        <input placeholder="Month" />
+
+        <h3>Transferor</h3>
+        <input placeholder="Name" />
+        <input placeholder="Age" />
+        <input placeholder="Address" />
+        <input placeholder="Pin Code" />
+        <input placeholder="PAN" />
+        <input placeholder="Aadhaar" />
+        <label>Photo</label>
+        <input type="file" />
+        <label>Signature</label>
+        <input type="file" />
+
+        <h3>Transferee</h3>
+        <input placeholder="Name" />
+        <input placeholder="Age" />
+        <input placeholder="Address" />
+        <input placeholder="Pin Code" />
+        <input placeholder="PAN" />
+        <input placeholder="Aadhaar" />
+        <label>Photo</label>
+        <input type="file" />
+        <label>Signature</label>
+        <input type="file" />
+
+        <h3>Previous Purchase</h3>
+        <input type="date" />
+        <input placeholder="Sub Registrar Office" />
+        <input placeholder="Document Number" />
+        <input placeholder="Purchased From" />
+
+        <h3>Flat Details</h3>
+        <input placeholder="Flat No" />
+        <input placeholder="Area Sq Ft" />
+        <input placeholder="Floor No" />
+        <input placeholder="Building Name" />
+        <input placeholder="Society Name" />
+        <input placeholder="Village Name" />
+
+        <h3>Parking</h3>
+        <select>
+          <option>Exclusive</option>
+          <option>Shared</option>
+        </select>
+        <input placeholder="Parking Floor" />
+        <input placeholder="Parking Number" />
+
+        <h3>Society & Shares</h3>
+        <input placeholder="Society Reg No" />
+        <input type="date" />
+        <input placeholder="Share Value" />
+        <input placeholder="Share Certificate No" />
+        <input placeholder="Share Serial Nos" />
+
+        <h3>Transaction</h3>
+        <input placeholder="Amount (Numeric)" />
+        <input placeholder="Amount (Words)" />
+        <input placeholder="TDS (Optional)" />
+
+        <h3>Location</h3>
+        <input placeholder="Property Location" />
+        <input placeholder="CTS / Survey No" />
+        <input placeholder="Village" />
+        <input placeholder="Taluka" />
+        <input placeholder="Ward" />
+
+        <h3>Building</h3>
+        <input placeholder="Construction Year" />
+        <input placeholder="Total Floors" />
+
+        <h3>Payment</h3>
+        <input placeholder="DD / Pay Order No" />
+        <input type="date" />
+        <input placeholder="Bank Name" />
+        <input placeholder="Amount" />
+
+        <h3>Declarations</h3>
+        <label><input type="checkbox" /> No disputes</label><br />
+        <label><input type="checkbox" /> No encumbrances</label><br />
+        <label><input type="checkbox" /> Not mortgaged</label><br />
+        <label><input type="checkbox" /> Ownership confirmed</label><br />
+        <label><input type="checkbox" /> Possession transfer</label><br />
+        <label><input type="checkbox" /> Taxes cleared</label><br />
+        <label><input type="checkbox" /> Society rules accepted</label><br />
+        <label><input type="checkbox" /> Indemnity</label>
+
+        <h3>Witness</h3>
+        <input placeholder="Witness 1 Name" />
+        <input placeholder="Witness 1 Address" />
+        <input type="file" />
+
+        <input placeholder="Witness 2 Name" />
+        <input placeholder="Witness 2 Address" />
+        <input type="file" />
+
+        <button class="submit-btn">Submit Transfer Deed</button>
       </div>
     </div>
-  </body>
+
+    {% comment %} CORE Agreements {% endcomment %}
+    <div class="form-section" id="assignmentForm">
+
+  <h2>Agreement of Assignment</h2>
+
+  <!-- 1. Basic Info -->
+  <h3>Basic Agreement Details</h3>
+  <input type="text" placeholder="Place of Execution" required />
+  <input type="date" required />
+
+  <!-- 2. Assignor -->
+  <h3>Assignor Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Occupation" required />
+  <input type="text" placeholder="Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 3. Assignee -->
+  <h3>Assignee Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Occupation" required />
+  <input type="text" placeholder="Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 4. Original Agreement -->
+  <h3>Original Agreement Details</h3>
+  <input type="date" required />
+  <input type="text" placeholder="Agreement Type (Sale/Lease/etc.)" />
+  <input type="text" placeholder="Executed Between Parties" required />
+  <input type="text" placeholder="Registration Number" required />
+  <input type="text" placeholder="Sub-Registrar Office" required />
+
+  <!-- 5. Property -->
+  <h3>Property Details</h3>
+  <select>
+    <option>Flat</option>
+    <option>Land</option>
+    <option>Commercial</option>
+  </select>
+  <textarea placeholder="Property Address" required></textarea>
+  <input type="text" placeholder="Survey No / CTS No" required />
+  <input type="text" placeholder="Area" required />
+  <input type="text" placeholder="Floor Number" />
+  <input type="text" placeholder="Building Name" />
+  <input type="text" placeholder="Society Name" />
+  <input type="text" placeholder="Village" required />
+  <input type="text" placeholder="Taluka" required />
+  <input type="text" placeholder="District" required />
+
+  <!-- 6. Rights -->
+  <h3>Rights Being Assigned</h3>
+  <select>
+    <option>Ownership</option>
+    <option>Leasehold</option>
+    <option>Development Rights</option>
+  </select>
+  <textarea placeholder="Description of Rights" required></textarea>
+  <select>
+    <option>Full Assignment</option>
+    <option>Partial Assignment</option>
+  </select>
+
+  <!-- 7. Consideration -->
+  <h3>Transaction Details</h3>
+  <input type="number" placeholder="Amount (Numeric)" required />
+  <input type="text" placeholder="Amount (Words)" required />
+  <select>
+    <option>Cash</option>
+    <option>Cheque</option>
+    <option>DD</option>
+    <option>Bank Transfer</option>
+  </select>
+  <input type="text" placeholder="Payment Details (Cheque No / Bank / Date)" />
+  <input type="text" placeholder="TDS (Optional)" />
+
+  <!-- 8. Possession -->
+  <h3>Possession Details</h3>
+  <select>
+    <option>Given</option>
+    <option>To be given</option>
+  </select>
+  <input type="date" required />
+
+  <!-- 9. Declarations -->
+  <h3>Declarations</h3>
+  <label><input type="checkbox" required /> Full ownership rights</label><br/>
+  <label><input type="checkbox" required /> No encumbrances</label><br/>
+  <label><input type="checkbox" required /> No disputes</label><br/>
+  <label><input type="checkbox" required /> Dues cleared</label><br/>
+  <label><input type="checkbox" required /> Rights transferable</label><br/>
+  <label><input type="checkbox" required /> Assignee accepts terms</label><br/>
+  <label><input type="checkbox" required /> Indemnity clause</label>
+
+  <!-- 10. Documents -->
+  <h3>Upload Documents</h3>
+  <label>Original Agreement</label>
+  <input type="file" />
+  <label>Property Documents</label>
+  <input type="file" />
+  <label>ID Proof</label>
+  <input type="file" />
+
+  <!-- 11. Witness -->
+  <h3>Witness 1</h3>
+  <input type="text" placeholder="Name" required />
+  <input type="text" placeholder="Address" required />
+  <input type="file" />
+
+  <h3>Witness 2</h3>
+  <input type="text" placeholder="Name" required />
+  <input type="text" placeholder="Address" required />
+  <input type="file" />
+
+  <!-- 12. Final Signatures -->
+  <h3>Final Signatures</h3>
+  <label>Assignor Signature</label>
+  <input type="file" />
+  <label>Assignee Signature</label>
+  <input type="file" />
+
+  <button class="submit-btn">Submit Agreement</button>
+
+</div>
+
+<div class="form-section" id="developmentForm">
+
+  <h2>Agreement of Development</h2>
+
+  <!-- 1. Basic -->
+  <h3>Basic Agreement Details</h3>
+  <input type="text" placeholder="Place of Execution" required />
+  <input type="date" required />
+
+  <!-- 2. Land Owner -->
+  <h3>Land Owner Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Occupation" required />
+  <input type="text" placeholder="Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 3. Developer -->
+  <h3>Developer / Builder Details</h3>
+  <input type="text" placeholder="Company Name" required />
+  <input type="text" placeholder="Authorized Person Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Designation" required />
+  <input type="text" placeholder="Office Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="GST Number" required />
+  <input type="text" placeholder="Registration Number (Optional)" />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Company Seal</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 4. Land -->
+  <h3>Land Details</h3>
+  <input type="text" placeholder="Survey No / Gat No" required />
+  <input type="text" placeholder="Area (Sq Meter / Acres)" required />
+  <input type="text" placeholder="Village" required />
+  <input type="text" placeholder="Taluka" required />
+  <input type="text" placeholder="District" required />
+  <textarea placeholder="Property Address" required></textarea>
+  <select>
+    <option>Agricultural</option>
+    <option>Non-Agricultural</option>
+  </select>
+
+  <!-- 5. Ownership -->
+  <h3>Ownership Details</h3>
+  <input type="text" placeholder="Title of Ownership" required />
+  <select>
+    <option>Sale</option>
+    <option>Inheritance</option>
+    <option>Gift</option>
+  </select>
+  <input type="text" placeholder="Previous Owner Name" required />
+  <input type="text" placeholder="Document Number (Optional)" />
+  <input type="text" placeholder="Sub-Registrar Office" required />
+
+  <!-- 6. Development -->
+  <h3>Development Details</h3>
+  <select>
+    <option>Residential</option>
+    <option>Commercial</option>
+    <option>Mixed</option>
+  </select>
+  <input type="number" placeholder="Total Floors Proposed" required />
+  <input type="number" placeholder="Total Units" required />
+  <input type="text" placeholder="Project Name" required />
+  <input type="text" placeholder="Construction Timeline" required />
+  <select>
+    <option>Approved</option>
+    <option>Pending</option>
+  </select>
+
+  <!-- 7. Sharing -->
+  <h3>Consideration & Sharing</h3>
+  <input type="number" placeholder="Owner Share (%)" required />
+  <input type="number" placeholder="Developer Share (%)" required />
+  <input type="text" placeholder="Monetary Consideration" />
+  <textarea placeholder="Payment Schedule"></textarea>
+
+  <!-- 8. Possession -->
+  <h3>Possession & Rights</h3>
+  <select>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+  <input type="date" required />
+  <select>
+    <option>Development</option>
+    <option>Sale</option>
+    <option>Marketing</option>
+  </select>
+
+  <!-- 9. Approvals -->
+  <h3>Approvals & Compliance</h3>
+  <input type="text" placeholder="RERA Registration Number" />
+  <input type="text" placeholder="Municipal Approval Number" required />
+  <select>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+  <label>Other Approvals</label>
+  <input type="file" />
+
+  <!-- 10. Obligations -->
+  <h3>Obligations</h3>
+  <label><input type="checkbox" /> Provide clear title</label><br/>
+  <label><input type="checkbox" /> Hand over possession</label><br/>
+  <label><input type="checkbox" /> Assist in approvals</label><br/>
+  <label><input type="checkbox" /> Complete construction</label><br/>
+  <label><input type="checkbox" /> Obtain approvals</label><br/>
+  <label><input type="checkbox" /> Deliver owner share</label>
+
+  <!-- 11. Declarations -->
+  <h3>Declarations</h3>
+  <label><input type="checkbox" required /> No encumbrances</label><br/>
+  <label><input type="checkbox" required /> No disputes</label><br/>
+  <label><input type="checkbox" required /> Developer authorized</label><br/>
+  <label><input type="checkbox" required /> Approvals will be obtained</label><br/>
+  <label><input type="checkbox" required /> Indemnity clause</label><br/>
+  <label><input type="checkbox" required /> Agreement binding</label>
+
+  <!-- 12. Termination -->
+  <h3>Termination Clause</h3>
+  <textarea placeholder="Termination Conditions"></textarea>
+  <input type="text" placeholder="Penalty Clause (Optional)" />
+
+  <!-- 13. Dispute -->
+  <h3>Dispute Resolution</h3>
+  <input type="text" placeholder="Jurisdiction (City)" />
+  <select>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+
+  <!-- 14. Uploads -->
+  <h3>Supporting Documents</h3>
+  <label>Land Ownership Documents</label>
+  <input type="file" />
+  <label>Approved Layout Plan</label>
+  <input type="file" />
+  <label>Government Approvals</label>
+  <input type="file" />
+  <label>ID Proof</label>
+  <input type="file" />
+
+  <!-- 15. Witness -->
+  <h3>Witness 1</h3>
+  <input type="text" placeholder="Name" required />
+  <input type="text" placeholder="Address" required />
+  <input type="file" />
+
+  <h3>Witness 2</h3>
+  <input type="text" placeholder="Name" required />
+  <input type="text" placeholder="Address" required />
+  <input type="file" />
+
+  <!-- 16. Final Signatures -->
+  <h3>Final Signatures</h3>
+  <label>Land Owner Signature</label>
+  <input type="file" />
+  <label>Developer Signature</label>
+  <input type="file" />
+
+  <button class="submit-btn">Submit Development Agreement</button>
+
+</div>
+
+<div class="form-section" id="conveyanceForm">
+
+  <h2>Deed of Conveyance</h2>
+
+  <!-- 1 -->
+  <h3>Basic Details</h3>
+  <input type="text" placeholder="Place of Execution" required />
+  <input type="date" required />
+
+  <!-- 2 -->
+  <h3>Transferor Details</h3>
+  <input type="text" placeholder="Name" required />
+  <select>
+    <option>Individual</option>
+    <option>Society</option>
+    <option>Builder</option>
+  </select>
+  <input type="text" placeholder="Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="Registration Number" />
+  <input type="text" placeholder="Authorized Person Name" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 3 -->
+  <h3>Transferee Details</h3>
+  <input type="text" placeholder="Name" required />
+  <select>
+    <option>Individual</option>
+    <option>Society</option>
+  </select>
+  <input type="text" placeholder="Address" required />
+  <input type="text" placeholder="PAN Number" required />
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="Registration Number" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 4 -->
+  <h3>Property Details</h3>
+  <select>
+    <option>Flat</option>
+    <option>Land</option>
+    <option>Building</option>
+  </select>
+  <textarea placeholder="Property Address" required></textarea>
+  <input type="text" placeholder="Survey No / CTS No" required />
+  <input type="text" placeholder="Area" required />
+  <input type="text" placeholder="Building Name" />
+  <input type="text" placeholder="Society Name" />
+  <input type="text" placeholder="Village" required />
+  <input type="text" placeholder="Taluka" required />
+  <input type="text" placeholder="District" required />
+
+  <!-- 5 -->
+  <h3>Ownership Details</h3>
+  <select>
+    <option>Sale</option>
+    <option>Development</option>
+    <option>Allotment</option>
+  </select>
+  <input type="text" placeholder="Previous Owner" required />
+  <select>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+  <input type="text" placeholder="Encumbrance Status" />
+  <input type="text" placeholder="Document Number" />
+  <input type="text" placeholder="Sub-Registrar Office" required />
+
+  <!-- 6 -->
+  <h3>Transaction Details</h3>
+  <input type="number" placeholder="Amount" />
+  <input type="text" placeholder="Amount in Words" required />
+  <select>
+    <option>Cheque</option>
+    <option>DD</option>
+    <option>Bank Transfer</option>
+  </select>
+  <input type="text" placeholder="Payment Details" />
+
+  <!-- 7 -->
+  <h3>Possession</h3>
+  <select>
+    <option>Given</option>
+    <option>To be given</option>
+  </select>
+  <input type="date" required />
+
+  <!-- 8 -->
+  <h3>Boundaries</h3>
+  <input placeholder="East" />
+  <input placeholder="West" />
+  <input placeholder="North" />
+  <input placeholder="South" />
+
+  <!-- 9 -->
+  <h3>Rights</h3>
+  <select>
+    <option>Ownership</option>
+    <option>Leasehold</option>
+  </select>
+  <select>
+    <option>Full Transfer</option>
+    <option>Partial Transfer</option>
+  </select>
+  <input type="text" placeholder="Easement Rights" />
+
+  <!-- 10 -->
+  <h3>Declarations</h3>
+  <label><input type="checkbox" required /> No encumbrances</label><br/>
+  <label><input type="checkbox" required /> No disputes</label><br/>
+  <label><input type="checkbox" required /> Clear title</label><br/>
+  <label><input type="checkbox" required /> Buyer accepts</label><br/>
+  <label><input type="checkbox" required /> Taxes cleared</label><br/>
+  <label><input type="checkbox" required /> Indemnity clause</label>
+
+  <!-- 11 -->
+  <h3>Documents</h3>
+  <input type="file" />
+  <input type="file" />
+  <input type="file" />
+
+  <!-- 12 -->
+  <h3>Witness</h3>
+  <input placeholder="Witness 1 Name" />
+  <input placeholder="Witness 1 Address" />
+  <input type="file" />
+
+  <input placeholder="Witness 2 Name" />
+  <input placeholder="Witness 2 Address" />
+  <input type="file" />
+
+  <!-- 13 -->
+  <h3>Final Signatures</h3>
+  <label>Transferor</label>
+  <input type="file" />
+  <label>Transferee</label>
+  <input type="file" />
+
+  <button class="submit-btn">Submit Conveyance Deed</button>
+
+</div>
+
+<div class="form-section" id="affidavitForm">
+<h2>Affidavit</h2>
+
+  <!-- 1. Basic -->
+  <h3>Basic Details</h3>
+  <input type="text" placeholder="Place of Affidavit" required />
+  <input type="date" required />
+
+  <!-- 2. Deponent -->
+  <h3>Deponent Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+
+  <select>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+
+  <input type="text" placeholder="Occupation" required />
+  <textarea placeholder="Address" required></textarea>
+
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="PAN Number (Optional)" />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+
+  <label>Photograph</label>
+  <input type="file" />
+
+  <!-- 3. Type -->
+  <h3>Affidavit Type</h3>
+  <select>
+    <option>Identity Proof</option>
+    <option>Address Proof</option>
+    <option>Income Declaration</option>
+    <option>Name Change</option>
+    <option>General Affidavit</option>
+  </select>
+
+  <!-- 4. Statement -->
+  <h3>Affidavit Statement</h3>
+  <textarea placeholder="Enter your statement..." required></textarea>
+
+  <!-- 5. Documents -->
+  <h3>Supporting Documents</h3>
+  <label>ID Proof</label>
+  <input type="file" />
+
+  <label>Address Proof</label>
+  <input type="file" />
+
+  <label>Other Documents</label>
+  <input type="file" />
+
+  <!-- 6. Verification -->
+  <h3>Verification</h3>
+  <textarea placeholder="I hereby verify that the above statements are true..." required></textarea>
+
+  <!-- 7. Declaration -->
+  <h3>Declaration</h3>
+  <label><input type="checkbox" required /> Information is true</label><br/>
+  <label><input type="checkbox" required /> No false statements</label><br/>
+  <label><input type="checkbox" required /> Legal responsibility accepted</label>
+
+  <!-- 8. Signature -->
+  <h3>Signature</h3>
+  <label>Deponent Signature</label>
+  <input type="file" />
+
+  <!-- 9. Witness -->
+  <h3>Witness (Optional)</h3>
+  <input type="text" placeholder="Witness Name" />
+  <input type="text" placeholder="Witness Address" />
+  <input type="file" />
+
+  <button class="submit-btn">Submit Affidavit</button>
+
+</div>
+<div class="form-section" id="authorityLetterForm">
+<h2>Authority Letter</h2>
+
+  <!-- 1. Basic -->
+  <h3>Basic Details</h3>
+  <input type="text" placeholder="Place" required />
+  <input type="date" required />
+
+  <!-- 2. Authorizer -->
+  <h3>Authorizer Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Occupation" required />
+  <textarea placeholder="Address" required></textarea>
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="PAN Number (Optional)" />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 3. Authorized Person -->
+  <h3>Authorized Person Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+  <input type="text" placeholder="Occupation" required />
+  <textarea placeholder="Address" required></textarea>
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="PAN Number (Optional)" />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+  <label>Photograph</label>
+  <input type="file" />
+  <label>Signature</label>
+  <input type="file" />
+
+  <!-- 4. Purpose -->
+  <h3>Purpose of Authority</h3>
+  <select>
+    <option>Bank Work</option>
+    <option>Property Transaction</option>
+    <option>Legal Representation</option>
+    <option>Document Submission</option>
+    <option>Other</option>
+  </select>
+  <textarea placeholder="Describe purpose..." required></textarea>
+
+  <!-- 5. Scope -->
+  <h3>Scope of Authority</h3>
+  <select>
+    <option>Full Authority</option>
+    <option>Limited Authority</option>
+  </select>
+  <input type="date" placeholder="Valid From" required />
+  <input type="date" placeholder="Valid Till" required />
+
+  <!-- 6. Powers -->
+  <h3>Powers Granted</h3>
+  <label><input type="checkbox" /> Sign Documents</label><br/>
+  <label><input type="checkbox" /> Submit Documents</label><br/>
+  <label><input type="checkbox" /> Collect Documents</label><br/>
+  <label><input type="checkbox" /> Represent Authority</label><br/>
+  <label><input type="checkbox" /> Financial Transactions</label><br/>
+  <input type="text" placeholder="Other Powers (Optional)" />
+
+  <!-- 7. Documents -->
+  <h3>Supporting Documents</h3>
+  <label>ID Proof</label>
+  <input type="file" />
+  <label>Authorization Proof</label>
+  <input type="file" />
+
+  <!-- 8. Declaration -->
+  <h3>Declaration</h3>
+  <label><input type="checkbox" required /> Given voluntarily</label><br/>
+  <label><input type="checkbox" required /> Information is true</label><br/>
+  <label><input type="checkbox" required /> No misuse</label><br/>
+  <label><input type="checkbox" required /> Legal responsibility accepted</label>
+
+  <!-- 9. Witness -->
+  <h3>Witness 1</h3>
+  <input type="text" placeholder="Name" />
+  <input type="text" placeholder="Address" />
+  <input type="file" />
+
+  <h3>Witness 2</h3>
+  <input type="text" placeholder="Name" />
+  <input type="text" placeholder="Address" />
+  <input type="file" />
+
+  <!-- 10. Final -->
+  <h3>Final Signatures</h3>
+  <label>Authorizer Signature</label>
+  <input type="file" />
+  <label>Authorized Person Signature</label>
+  <input type="file" />
+
+  <button class="submit-btn">Submit Authority Letter</button>
+
+</div>
+<div class="form-section" id="declarationForm">
+
+  <h2>Declaration Form</h2>
+
+  <!-- 1. Basic -->
+  <h3>Basic Details</h3>
+  <input type="text" placeholder="Place" required />
+  <input type="date" required />
+
+  <!-- 2. Declarant -->
+  <h3>Declarant Details</h3>
+  <input type="text" placeholder="Full Name" required />
+  <input type="number" placeholder="Age" required />
+
+  <select>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+
+  <input type="text" placeholder="Occupation" required />
+  <textarea placeholder="Address" required></textarea>
+
+  <input type="text" placeholder="Aadhaar Number" required />
+  <input type="text" placeholder="PAN Number (Optional)" />
+  <input type="text" placeholder="Mobile (Optional)" />
+  <input type="email" placeholder="Email (Optional)" />
+
+  <label>Photograph</label>
+  <input type="file" />
+
+  <!-- 3. Type -->
+  <h3>Declaration Type</h3>
+  <select>
+    <option>Self Declaration</option>
+    <option>Income Declaration</option>
+    <option>Address Declaration</option>
+    <option>Compliance Declaration</option>
+    <option>Undertaking</option>
+    <option>Other</option>
+  </select>
+
+  <!-- 4. Statement -->
+  <h3>Declaration Statement</h3>
+  <textarea placeholder="Enter declaration..." required></textarea>
+
+  <!-- 5. Purpose -->
+  <h3>Purpose / Validity</h3>
+  <textarea placeholder="Purpose of declaration"></textarea>
+  <input type="date" placeholder="Valid Till (Optional)" />
+
+  <!-- 6. Documents -->
+  <h3>Supporting Documents</h3>
+  <label>ID Proof</label>
+  <input type="file" />
+
+  <label>Address Proof</label>
+  <input type="file" />
+
+  <label>Other Documents</label>
+  <input type="file" />
+
+  <!-- 7. Declaration -->
+  <h3>Confirmation</h3>
+  <label><input type="checkbox" required /> Information is true</label><br/>
+  <label><input type="checkbox" required /> No false information</label><br/>
+  <label><input type="checkbox" required /> Responsibility accepted</label><br/>
+  <label><input type="checkbox" required /> Given voluntarily</label>
+
+  <!-- 8. Signature -->
+  <h3>Signature</h3>
+  <label>Declarant Signature</label>
+  <input type="file" />
+
+  <!-- 9. Witness -->
+  <h3>Witness (Optional)</h3>
+  <input type="text" placeholder="Witness Name" />
+  <input type="text" placeholder="Witness Address" />
+  <input type="file" />
+
+  <button class="submit-btn">Submit Declaration</button>
+  <button id="voiceBtn" class="alerts-btn"
+style="background: #e74c3c; display: none; position: sticky; bottom: 20px; z-index: 100; margin-top: 20px;">
+  🎙️ Start Live Voice Fill
+</button>
+
+</div>
+   <script>
+// ================= FORM NAVIGATION =================
+function hideAll() {
+  document.querySelectorAll('.form-section').forEach(el => el.style.display = "none");
+}
+
+function showForm(formId) {
+  document.getElementById("selectionBox").style.display = "none";
+  hideAll();
+
+  const form = document.getElementById(formId);
+  form.style.display = "block";
+
+  document.getElementById("voiceBtn").style.display = "block";
+
+  initSequentialVoiceFill(form);
+}
+
+function loadForm() { showForm("formSection"); }
+function loadSaleDeedForm() { showForm("saleDeedForm"); }
+function loadTransferDeedForm() { showForm("transferDeedForm"); }
+function loadAssignment() { showForm("assignmentForm"); }
+function loadDevelopmentForm() { showForm("developmentForm"); }
+function loadConveyanceForm() { showForm("conveyanceForm"); }
+function loadAffidavitForm() { showForm("affidavitForm"); }
+function loadAuthorityLetterForm() { showForm("authorityLetterForm"); }
+function loadDeclarationForm() { showForm("declarationForm"); }
+
+
+// ================= SEQUENTIAL STATE =================
+let formInputs = [];
+let currentIndex = 0;
+let activeFormElement = null;
+
+function initSequentialVoiceFill(formElement) {
+  activeFormElement = formElement;
+
+  formInputs = Array.from(
+    formElement.querySelectorAll(
+      'input:not([type="file"]):not([type="checkbox"]), textarea, select'
+    )
+  );
+
+  currentIndex = 0;
+}
+
+function highlightCurrentInput() {
+  formInputs.forEach(el => {
+    el.style.border = "1px solid #ccc";
+    el.style.backgroundColor = "#fff";
+    el.style.boxShadow = "none";
+  });
+
+  if (formInputs[currentIndex]) {
+    const el = formInputs[currentIndex];
+
+    el.style.border = "2px solid #3498db";
+    el.style.backgroundColor = "#ebf5fb";
+    el.style.boxShadow = "0 0 10px rgba(52,152,219,0.5)";
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+
+// ================= VOICE ENGINE =================
+const voiceBtn = document.getElementById("voiceBtn");
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = 'en-IN';
+
+  let isRecording = false;
+
+  voiceBtn.addEventListener("click", () => {
+
+    if (!isRecording) {
+      recognition.start();
+      voiceBtn.innerHTML = "🛑 Stop Voice Fill";
+      voiceBtn.style.background = "#c0392b";
+      isRecording = true;
+
+      highlightCurrentInput();
+
+    } else {
+      recognition.stop();
+      voiceBtn.innerHTML = "🎙️ Start Live Voice Fill";
+      voiceBtn.style.background = "#e74c3c";
+      isRecording = false;
+    }
+  });
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+    processVoiceCommand(transcript);
+  };
+
+  recognition.onerror = () => {
+    isRecording = false;
+    voiceBtn.innerHTML = "🎙️ Start Live Voice Fill";
+  };
+
+  recognition.onend = () => {
+    if (isRecording) recognition.start();
+  };
+
+} else {
+  voiceBtn.innerHTML = "Voice Not Supported";
+  voiceBtn.disabled = true;
+}
+
+
+// ================= PROCESS VOICE =================
+function processVoiceCommand(text) {
+
+  if (!activeFormElement || formInputs.length === 0) return;
+
+  // NAVIGATION COMMANDS
+  if (text.includes("next")) {
+    currentIndex++;
+    highlightCurrentInput();
+    return;
+  }
+
+  if (text.includes("back") || text.includes("previous")) {
+    if (currentIndex > 0) currentIndex--;
+    highlightCurrentInput();
+    return;
+  }
+
+  if (text.includes("clear form")) {
+    formInputs.forEach(el => el.value = "");
+    currentIndex = 0;
+    highlightCurrentInput();
+    return;
+  }
+
+  const input = formInputs[currentIndex];
+  if (!input) return;
+
+  let value = extractValue(input, text);
+
+  if (value) {
+    input.value = value;
+    input.style.border = "2px solid #2ecc71";
+    input.style.background = "#eafaf1";
+
+    currentIndex++;
+    setTimeout(highlightCurrentInput, 400);
+  }
+}
+
+
+// ================= VALUE EXTRACTION =================
+function extractValue(input, text) {
+
+  const p = (input.placeholder || "").toLowerCase();
+
+  // EMAIL
+  if (p.includes("email")) {
+    const match = text.match(/\S+@\S+\.\S+/);
+    return match ? match[0] : null;
+  }
+
+  // PHONE
+  if (p.includes("phone") || p.includes("mobile")) {
+    const match = text.match(/\d{10}/);
+    return match ? match[0] : null;
+  }
+
+  // PIN
+  if (p.includes("pin")) {
+    const match = text.match(/\d{6}/);
+    return match ? match[0] : null;
+  }
+
+  // PAN
+  if (p.includes("pan")) {
+    const match = text.match(/[a-z]{5}\d{4}[a-z]/i);
+    return match ? match[0].toUpperCase() : null;
+  }
+
+  // AADHAAR
+  if (p.includes("aadhaar")) {
+    const match = text.match(/\d{4}\s?\d{4}\s?\d{4}/);
+    return match ? match[0] : null;
+  }
+
+  // AGE
+  if (p.includes("age")) {
+    const match = text.match(/\d{1,3}/);
+    return match ? match[0] : null;
+  }
+
+  // DATE
+  if (input.type === "date") {
+    const d = new Date(text);
+    if (!isNaN(d)) {
+      return d.toISOString().split("T")[0];
+    }
+  }
+
+  // SELECT
+  if (input.tagName === "SELECT") {
+    for (let opt of input.options) {
+      if (text.includes(opt.value.toLowerCase())) {
+        return opt.value;
+      }
+    }
+  }
+
+  // DEFAULT TEXT
+  return text.replace(/my name is|i am|address is|from/gi, "").trim();
+}
+</script>
+
+</body>
 </html>
