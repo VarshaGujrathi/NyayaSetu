@@ -102,6 +102,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # project-level static folder
 
+# Use signed cookie sessions in development to avoid database session table needs
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
 # For production: optional static root
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 

@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Debug display issue",
+			"type": "shell",
+			"command": "cd d:\\Major_Project\\NyayaSetu && python -c \"from main.utils import CUSTOM_MODEL_READY; print(f'Model Ready: {CUSTOM_MODEL_READY}')\"",
+			"group": "none"
+		}
+	]
+}
