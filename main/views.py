@@ -592,3 +592,8 @@ def document_comparison(request):
         "document_comparison.html",
         context
     )
+
+#Smart Form Autofill
+
+def smart_form_autofill(request):
+    return render(request, 'smart_form_autofill.html')

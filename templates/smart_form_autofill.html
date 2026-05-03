@@ -1,1443 +1,1615 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Smart Form Filling – NyaySetu</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-      rel="stylesheet"
-    />
+<head>
+<meta charset="UTF-8" />
+<title>Smart Form Filling – NyaySetu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
-    <style>
-      :root {
-        --gold: #b5953d;
-        --gold-light: #d4af6a;
-        --gold-pale: #f7f3e5;
-        --gold-dark: #8a6e28;
-        --gold-muted: rgba(181, 149, 61, 0.15);
-        --green: #27ae60;
-        --green-light: #eafaf1;
-        --blue: #2471a3;
-        --blue-light: #eaf4fb;
-        --red: #c0392b;
-        --bg: #ede9e0;
-        --card: #ffffff;
-        --text: #2c2c2c;
-        --muted: #777;
-        --border: #e0dbd0;
-        --radius: 14px;
-        --radius-sm: 9px;
-        --shadow: 0 6px 36px rgba(0, 0, 0, 0.08);
-      }
+<style>
+:root {
+  --gold:        #b5953d;
+  --gold-light:  #d4af6a;
+  --gold-pale:   #f7f3e5;
+  --gold-dark:   #8a6e28;
+  --gold-muted:  rgba(181,149,61,.15);
+  --green:       #27ae60;
+  --green-light: #eafaf1;
+  --blue:        #2471a3;
+  --blue-light:  #eaf4fb;
+  --red:         #c0392b;
+  --bg:          #ede9e0;
+  --card:        #ffffff;
+  --text:        #2c2c2c;
+  --muted:       #777;
+  --border:      #e0dbd0;
+  --radius:      14px;
+  --radius-sm:   9px;
+  --shadow:      0 6px 36px rgba(0,0,0,.08);
+}
 
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        padding-bottom: 130px;
-      }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 130px;
+}
 
-      /* HEADER */
-      .site-header {
-        background: var(--gold);
-        padding: 13px 36px;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 2px 14px rgba(181, 149, 61, 0.3);
-      }
-      .header-logo {
-        font-family: "Playfair Display", serif;
-        font-size: 20px;
-        color: #fff;
-      }
-      .header-tag {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.75);
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        margin-top: 1px;
-      }
+/* HEADER */
+.site-header {
+  background: var(--gold);
+  padding: 13px 36px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 14px rgba(181,149,61,.3);
+}
+.header-logo  { font-family:'Playfair Display',serif; font-size:20px; color:#fff; }
+.header-tag   { font-size:11px; color:rgba(255,255,255,.75); letter-spacing:1.2px; text-transform:uppercase; margin-top:1px; }
 
-      /* MAIN CARD */
-      .main-card {
-        background: var(--card);
-        width: 90%;
-        max-width: 820px;
-        margin: 36px auto 0;
-        padding: 44px 50px;
-        border-radius: 22px;
-        box-shadow: var(--shadow);
-      }
-      .page-title {
-        text-align: center;
-        font-family: "Playfair Display", serif;
-        font-size: 30px;
-        color: var(--gold);
-        margin-bottom: 6px;
-      }
-      .page-sub {
-        text-align: center;
-        color: var(--muted);
-        font-size: 14px;
-        margin-bottom: 34px;
-      }
+/* MAIN CARD */
+.main-card {
+  background: var(--card);
+  width: 90%;
+  max-width: 820px;
+  margin: 36px auto 0;
+  padding: 44px 50px;
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+}
+.page-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.page-sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 34px;
+}
 
-      /* PROGRESS BAR */
-      .prog-wrap {
-        margin-bottom: 22px;
-        display: none;
-      }
-      .prog-wrap.on {
-        display: block;
-      }
-      .prog-meta {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 5px;
-      }
-      .prog-track {
-        height: 4px;
-        background: #ece8df;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .prog-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--gold), var(--gold-light));
-        border-radius: 4px;
-        transition: width 0.5s ease;
-      }
+/* PROGRESS BAR */
+.prog-wrap { margin-bottom: 22px; display: none; }
+.prog-wrap.on { display: block; }
+.prog-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:5px; }
+.prog-track { height:4px; background:#ece8df; border-radius:4px; overflow:hidden; }
+.prog-fill  { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:4px; transition:width .5s ease; }
 
-      /* DROPDOWN SELECTOR */
-      .selector-box {
-        border: 2px dashed var(--gold-light);
-        border-radius: 18px;
-        padding: 26px;
-        background: var(--gold-pale);
-      }
-      .dropdown-label {
-        display: block;
-        padding: 12px 18px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid var(--gold);
-        cursor: pointer;
-        text-align: center;
-        font-size: 15px;
-        background: #fff;
-        color: var(--gold-dark);
-        font-weight: 500;
-        user-select: none;
-      }
-      #dd-toggle {
-        display: none;
-      }
-      .dropdown {
-        display: none;
-        margin-top: 12px;
-        border-radius: var(--radius);
-        border: 1px solid #e4dcca;
-        background: #fff;
-        padding: 12px;
-        flex-direction: column;
-        gap: 6px;
-      }
-      #dd-toggle:checked ~ .dropdown {
-        display: flex;
-      }
-      .menu-group {
-        display: flex;
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        border: 1px solid #ede8da;
-      }
-      .main-item {
-        width: 42%;
-        padding: 10px 13px;
-        font-weight: 600;
-        color: var(--gold-dark);
-        font-size: 13px;
-        background: var(--gold-pale);
-      }
-      .sub-menu {
-        width: 58%;
-      }
-      .sub-menu span {
-        display: block;
-        padding: 8px 13px;
-        cursor: pointer;
-        font-size: 13.5px;
-        transition: background 0.12s;
-      }
-      .sub-menu span:hover {
-        background: var(--gold-pale);
-        color: var(--gold-dark);
-      }
-      .pick-btn {
-        margin-top: 16px;
-        width: 100%;
-        padding: 12px;
-        border-radius: var(--radius);
-        border: none;
-        background: var(--gold);
-        color: #fff;
-        cursor: pointer;
-        font-size: 14.5px;
-        font-weight: 500;
-        transition: background 0.2s;
-      }
-      .pick-btn:hover {
-        background: var(--gold-dark);
-      }
+/* DROPDOWN SELECTOR */
+.selector-box {
+  border: 2px dashed var(--gold-light);
+  border-radius: 18px;
+  padding: 26px;
+  background: var(--gold-pale);
+}
+.dropdown-label {
+  display: block;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--gold);
+  cursor: pointer;
+  text-align: center;
+  font-size: 15px;
+  background: #fff;
+  color: var(--gold-dark);
+  font-weight: 500;
+  user-select: none;
+}
+#dd-toggle { display: none; }
+.dropdown {
+  display: none;
+  margin-top: 12px;
+  border-radius: var(--radius);
+  border: 1px solid #e4dcca;
+  background: #fff;
+  padding: 12px;
+  flex-direction: column;
+  gap: 6px;
+}
+#dd-toggle:checked ~ .dropdown { display: flex; }
+.menu-group { display: flex; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid #ede8da; }
+.main-item  { width:42%; padding:10px 13px; font-weight:600; color:var(--gold-dark); font-size:13px; background:var(--gold-pale); }
+.sub-menu   { width:58%; }
+.sub-menu span { display:block; padding:8px 13px; cursor:pointer; font-size:13.5px; transition:background .12s; }
+.sub-menu span:hover { background: var(--gold-pale); color: var(--gold-dark); }
+.pick-btn {
+  margin-top: 16px; width: 100%; padding: 12px;
+  border-radius: var(--radius); border: none; background: var(--gold); color: #fff;
+  cursor: pointer; font-size: 14.5px; font-weight: 500; transition: background .2s;
+}
+.pick-btn:hover { background: var(--gold-dark); }
 
-      /* FORM SECTION */
-      .form-section {
-        display: none;
-        margin-top: 28px;
-      }
-      .form-section h2 {
-        font-family: "Playfair Display", serif;
-        font-size: 24px;
-        color: var(--gold);
-        margin-bottom: 2px;
-      }
-      .form-section h3 {
-        margin-top: 26px;
-        margin-bottom: 5px;
-        color: var(--gold-dark);
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-bottom: 1px solid var(--gold-muted);
-        padding-bottom: 4px;
-      }
-      .form-section input,
-      .form-section textarea,
-      .form-section select {
-        width: 100%;
-        padding: 10px 13px;
-        margin: 4px 0 11px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid var(--border);
-        font-family: "DM Sans", sans-serif;
-        font-size: 14px;
-        background: #fafaf8;
-        outline: none;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
-      }
-      .form-section input:focus,
-      .form-section textarea:focus,
-      .form-section select:focus {
-        border-color: var(--gold);
-        box-shadow: 0 0 0 3px rgba(181, 149, 61, 0.13);
-        background: #fff;
-      }
-      .form-section label {
-        font-size: 12px;
-        color: var(--muted);
-        font-weight: 500;
-      }
-      .submit-btn {
-        background: var(--green);
-        color: #fff;
-        padding: 13px;
-        border-radius: var(--radius);
-        width: 100%;
-        margin-top: 22px;
-        cursor: pointer;
-        border: none;
-        font-size: 15px;
-        font-weight: 500;
-        transition: background 0.2s;
-      }
-      .submit-btn:hover {
-        background: #1e8449;
-      }
+/* FORM SECTION */
+.form-section { display: none; margin-top: 28px; }
+.form-section h2 {
+  font-family:'Playfair Display',serif; font-size:24px; color:var(--gold); margin-bottom:2px;
+}
+.form-section h3 {
+  margin-top: 26px; margin-bottom: 5px; color: var(--gold-dark);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid var(--gold-muted); padding-bottom: 4px;
+}
+.form-section input,
+.form-section textarea,
+.form-section select {
+  width: 100%; padding: 10px 13px; margin: 4px 0 11px;
+  border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  background: #fafaf8; outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.form-section input:focus,
+.form-section textarea:focus,
+.form-section select:focus {
+  border-color: var(--gold); box-shadow: 0 0 0 3px rgba(181,149,61,.13); background:#fff;
+}
+.form-section label { font-size: 12px; color: var(--muted); font-weight:500; }
+.submit-btn {
+  background: var(--green); color: #fff; padding: 13px; border-radius: var(--radius);
+  width: 100%; margin-top: 22px; cursor: pointer; border: none; font-size: 15px;
+  font-weight: 500; transition: background .2s;
+}
+.submit-btn:hover { background: #1e8449; }
 
-      /* VOICE FIELD STATES */
-      .v-active {
-        border-color: var(--blue) !important;
-        background: var(--blue-light) !important;
-        box-shadow: 0 0 0 3px rgba(36, 113, 163, 0.14) !important;
-      }
-      .v-filled {
-        border-color: var(--green) !important;
-        background: var(--green-light) !important;
-      }
+/* VOICE FIELD STATES */
+.v-active {
+  border-color: var(--blue)    !important;
+  background:   var(--blue-light) !important;
+  box-shadow: 0 0 0 3px rgba(36,113,163,.14) !important;
+}
+.v-filled {
+  border-color: var(--green) !important;
+  background:   var(--green-light) !important;
+}
 
-      /* ══ FLOATING VOICE BAR ══ */
-      #voiceBar {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(760px, 94vw);
-        z-index: 300;
-        animation: barIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      @keyframes barIn {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) translateY(16px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(-50%) translateY(0);
-        }
-      }
+/* ══ FLOATING VOICE BAR ══ */
+#voiceBar {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 94vw);
+  z-index: 300;
+  animation: barIn .35s cubic-bezier(.22,1,.36,1);
+}
+@keyframes barIn {
+  from { opacity:0; transform:translateX(-50%) translateY(16px); }
+  to   { opacity:1; transform:translateX(-50%) translateY(0); }
+}
 
-      .vbar-shell {
-        background: rgba(255, 252, 244, 0.97);
-        border: 1.5px solid var(--gold-light);
-        border-radius: 16px;
-        box-shadow:
-          0 6px 28px rgba(0, 0, 0, 0.15),
-          0 1px 0 rgba(255, 255, 255, 0.8) inset;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 10px 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+.vbar-shell {
+  background: rgba(255,252,244,.97);
+  border: 1.5px solid var(--gold-light);
+  border-radius: 16px;
+  box-shadow: 0 6px 28px rgba(0,0,0,.15), 0 1px 0 rgba(255,255,255,.8) inset;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-      /* ─── VOICE FILL BUTTON (replaces bare mic icon) ─── */
-      #voiceBtn {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 0 14px;
-        height: 38px;
-        border-radius: 20px;
-        border: 2px solid var(--gold);
-        background: var(--gold-pale);
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--gold-dark);
-        white-space: nowrap;
-        transition:
-          background 0.2s,
-          border-color 0.2s,
-          color 0.2s,
-          box-shadow 0.2s;
-        line-height: 1;
-        font-family: "DM Sans", sans-serif;
-        letter-spacing: 0.2px;
-      }
-      #voiceBtn .btn-mic {
-        font-size: 15px;
-      }
-      #voiceBtn .btn-text {
-        font-size: 12.5px;
-      }
-      #voiceBtn:hover {
-        background: rgba(181, 149, 61, 0.22);
-        border-color: var(--gold-dark);
-      }
-      #voiceBtn.on {
-        background: var(--red);
-        border-color: var(--red);
-        color: #fff;
-        animation: micPulse 1.4s ease-in-out infinite;
-      }
-      #voiceBtn.on .btn-text::after {
-        content: " — tap to stop";
-      }
-      @keyframes micPulse {
-        0%,
-        100% {
-          box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4);
-        }
-        50% {
-          box-shadow: 0 0 0 9px rgba(192, 57, 43, 0);
-        }
-      }
+/* ─── VOICE FILL BUTTON (replaces bare mic icon) ─── */
+#voiceBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 38px;
+  border-radius: 20px;
+  border: 2px solid var(--gold);
+  background: var(--gold-pale);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-dark);
+  white-space: nowrap;
+  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+  line-height: 1;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .2px;
+}
+#voiceBtn .btn-mic  { font-size: 15px; }
+#voiceBtn .btn-text { font-size: 12.5px; }
+#voiceBtn:hover {
+  background: rgba(181,149,61,.22);
+  border-color: var(--gold-dark);
+}
+#voiceBtn.on {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  animation: micPulse 1.4s ease-in-out infinite;
+}
+#voiceBtn.on .btn-text::after { content: ' — tap to stop'; }
+@keyframes micPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,.4); }
+  50%      { box-shadow: 0 0 0 9px rgba(192,57,43,0); }
+}
 
-      /* FIELD CHIP */
-      .vbar-chip {
-        flex-shrink: 0;
-        max-width: 130px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 11.5px;
-        font-weight: 600;
-        color: var(--gold-dark);
-        background: var(--gold-pale);
-        border: 1px solid var(--gold-light);
-        border-radius: 20px;
-        padding: 4px 9px;
-      }
+/* FIELD CHIP */
+.vbar-chip {
+  flex-shrink: 0;
+  max-width: 130px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 11.5px; font-weight: 600; color: var(--gold-dark);
+  background: var(--gold-pale); border: 1px solid var(--gold-light);
+  border-radius: 20px; padding: 4px 9px;
+}
 
-      /* TRANSCRIPT */
-      .vbar-tx {
-        flex: 1;
-        font-size: 13px;
-        background: #f5f1e8;
-        border-radius: 9px;
-        border: 1px solid #e8e1d0;
-        padding: 6px 10px;
-        min-height: 32px;
-        line-height: 1.45;
-        font-style: italic;
-        color: var(--muted);
-        transition: all 0.2s;
-        word-break: break-word;
-      }
-      .vbar-tx.live {
-        font-style: normal;
-        color: var(--text);
-        background: #fff;
-        border-color: #ddd;
-      }
-      .vbar-tx.thinking {
-        color: var(--gold-dark);
-        background: var(--gold-pale);
-        border-color: var(--gold-light);
-        font-style: normal;
-      }
-      .vbar-tx.filled {
-        color: var(--green);
-        background: var(--green-light);
-        border-color: rgba(39, 174, 96, 0.25);
-        font-style: normal;
-      }
-      .vbar-tx.error {
-        color: var(--red);
-        background: #fdf2f0;
-        border-color: rgba(192, 57, 43, 0.2);
-        font-style: normal;
-      }
+/* TRANSCRIPT */
+.vbar-tx {
+  flex: 1;
+  font-size: 13px;
+  background: #f5f1e8;
+  border-radius: 9px; border: 1px solid #e8e1d0;
+  padding: 6px 10px;
+  min-height: 32px;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--muted);
+  transition: all .2s;
+  word-break: break-word;
+}
+.vbar-tx.live     { font-style:normal; color:var(--text); background:#fff; border-color:#ddd; }
+.vbar-tx.thinking { color:var(--gold-dark); background:var(--gold-pale); border-color:var(--gold-light); font-style:normal; }
+.vbar-tx.filled   { color:var(--green); background:var(--green-light); border-color:rgba(39,174,96,.25); font-style:normal; }
+.vbar-tx.error    { color:var(--red); background:#fdf2f0; border-color:rgba(192,57,43,.2); font-style:normal; }
 
-      /* WAVEFORM */
-      .vbar-wave {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        height: 26px;
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-      .vbar-wave.on {
-        opacity: 1;
-      }
-      .vbar-wave i {
-        display: block;
-        width: 3px;
-        border-radius: 2px;
-        background: var(--gold);
-        animation: wv 1s ease-in-out infinite;
-      }
-      .vbar-wave i:nth-child(1) {
-        animation-delay: 0s;
-      }
-      .vbar-wave i:nth-child(2) {
-        animation-delay: 0.12s;
-      }
-      .vbar-wave i:nth-child(3) {
-        animation-delay: 0.24s;
-      }
-      .vbar-wave i:nth-child(4) {
-        animation-delay: 0.36s;
-      }
-      .vbar-wave i:nth-child(5) {
-        animation-delay: 0.48s;
-      }
-      @keyframes wv {
-        0%,
-        100% {
-          height: 4px;
-        }
-        50% {
-          height: 18px;
-        }
-      }
+/* WAVEFORM */
+.vbar-wave {
+  flex-shrink:0; display:flex; align-items:center; gap:2px; height:26px;
+  opacity:0; transition:opacity .3s;
+}
+.vbar-wave.on { opacity:1; }
+.vbar-wave i {
+  display:block; width:3px; border-radius:2px; background:var(--gold);
+  animation:wv 1s ease-in-out infinite;
+}
+.vbar-wave i:nth-child(1){animation-delay:0s}
+.vbar-wave i:nth-child(2){animation-delay:.12s}
+.vbar-wave i:nth-child(3){animation-delay:.24s}
+.vbar-wave i:nth-child(4){animation-delay:.36s}
+.vbar-wave i:nth-child(5){animation-delay:.48s}
+@keyframes wv {
+  0%,100%{height:4px} 50%{height:18px}
+}
 
-      /* NAV */
-      .vbar-nav {
-        flex-shrink: 0;
-        display: flex;
-        gap: 4px;
-      }
-      .vbar-nav button {
-        padding: 5px 9px;
-        border-radius: 8px;
-        border: 1.5px solid var(--border);
-        background: #fff;
-        cursor: pointer;
-        font-size: 12px;
-        color: var(--muted);
-        transition:
-          border-color 0.15s,
-          color 0.15s,
-          background 0.15s;
-        line-height: 1;
-        font-family: "DM Sans", sans-serif;
-      }
-      .vbar-nav button:hover {
-        border-color: var(--gold);
-        color: var(--gold-dark);
-        background: var(--gold-pale);
-      }
+/* NAV */
+.vbar-nav { flex-shrink:0; display:flex; gap:4px; }
+.vbar-nav button {
+  padding: 5px 9px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: #fff;
+  cursor: pointer; font-size: 12px; color: var(--muted);
+  transition: border-color .15s, color .15s, background .15s;
+  line-height:1;
+  font-family: 'DM Sans', sans-serif;
+}
+.vbar-nav button:hover { border-color:var(--gold); color:var(--gold-dark); background:var(--gold-pale); }
 
-      /* AI BADGE */
-      .ai-pip {
-        flex-shrink: 0;
-        font-size: 9.5px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        color: var(--gold-dark);
-        background: var(--gold-pale);
-        border: 1px solid var(--gold-light);
-        border-radius: 5px;
-        padding: 2px 6px;
-        text-transform: uppercase;
-      }
+/* AI BADGE */
+.ai-pip {
+  flex-shrink:0;
+  font-size:9.5px; font-weight:700; letter-spacing:.5px;
+  color: var(--gold-dark); background: var(--gold-pale);
+  border: 1px solid var(--gold-light); border-radius: 5px;
+  padding: 2px 6px; text-transform: uppercase;
+}
 
-      /* TOAST */
-      #toast {
-        position: fixed;
-        bottom: 98px;
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-        background: #2c2c2c;
-        color: #fff;
-        padding: 7px 18px;
-        border-radius: 22px;
-        font-size: 13px;
-        opacity: 0;
-        pointer-events: none;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-        z-index: 400;
-        white-space: nowrap;
-      }
-      #toast.on {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- HEADER -->
-    <header class="site-header">
-      <div>
-        <div class="header-logo">⚖️ NyaySetu</div>
-        <div class="header-tag">Smart Form Filling</div>
-      </div>
-    </header>
+/* TOAST */
+#toast {
+  position:fixed; bottom:98px; left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:#2c2c2c; color:#fff;
+  padding:7px 18px; border-radius:22px;
+  font-size:13px; opacity:0; pointer-events:none;
+  transition:opacity .2s, transform .2s;
+  z-index:400; white-space:nowrap;
+}
+#toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
 
-    <!-- MAIN CARD -->
-    <div class="main-card">
-      <h1 class="page-title">Smart Form Filling</h1>
-      <p class="page-sub">
-        Select a legal document type, then fill it hands-free with AI voice.
-      </p>
+<!-- HEADER -->
+<header class="site-header">
+  <div>
+    <div class="header-logo">⚖️ NyaySetu</div>
+    <div class="header-tag">Smart Form Filling</div>
+  </div>
+</header>
 
-      <!-- PROGRESS -->
-      <div class="prog-wrap" id="progWrap">
-        <div class="prog-meta">
-          <span id="progLabel">Field 1 of –</span>
-          <span id="progPct">0%</span>
-        </div>
-        <div class="prog-track">
-          <div class="prog-fill" id="progFill" style="width: 0%"></div>
+<!-- MAIN CARD -->
+<div class="main-card">
+  <h1 class="page-title">Smart Form Filling</h1>
+  <p class="page-sub">Select a legal document type, then fill it hands-free with AI voice.</p>
+
+  <!-- PROGRESS -->
+  <div class="prog-wrap" id="progWrap">
+    <div class="prog-meta">
+      <span id="progLabel">Field 1 of –</span>
+      <span id="progPct">0%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- SELECTOR -->
+  <div class="selector-box" id="selectorBox">
+    <label for="dd-toggle" class="dropdown-label">📄 Select Legal Document Type ▾</label>
+    <input type="checkbox" id="dd-toggle" />
+    <div class="dropdown">
+      <div class="menu-group">
+        <div class="main-item">🏠 Property</div>
+        <div class="sub-menu">
+          <span onclick="showForm('formSection')">Leave &amp; License</span>
+          <span onclick="showForm('saleDeedForm')">Sale Deed</span>
+          <span onclick="showForm('transferDeedForm')">Transfer Deed</span>
         </div>
       </div>
-
-      <!-- SELECTOR -->
-      <div class="selector-box" id="selectorBox">
-        <label for="dd-toggle" class="dropdown-label"
-          >📄 Select Legal Document Type ▾</label
-        >
-        <input type="checkbox" id="dd-toggle" />
-        <div class="dropdown">
-          <div class="menu-group">
-            <div class="main-item">🏠 Property</div>
-            <div class="sub-menu">
-              <span onclick="showForm('formSection')">Leave &amp; License</span>
-              <span onclick="showForm('saleDeedForm')">Sale Deed</span>
-              <span onclick="showForm('transferDeedForm')">Transfer Deed</span>
-            </div>
-          </div>
-          <div class="menu-group">
-            <div class="main-item">🤝 Core Agreements</div>
-            <div class="sub-menu">
-              <span onclick="showForm('assignmentForm')"
-                >Agreement of Assignment</span
-              >
-              <span onclick="showForm('developmentForm')"
-                >Agreement of Development</span
-              >
-              <span onclick="showForm('conveyanceForm')"
-                >Deed of Conveyance</span
-              >
-            </div>
-          </div>
-          <div class="menu-group">
-            <div class="main-item">🧾 Affidavits</div>
-            <div class="sub-menu">
-              <span onclick="showForm('affidavitForm')">Affidavit</span>
-              <span onclick="showForm('authorityLetterForm')"
-                >Authority Letter</span
-              >
-              <span onclick="showForm('declarationForm')">Declaration</span>
-            </div>
-          </div>
+      <div class="menu-group">
+        <div class="main-item">🤝 Core Agreements</div>
+        <div class="sub-menu">
+          <span onclick="showForm('assignmentForm')">Agreement of Assignment</span>
+          <span onclick="showForm('developmentForm')">Agreement of Development</span>
+          <span onclick="showForm('conveyanceForm')">Deed of Conveyance</span>
         </div>
-        <button class="pick-btn">✍️ Fill Form</button>
       </div>
-
-      <!-- ══════════ FORMS ══════════ -->
-
-      <div class="form-section" id="formSection">
-        <h2>Leave &amp; License</h2>
-        <h3>Owner</h3>
-        <input id="f_owner_name" placeholder="Owner Name" />
-        <input id="f_email" type="email" placeholder="Owner Email" />
-        <input id="f_phone" placeholder="Owner Phone" />
-        <h3>Occupant</h3>
-        <input id="f_occupant_name" placeholder="Occupant Name" />
-        <textarea id="f_address" placeholder="Property Address"></textarea>
-        <h3>Agreement</h3>
-        <label>Start Date</label><input id="f_start_date" type="date" />
-        <label>End Date</label><input id="f_end_date" type="date" />
-        <select id="f_type">
-          <option>Residential</option>
-          <option>Commercial</option>
-        </select>
-        <input id="f_rent" placeholder="Monthly Rent (₹)" />
-        <button class="submit-btn">Submit</button>
-      </div>
-
-      <div class="form-section" id="saleDeedForm">
-        <h2>Sale Deed</h2>
-        <h3>Basic Info</h3>
-        <input id="sd_location" placeholder="Location / City" />
-        <label>Execution Date</label><input id="sd_date" type="date" />
-        <h3>Vendor</h3>
-        <input id="sd_vendor_name" placeholder="Vendor Name" />
-        <input id="sd_vendor_age" placeholder="Vendor Age" />
-        <input id="sd_vendor_address" placeholder="Vendor Address" />
-        <h3>Purchaser</h3>
-        <input id="sd_purchaser_name" placeholder="Purchaser Name" />
-        <input id="sd_purchaser_age" placeholder="Purchaser Age" />
-        <button class="submit-btn">Submit</button>
-      </div>
-
-      <div class="form-section" id="transferDeedForm">
-        <h2>Transfer Deed</h2>
-        <h3>Basic Info</h3>
-        <input id="td_city" placeholder="Execution City" />
-        <label>Date</label><input id="td_date" type="date" />
-        <h3>Transferor</h3>
-        <input id="td_tr_name" placeholder="Transferor Name" />
-        <input id="td_tr_age" placeholder="Transferor Age" />
-        <input id="td_tr_address" placeholder="Transferor Address" />
-        <input id="td_tr_pan" placeholder="Transferor PAN" />
-        <input id="td_tr_aadhaar" placeholder="Transferor Aadhaar" />
-        <h3>Transferee</h3>
-        <input id="td_te_name" placeholder="Transferee Name" />
-        <input id="td_te_age" placeholder="Transferee Age" />
-        <input id="td_te_address" placeholder="Transferee Address" />
-        <input id="td_te_pan" placeholder="Transferee PAN" />
-        <input id="td_te_aadhaar" placeholder="Transferee Aadhaar" />
-        <h3>Flat Details</h3>
-        <input id="td_flat_no" placeholder="Flat No" />
-        <input id="td_flat_area" placeholder="Area Sq Ft" />
-        <input id="td_flat_floor" placeholder="Floor No" />
-        <input id="td_flat_bldg" placeholder="Building Name" />
-        <input id="td_flat_soc" placeholder="Society Name" />
-        <input id="td_flat_village" placeholder="Village Name" />
-        <h3>Transaction</h3>
-        <input id="td_amount" placeholder="Amount (Numeric)" />
-        <input id="td_amount_words" placeholder="Amount (Words)" />
-        <h3>Witnesses</h3>
-        <input id="td_w1_name" placeholder="Witness 1 Name" />
-        <input id="td_w1_addr" placeholder="Witness 1 Address" />
-        <input id="td_w2_name" placeholder="Witness 2 Name" />
-        <input id="td_w2_addr" placeholder="Witness 2 Address" />
-        <button class="submit-btn">Submit Transfer Deed</button>
-      </div>
-
-      <div class="form-section" id="assignmentForm">
-        <h2>Agreement of Assignment</h2>
-        <h3>Basic Details</h3>
-        <input id="as_place" placeholder="Place of Execution" />
-        <label>Date</label><input id="as_date" type="date" />
-        <h3>Assignor</h3>
-        <input id="as_or_name" placeholder="Assignor Full Name" />
-        <input id="as_or_age" placeholder="Assignor Age" />
-        <input id="as_or_occ" placeholder="Assignor Occupation" />
-        <input id="as_or_addr" placeholder="Assignor Address" />
-        <input id="as_or_pan" placeholder="Assignor PAN" />
-        <input id="as_or_aadh" placeholder="Assignor Aadhaar" />
-        <input id="as_or_mob" placeholder="Assignor Mobile" />
-        <h3>Assignee</h3>
-        <input id="as_ee_name" placeholder="Assignee Full Name" />
-        <input id="as_ee_age" placeholder="Assignee Age" />
-        <input id="as_ee_occ" placeholder="Assignee Occupation" />
-        <input id="as_ee_addr" placeholder="Assignee Address" />
-        <input id="as_ee_pan" placeholder="Assignee PAN" />
-        <input id="as_ee_aadh" placeholder="Assignee Aadhaar" />
-        <h3>Transaction</h3>
-        <input id="as_amount" placeholder="Amount (Numeric)" />
-        <input id="as_amount_words" placeholder="Amount (Words)" />
-        <button class="submit-btn">Submit Agreement</button>
-      </div>
-
-      <div class="form-section" id="developmentForm">
-        <h2>Agreement of Development</h2>
-        <h3>Basic Details</h3>
-        <input id="dev_place" placeholder="Place of Execution" />
-        <label>Date</label><input id="dev_date" type="date" />
-        <h3>Land Owner</h3>
-        <input id="dev_own_name" placeholder="Land Owner Full Name" />
-        <input id="dev_own_age" placeholder="Land Owner Age" />
-        <input id="dev_own_occ" placeholder="Land Owner Occupation" />
-        <input id="dev_own_addr" placeholder="Land Owner Address" />
-        <input id="dev_own_pan" placeholder="Land Owner PAN" />
-        <input id="dev_own_aadh" placeholder="Land Owner Aadhaar" />
-        <h3>Developer</h3>
-        <input id="dev_dev_company" placeholder="Developer Company Name" />
-        <input id="dev_dev_person" placeholder="Authorized Person Name" />
-        <input id="dev_dev_addr" placeholder="Developer Office Address" />
-        <input id="dev_dev_pan" placeholder="Developer PAN" />
-        <input id="dev_dev_gst" placeholder="Developer GST Number" />
-        <h3>Land &amp; Project</h3>
-        <input id="dev_survey" placeholder="Survey No / Gat No" />
-        <input id="dev_area" placeholder="Area" />
-        <input id="dev_village" placeholder="Village" />
-        <input id="dev_district" placeholder="District" />
-        <input id="dev_proj_name" placeholder="Project Name" />
-        <input id="dev_timeline" placeholder="Construction Timeline" />
-        <button class="submit-btn">Submit Development Agreement</button>
-      </div>
-
-      <div class="form-section" id="conveyanceForm">
-        <h2>Deed of Conveyance</h2>
-        <h3>Basic Details</h3>
-        <input id="cv_place" placeholder="Place of Execution" />
-        <label>Date</label><input id="cv_date" type="date" />
-        <h3>Transferor</h3>
-        <input id="cv_tr_name" placeholder="Transferor Name" />
-        <input id="cv_tr_addr" placeholder="Transferor Address" />
-        <input id="cv_tr_pan" placeholder="Transferor PAN" />
-        <h3>Transferee</h3>
-        <input id="cv_te_name" placeholder="Transferee Name" />
-        <input id="cv_te_addr" placeholder="Transferee Address" />
-        <input id="cv_te_pan" placeholder="Transferee PAN" />
-        <input id="cv_te_aadh" placeholder="Transferee Aadhaar" />
-        <h3>Property</h3>
-        <textarea id="cv_prop_addr" placeholder="Property Address"></textarea>
-        <input id="cv_survey" placeholder="Survey No / CTS No" />
-        <input id="cv_area" placeholder="Area" />
-        <input id="cv_bldg" placeholder="Building Name" />
-        <input id="cv_village" placeholder="Village" />
-        <input id="cv_district" placeholder="District" />
-        <h3>Transaction</h3>
-        <input id="cv_amount" placeholder="Amount" />
-        <input id="cv_amount_words" placeholder="Amount in Words" />
-        <button class="submit-btn">Submit Conveyance Deed</button>
-      </div>
-
-      <div class="form-section" id="affidavitForm">
-        <h2>Affidavit</h2>
-        <h3>Basic Details</h3>
-        <input id="af_place" placeholder="Place of Affidavit" />
-        <label>Date</label><input id="af_date" type="date" />
-        <h3>Deponent</h3>
-        <input id="af_name" placeholder="Deponent Full Name" />
-        <input id="af_age" placeholder="Deponent Age" />
-        <select id="af_gender">
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
-        <input id="af_occ" placeholder="Occupation" />
-        <textarea id="af_addr" placeholder="Address"></textarea>
-        <input id="af_aadh" placeholder="Aadhaar Number" />
-        <input id="af_pan" placeholder="PAN Number (Optional)" />
-        <input id="af_mob" placeholder="Mobile (Optional)" />
-        <h3>Statement</h3>
-        <textarea
-          id="af_stmt"
-          placeholder="Enter your statement here..."
-        ></textarea>
-        <button class="submit-btn">Submit Affidavit</button>
-      </div>
-
-      <div class="form-section" id="authorityLetterForm">
-        <h2>Authority Letter</h2>
-        <h3>Basic Details</h3>
-        <input id="al_place" placeholder="Place" />
-        <label>Date</label><input id="al_date" type="date" />
-        <h3>Authorizer</h3>
-        <input id="al_auth_name" placeholder="Authorizer Full Name" />
-        <input id="al_auth_age" placeholder="Authorizer Age" />
-        <input id="al_auth_occ" placeholder="Authorizer Occupation" />
-        <textarea id="al_auth_addr" placeholder="Authorizer Address"></textarea>
-        <input id="al_auth_aadh" placeholder="Authorizer Aadhaar" />
-        <input id="al_auth_mob" placeholder="Authorizer Mobile" />
-        <h3>Authorized Person</h3>
-        <input id="al_prsn_name" placeholder="Authorized Person Full Name" />
-        <input id="al_prsn_age" placeholder="Authorized Person Age" />
-        <input id="al_prsn_occ" placeholder="Authorized Person Occupation" />
-        <textarea
-          id="al_prsn_addr"
-          placeholder="Authorized Person Address"
-        ></textarea>
-        <input id="al_prsn_aadh" placeholder="Authorized Person Aadhaar" />
-        <h3>Purpose &amp; Validity</h3>
-        <textarea
-          id="al_purpose"
-          placeholder="Describe the purpose of authority..."
-        ></textarea>
-        <label>Valid From</label><input id="al_from" type="date" />
-        <label>Valid Till</label><input id="al_till" type="date" />
-        <button class="submit-btn">Submit Authority Letter</button>
-      </div>
-
-      <div class="form-section" id="declarationForm">
-        <h2>Declaration Form</h2>
-        <h3>Basic Details</h3>
-        <input id="dc_place" placeholder="Place" />
-        <label>Date</label><input id="dc_date" type="date" />
-        <h3>Declarant</h3>
-        <input id="dc_name" placeholder="Declarant Full Name" />
-        <input id="dc_age" placeholder="Declarant Age" />
-        <select id="dc_gender">
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
-        <input id="dc_occ" placeholder="Occupation" />
-        <textarea id="dc_addr" placeholder="Address"></textarea>
-        <input id="dc_aadh" placeholder="Aadhaar Number" />
-        <input id="dc_pan" placeholder="PAN Number (Optional)" />
-        <input id="dc_mob" placeholder="Mobile (Optional)" />
-        <h3>Declaration Statement</h3>
-        <textarea
-          id="dc_stmt"
-          placeholder="Enter declaration here..."
-        ></textarea>
-        <button class="submit-btn">Submit Declaration</button>
+      <div class="menu-group">
+        <div class="main-item">🧾 Affidavits</div>
+        <div class="sub-menu">
+          <span onclick="showForm('affidavitForm')">Affidavit</span>
+          <span onclick="showForm('authorityLetterForm')">Authority Letter</span>
+          <span onclick="showForm('declarationForm')">Declaration</span>
+        </div>
       </div>
     </div>
-    <!-- /.main-card -->
+    <button class="pick-btn">✍️ Fill Form</button>
+  </div>
 
-    <!-- ══ FLOATING VOICE BAR ══ -->
-    <div id="voiceBar">
-      <div class="vbar-shell">
-        <!--
+  <!-- ══════════ FORMS ══════════ -->
+
+  <div class="form-section" id="formSection">
+    <h2>Leave &amp; License</h2>
+    <h3>Owner</h3>
+    <input id="f_owner_name" placeholder="Owner Name" />
+    <input id="f_email" type="email" placeholder="Owner Email" />
+    <input id="f_phone" placeholder="Owner Phone" />
+    <h3>Occupant</h3>
+    <input id="f_occupant_name" placeholder="Occupant Name" />
+    <textarea id="f_address" placeholder="Property Address"></textarea>
+    <h3>Agreement</h3>
+    <label>Start Date</label><input id="f_start_date" type="date" />
+    <label>End Date</label><input id="f_end_date" type="date" />
+    <select id="f_type"><option>Residential</option><option>Commercial</option></select>
+    <input id="f_rent" placeholder="Monthly Rent (₹)" />
+    <button class="submit-btn">Submit</button>
+  </div>
+
+  <div class="form-section" id="saleDeedForm">
+    <h2>Sale Deed</h2>
+    <h3>Basic Info</h3>
+    <input id="sd_location" placeholder="Location / City" />
+    <label>Execution Date</label><input id="sd_date" type="date" />
+    <h3>Vendor</h3>
+    <input id="sd_vendor_name" placeholder="Vendor Name" />
+    <input id="sd_vendor_age" placeholder="Vendor Age" />
+    <input id="sd_vendor_address" placeholder="Vendor Address" />
+    <h3>Purchaser</h3>
+    <input id="sd_purchaser_name" placeholder="Purchaser Name" />
+    <input id="sd_purchaser_age" placeholder="Purchaser Age" />
+    <button class="submit-btn">Submit</button>
+  </div>
+
+  <div class="form-section" id="transferDeedForm">
+    <h2>Transfer Deed</h2>
+    <h3>Basic Info</h3>
+    <input id="td_city" placeholder="Execution City" />
+    <label>Date</label><input id="td_date" type="date" />
+    <h3>Transferor</h3>
+    <input id="td_tr_name" placeholder="Transferor Name" />
+    <input id="td_tr_age" placeholder="Transferor Age" />
+    <input id="td_tr_address" placeholder="Transferor Address" />
+    <input id="td_tr_pan" placeholder="Transferor PAN" />
+    <input id="td_tr_aadhaar" placeholder="Transferor Aadhaar" />
+    <h3>Transferee</h3>
+    <input id="td_te_name" placeholder="Transferee Name" />
+    <input id="td_te_age" placeholder="Transferee Age" />
+    <input id="td_te_address" placeholder="Transferee Address" />
+    <input id="td_te_pan" placeholder="Transferee PAN" />
+    <input id="td_te_aadhaar" placeholder="Transferee Aadhaar" />
+    <h3>Flat Details</h3>
+    <input id="td_flat_no" placeholder="Flat No" />
+    <input id="td_flat_area" placeholder="Area Sq Ft" />
+    <input id="td_flat_floor" placeholder="Floor No" />
+    <input id="td_flat_bldg" placeholder="Building Name" />
+    <input id="td_flat_soc" placeholder="Society Name" />
+    <input id="td_flat_village" placeholder="Village Name" />
+    <h3>Transaction</h3>
+    <input id="td_amount" placeholder="Amount (Numeric)" />
+    <input id="td_amount_words" placeholder="Amount (Words)" />
+    <h3>Witnesses</h3>
+    <input id="td_w1_name" placeholder="Witness 1 Name" />
+    <input id="td_w1_addr" placeholder="Witness 1 Address" />
+    <input id="td_w2_name" placeholder="Witness 2 Name" />
+    <input id="td_w2_addr" placeholder="Witness 2 Address" />
+    <button class="submit-btn">Submit Transfer Deed</button>
+  </div>
+
+  <div class="form-section" id="assignmentForm">
+    <h2>Agreement of Assignment</h2>
+    <h3>Basic Details</h3>
+    <input id="as_place" placeholder="Place of Execution" />
+    <label>Date</label><input id="as_date" type="date" />
+    <h3>Assignor</h3>
+    <input id="as_or_name" placeholder="Assignor Full Name" />
+    <input id="as_or_age" placeholder="Assignor Age" />
+    <input id="as_or_occ" placeholder="Assignor Occupation" />
+    <input id="as_or_addr" placeholder="Assignor Address" />
+    <input id="as_or_pan" placeholder="Assignor PAN" />
+    <input id="as_or_aadh" placeholder="Assignor Aadhaar" />
+    <input id="as_or_mob" placeholder="Assignor Mobile" />
+    <h3>Assignee</h3>
+    <input id="as_ee_name" placeholder="Assignee Full Name" />
+    <input id="as_ee_age" placeholder="Assignee Age" />
+    <input id="as_ee_occ" placeholder="Assignee Occupation" />
+    <input id="as_ee_addr" placeholder="Assignee Address" />
+    <input id="as_ee_pan" placeholder="Assignee PAN" />
+    <input id="as_ee_aadh" placeholder="Assignee Aadhaar" />
+    <h3>Transaction</h3>
+    <input id="as_amount" placeholder="Amount (Numeric)" />
+    <input id="as_amount_words" placeholder="Amount (Words)" />
+    <button class="submit-btn">Submit Agreement</button>
+  </div>
+
+  <div class="form-section" id="developmentForm">
+    <h2>Agreement of Development</h2>
+    <h3>Basic Details</h3>
+    <input id="dev_place" placeholder="Place of Execution" />
+    <label>Date</label><input id="dev_date" type="date" />
+    <h3>Land Owner</h3>
+    <input id="dev_own_name" placeholder="Land Owner Full Name" />
+    <input id="dev_own_age" placeholder="Land Owner Age" />
+    <input id="dev_own_occ" placeholder="Land Owner Occupation" />
+    <input id="dev_own_addr" placeholder="Land Owner Address" />
+    <input id="dev_own_pan" placeholder="Land Owner PAN" />
+    <input id="dev_own_aadh" placeholder="Land Owner Aadhaar" />
+    <h3>Developer</h3>
+    <input id="dev_dev_company" placeholder="Developer Company Name" />
+    <input id="dev_dev_person" placeholder="Authorized Person Name" />
+    <input id="dev_dev_addr" placeholder="Developer Office Address" />
+    <input id="dev_dev_pan" placeholder="Developer PAN" />
+    <input id="dev_dev_gst" placeholder="Developer GST Number" />
+    <h3>Land &amp; Project</h3>
+    <input id="dev_survey" placeholder="Survey No / Gat No" />
+    <input id="dev_area" placeholder="Area" />
+    <input id="dev_village" placeholder="Village" />
+    <input id="dev_district" placeholder="District" />
+    <input id="dev_proj_name" placeholder="Project Name" />
+    <input id="dev_timeline" placeholder="Construction Timeline" />
+    <button class="submit-btn">Submit Development Agreement</button>
+  </div>
+
+  <div class="form-section" id="conveyanceForm">
+    <h2>Deed of Conveyance</h2>
+    <h3>Basic Details</h3>
+    <input id="cv_place" placeholder="Place of Execution" />
+    <label>Date</label><input id="cv_date" type="date" />
+    <h3>Transferor</h3>
+    <input id="cv_tr_name" placeholder="Transferor Name" />
+    <input id="cv_tr_addr" placeholder="Transferor Address" />
+    <input id="cv_tr_pan" placeholder="Transferor PAN" />
+    <h3>Transferee</h3>
+    <input id="cv_te_name" placeholder="Transferee Name" />
+    <input id="cv_te_addr" placeholder="Transferee Address" />
+    <input id="cv_te_pan" placeholder="Transferee PAN" />
+    <input id="cv_te_aadh" placeholder="Transferee Aadhaar" />
+    <h3>Property</h3>
+    <textarea id="cv_prop_addr" placeholder="Property Address"></textarea>
+    <input id="cv_survey" placeholder="Survey No / CTS No" />
+    <input id="cv_area" placeholder="Area" />
+    <input id="cv_bldg" placeholder="Building Name" />
+    <input id="cv_village" placeholder="Village" />
+    <input id="cv_district" placeholder="District" />
+    <h3>Transaction</h3>
+    <input id="cv_amount" placeholder="Amount" />
+    <input id="cv_amount_words" placeholder="Amount in Words" />
+    <button class="submit-btn">Submit Conveyance Deed</button>
+  </div>
+
+  <div class="form-section" id="affidavitForm">
+    <h2>Affidavit</h2>
+    <h3>Basic Details</h3>
+    <input id="af_place" placeholder="Place of Affidavit" />
+    <label>Date</label><input id="af_date" type="date" />
+    <h3>Deponent</h3>
+    <input id="af_name" placeholder="Deponent Full Name" />
+    <input id="af_age" placeholder="Deponent Age" />
+    <select id="af_gender"><option>Male</option><option>Female</option><option>Other</option></select>
+    <input id="af_occ" placeholder="Occupation" />
+    <textarea id="af_addr" placeholder="Address"></textarea>
+    <input id="af_aadh" placeholder="Aadhaar Number" />
+    <input id="af_pan" placeholder="PAN Number (Optional)" />
+    <input id="af_mob" placeholder="Mobile (Optional)" />
+    <h3>Statement</h3>
+    <textarea id="af_stmt" placeholder="Enter your statement here..."></textarea>
+    <button class="submit-btn">Submit Affidavit</button>
+  </div>
+
+  <div class="form-section" id="authorityLetterForm">
+    <h2>Authority Letter</h2>
+    <h3>Basic Details</h3>
+    <input id="al_place" placeholder="Place" />
+    <label>Date</label><input id="al_date" type="date" />
+    <h3>Authorizer</h3>
+    <input id="al_auth_name" placeholder="Authorizer Full Name" />
+    <input id="al_auth_age" placeholder="Authorizer Age" />
+    <input id="al_auth_occ" placeholder="Authorizer Occupation" />
+    <textarea id="al_auth_addr" placeholder="Authorizer Address"></textarea>
+    <input id="al_auth_aadh" placeholder="Authorizer Aadhaar" />
+    <input id="al_auth_mob" placeholder="Authorizer Mobile" />
+    <h3>Authorized Person</h3>
+    <input id="al_prsn_name" placeholder="Authorized Person Full Name" />
+    <input id="al_prsn_age" placeholder="Authorized Person Age" />
+    <input id="al_prsn_occ" placeholder="Authorized Person Occupation" />
+    <textarea id="al_prsn_addr" placeholder="Authorized Person Address"></textarea>
+    <input id="al_prsn_aadh" placeholder="Authorized Person Aadhaar" />
+    <h3>Purpose &amp; Validity</h3>
+    <textarea id="al_purpose" placeholder="Describe the purpose of authority..."></textarea>
+    <label>Valid From</label><input id="al_from" type="date" />
+    <label>Valid Till</label><input id="al_till" type="date" />
+    <button class="submit-btn">Submit Authority Letter</button>
+  </div>
+
+  <div class="form-section" id="declarationForm">
+    <h2>Declaration Form</h2>
+    <h3>Basic Details</h3>
+    <input id="dc_place" placeholder="Place" />
+    <label>Date</label><input id="dc_date" type="date" />
+    <h3>Declarant</h3>
+    <input id="dc_name" placeholder="Declarant Full Name" />
+    <input id="dc_age" placeholder="Declarant Age" />
+    <select id="dc_gender"><option>Male</option><option>Female</option><option>Other</option></select>
+    <input id="dc_occ" placeholder="Occupation" />
+    <textarea id="dc_addr" placeholder="Address"></textarea>
+    <input id="dc_aadh" placeholder="Aadhaar Number" />
+    <input id="dc_pan" placeholder="PAN Number (Optional)" />
+    <input id="dc_mob" placeholder="Mobile (Optional)" />
+    <h3>Declaration Statement</h3>
+    <textarea id="dc_stmt" placeholder="Enter declaration here..."></textarea>
+    <button class="submit-btn">Submit Declaration</button>
+  </div>
+
+</div><!-- /.main-card -->
+
+<!-- ══ FLOATING VOICE BAR ══ -->
+<div id="voiceBar">
+  <div class="vbar-shell">
+    <!--
       CHANGED: Was a bare 🎙️ icon button.
       Now a pill-shaped labelled button so users immediately know
       what it does — "🎙️ Voice Fill" with active state "🛑 Stop Voice Fill".
     -->
-        <button id="voiceBtn" title="Start or stop AI voice form filling">
-          <span class="btn-mic">🎙️</span>
-          <span class="btn-text">Voice Fill</span>
-        </button>
+    <button id="voiceBtn" title="Start or stop AI voice form filling">
+      <span class="btn-mic">🎙️</span>
+      <span class="btn-text">Voice Fill</span>
+    </button>
 
-        <div class="vbar-chip" id="vbarField">Ready</div>
-        <div class="vbar-tx" id="vbarTx">
-          Tap "Voice Fill" to start speaking…
-        </div>
-        <div class="vbar-wave" id="vbarWave">
-          <i></i><i></i><i></i><i></i><i></i>
-        </div>
-        <div class="vbar-nav">
-          <button id="prevBtn" title="Previous field">◀ Prev</button>
-          <button id="nextBtn" title="Next field">Next ▶</button>
-          <button id="clearBtn" title="Clear form">✕ Clear</button>
-        </div>
-        <div class="ai-pip">AI</div>
-      </div>
+    <div class="vbar-chip" id="vbarField">Ready</div>
+    <div class="vbar-tx"   id="vbarTx">Tap "Voice Fill" to start speaking…</div>
+    <div class="vbar-wave" id="vbarWave">
+      <i></i><i></i><i></i><i></i><i></i>
     </div>
+    <div class="vbar-nav">
+      <button id="prevBtn" title="Previous field">◀ Prev</button>
+      <button id="nextBtn" title="Next field">Next ▶</button>
+      <button id="clearBtn" title="Clear form">✕ Clear</button>
+    </div>
+    <div class="ai-pip">AI</div>
+  </div>
+</div>
 
-    <div id="toast"></div>
+<div id="toast"></div>
 
-    <!-- ══════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      VOICE ENGINE  — AI-POWERED  (fixed)
 ══════════════════════════════════════════ -->
-    <script>
-      /* ────────────────────────────────────────────
-   STATE
-──────────────────────────────────────────── */
-      let formInputs = [];
-      let currentIndex = 0;
-      let isListening = false;
-      let recognition = null;
-      let silenceTimer = null;
-      let finalBuffer = "";
-      /* guard: don't restart recognition once we've deliberately stopped */
-      let stoppingDeliberately = false;
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   VISION BASED CONTRACT UNDERSTANDING PLATFORM
+   Smart Form Filling — Voice Engine  v2.0
+   ─ Complete rewrite of the speech/AI pipeline.
+   ─ UI is 100% unchanged.
+   ─ Key upgrades:
+       1. Entity-aware field context classification
+       2. Speech pre-processing per field type (digits, email, PAN…)
+       3. SR alternative ranking scored against field type
+       4. Adaptive silence timer (address/textarea gets more time)
+       5. Massively enhanced Claude system prompt with per-entity rules
+       6. Post-processing validation layer after Claude responds
+       7. Enriched fallback regex for offline / API-error scenarios
+══════════════════════════════════════════════════════════════════════ */
 
-      /* ────────────────────────────────────────────
-   FORM DISPLAY
-──────────────────────────────────────────── */
-      function showForm(id) {
-        document.getElementById("selectorBox").style.display = "none";
-        document
-          .querySelectorAll(".form-section")
-          .forEach((f) => (f.style.display = "none"));
-        const form = document.getElementById(id);
-        form.style.display = "block";
-        document.getElementById("voiceBar").style.display = "block";
-        document.getElementById("progWrap").classList.add("on");
-        initVoice(form);
+/* ── STATE ─────────────────────────────────────────────────────────── */
+let formInputs        = [];
+let currentIndex      = 0;
+let isListening       = false;
+let recognition       = null;
+let silenceTimer      = null;
+let finalBuffer       = "";
+let lastAlternatives  = [];          // store latest SR alternatives array
+let stoppingDeliberately = false;
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 1 — FIELD CONTEXT
+   Classifies every form field into a semantic category used throughout
+   the pipeline (speech pre-processing, prompt building, post-processing).
+══════════════════════════════════════════════════════════════════════ */
+function getFieldContext(el) {
+  if (!el) return { category: "generic", inputType: "text" };
+  const ph  = (el.getAttribute("placeholder") || "").toLowerCase();
+  const id  = (el.id || "").toLowerCase();
+  const key = ph + " " + id;
+  const tag = el.tagName;
+  const itype = (el.type || "text").toLowerCase();
+
+  if (itype === "date")                                              return { category: "date",         inputType: itype };
+  if (itype === "email" || key.includes("email"))                   return { category: "email",        inputType: itype };
+  if (key.match(/\b(phone|mobile|mob)\b/))                         return { category: "phone",        inputType: itype };
+  if (key.match(/\b(aadhaar|aadh)\b/))                             return { category: "aadhaar",      inputType: itype };
+  if (key.match(/\bpan\b/) && !key.includes("company"))            return { category: "pan",          inputType: itype };
+  if (key.match(/\b(address|addr|prop_addr)\b/))                   return { category: "address",      inputType: itype };
+  if (key.match(/\bage\b/))                                        return { category: "age",          inputType: itype };
+  if (key.match(/\b(amount|rent)\b/) && key.includes("word"))      return { category: "amount_words", inputType: itype };
+  if (key.match(/\b(amount|rent)\b/))                              return { category: "amount",       inputType: itype };
+  if (key.match(/\bname\b/))                                       return { category: "name",         inputType: itype };
+  if (key.match(/\b(occ|occupation)\b/))                           return { category: "occupation",   inputType: itype };
+  if (key.match(/\bgender\b/) || tag === "SELECT")                 return { category: "select",       inputType: "select" };
+  if (key.match(/\b(gst|survey|cts|gat)\b/))                      return { category: "code",         inputType: itype };
+  if (key.match(/\b(stmt|statement|purpose|declaration)\b/))       return { category: "statement",    inputType: itype };
+  if (tag === "TEXTAREA")                                          return { category: "address",      inputType: "textarea" };
+  return { category: "generic", inputType: itype };
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 2 — ADAPTIVE SILENCE DELAY
+   Fields that naturally take longer to dictate get a bigger buffer.
+══════════════════════════════════════════════════════════════════════ */
+function getSilenceDelay(el) {
+  if (!el) return 950;
+  const { category } = getFieldContext(el);
+  const tag = el.tagName;
+  switch (category) {
+    case "statement":    return 2200;
+    case "address":      return 2000;
+    case "phone":
+    case "aadhaar":      return 1500;   // user may pause between digit groups
+    case "pan":          return 1300;
+    case "amount_words": return 1200;
+    case "date":         return 850;
+    case "name":
+    case "age":
+    case "occupation":   return 750;
+    default:             return tag === "TEXTAREA" ? 1800 : 950;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 3 — SPEECH PRE-PROCESSING
+   Converts common spoken forms into text Claude can parse more reliably.
+   Runs on EVERY alternative before ranking and before sending to Claude.
+══════════════════════════════════════════════════════════════════════ */
+const DIGIT_MAP = {
+  zero:0, oh:0, o:0, one:1, two:2, three:3, four:4,
+  five:5, six:6, seven:7, eight:8, nine:9
+};
+
+function spokenDigitsToString(text) {
+  /* Converts "nine eight two one..." → "9821..." preserving mixed digit+word strings */
+  return text.replace(/\b(zero|oh|one|two|three|four|five|six|seven|eight|nine)\b/gi,
+    (m) => DIGIT_MAP[m.toLowerCase()] ?? m
+  );
+}
+
+function preprocessSpeechForField(rawText, fieldCtx) {
+  let t = rawText.trim();
+  switch (fieldCtx.category) {
+
+    case "email":
+      t = t
+        .replace(/\bat the rate\b/gi, "@")
+        .replace(/\bat\b(?=\s+\S+\s+dot\b)/gi, "@")   // "john at gmail dot com"
+        .replace(/\bat\b/gi, "@")
+        .replace(/\bdot\b/gi, ".")
+        .replace(/\bunderscore\b|\bunder score\b/gi, "_")
+        .replace(/\bhyphen\b|\bdash\b/gi, "-")
+        .replace(/\bforward slash\b/gi, "/")
+        .replace(/\s+/g, "")          // emails have no spaces
+        .toLowerCase();
+      break;
+
+    case "phone":
+    case "aadhaar":
+      // Convert spoken digits: "nine eight two one" → "9821"
+      t = spokenDigitsToString(t);
+      // Collapse spaces between digit runs
+      t = t.replace(/(\d)\s+(\d)/g, "$1$2");
+      break;
+
+    case "pan":
+      // Letters may be spelt one-by-one; numbers may be digit words
+      t = spokenDigitsToString(t).toUpperCase();
+      // Remove spaces between individual letters/digits that were spelled
+      t = t.replace(/\b([A-Z])\s+(?=[A-Z0-9])/g, "$1");
+      break;
+
+    case "date":
+      // Strip ordinal suffixes early so Claude sees "13 April 2006"
+      t = t.replace(/\b(\d{1,2})(st|nd|rd|th)\b/gi, "$1");
+      break;
+
+    case "amount":
+    case "amount_words":
+      // Normalise Indian unit words
+      t = t.replace(/\bkrore\b|\bkaror\b/gi, "crore")
+           .replace(/\blac\b|\blakh\b/gi, "lakh");
+      break;
+  }
+  return t;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 4 — ALTERNATIVE RANKING
+   Scores each SR alternative against field-type rules so the best
+   candidate goes first in the prompt sent to Claude.
+══════════════════════════════════════════════════════════════════════ */
+function rankAlternativesForField(alternatives, fieldCtx) {
+  if (!alternatives || alternatives.length <= 1) return alternatives;
+
+  const scored = alternatives.map(alt => {
+    const text = preprocessSpeechForField(alt.text, fieldCtx);
+    let bonus = 0;
+
+    switch (fieldCtx.category) {
+      case "phone": {
+        const d = text.replace(/\D/g, "").length;
+        bonus += Math.max(0, 10 - Math.abs(d - 10)) * 1.5;
+        break;
       }
-
-      function initVoice(formEl) {
-        formInputs = Array.from(
-          formEl.querySelectorAll(
-            'input:not([type="file"]):not([type="checkbox"]):not([type="submit"]), textarea, select',
-          ),
-        );
-        currentIndex = 0;
-        updateProgress();
-        highlightCurrent();
+      case "aadhaar": {
+        const d = text.replace(/\D/g, "").length;
+        bonus += Math.max(0, 12 - Math.abs(d - 12)) * 1.5;
+        break;
       }
+      case "pan": {
+        const clean = text.replace(/\s/g, "");
+        if (/[A-Z]{5}\d{4}[A-Z]/.test(clean)) bonus += 20;
+        if (clean.length === 10) bonus += 5;
+        break;
+      }
+      case "email": {
+        if (text.includes("@"))  bonus += 8;
+        if (/\.\w{2,}$/.test(text)) bonus += 5;
+        break;
+      }
+      case "date": {
+        if (/\d{1,2}/.test(text)) bonus += 3;
+        if (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d{4})\b/i.test(text)) bonus += 5;
+        break;
+      }
+      case "age": {
+        if (/\b\d{1,3}\b/.test(text)) bonus += 8;
+        break;
+      }
+      case "amount": {
+        if (/\d/.test(text) || /\b(lakh|crore|thousand)\b/i.test(text)) bonus += 5;
+        break;
+      }
+    }
 
-      /* ────────────────────────────────────────────
-   HIGHLIGHT
-──────────────────────────────────────────── */
-      function highlightCurrent() {
-        formInputs.forEach((el) => {
-          el.classList.remove("v-active");
-          el.classList.toggle("v-filled", !!el.value.trim());
-        });
-        if (currentIndex >= 0 && currentIndex < formInputs.length) {
-          const el = formInputs[currentIndex];
-          el.classList.remove("v-filled");
-          el.classList.add("v-active");
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
-          document.getElementById("vbarField").textContent =
-            el.getAttribute("placeholder") || el.id || "Field";
+    return { ...alt, processedText: text, score: (alt.confidence || 0) * 10 + bonus };
+  });
+
+  return scored.sort((a, b) => b.score - a.score);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 5 — POST-PROCESSING VALIDATION
+   Cleans / validates / reformats values returned by Claude before
+   writing them into the DOM.
+══════════════════════════════════════════════════════════════════════ */
+function postProcessValue(el, value) {
+  if (value === null || value === undefined) return value;
+  const { category } = getFieldContext(el);
+  let v = String(value).trim();
+
+  switch (category) {
+
+    case "date": {
+      const fixed = parseDateToYMD(v);
+      return fixed || v;
+    }
+
+    case "email": {
+      // Catch residual spoken-form artefacts Claude may have missed
+      v = v.replace(/\bat\b/gi, "@")
+           .replace(/\bdot\b/gi, ".")
+           .replace(/\s+/g, "")
+           .toLowerCase();
+      return v;
+    }
+
+    case "phone": {
+      const digits = v.replace(/\D/g, "");
+      // Strip leading country code if present (91XXXXXXXXXX → XXXXXXXXXX)
+      if (digits.length === 12 && digits.startsWith("91")) return digits.slice(2);
+      if (digits.length === 11 && digits.startsWith("0"))  return digits.slice(1);
+      return digits.slice(-10);   // take last 10 digits as safest fallback
+    }
+
+    case "aadhaar": {
+      const digits = v.replace(/\D/g, "");
+      return digits.length >= 12 ? digits.slice(-12) : digits;
+    }
+
+    case "pan": {
+      const pan = v.replace(/\s+/g, "").toUpperCase();
+      const m   = pan.match(/[A-Z]{5}\d{4}[A-Z]/);
+      return m ? m[0] : pan;
+    }
+
+    case "amount": {
+      // Keep only digits
+      return v.replace(/[^0-9]/g, "") || v;
+    }
+
+    case "amount_words": {
+      // Ensure "Only" suffix
+      if (!/\bOnly\b/i.test(v)) v = v.replace(/\.?\s*$/, " Only");
+      return v;
+    }
+
+    case "name":
+    case "occupation": {
+      return titleCase(v);
+    }
+
+    case "address": {
+      // Ensure each comma-separated component starts capitalised
+      return v.split(",")
+        .map(p => p.trim())
+        .filter(Boolean)
+        .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+        .join(", ");
+    }
+
+    case "age": {
+      const num = v.match(/\d+/);
+      return num ? num[0] : v;
+    }
+
+    default:
+      return v;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 6 — FORM DISPLAY + VOICE INITIALISATION  (logic unchanged)
+══════════════════════════════════════════════════════════════════════ */
+function showForm(id) {
+  document.getElementById("selectorBox").style.display = "none";
+  document.querySelectorAll('.form-section').forEach(f => f.style.display = "none");
+  const form = document.getElementById(id);
+  form.style.display = "block";
+  document.getElementById("voiceBar").style.display = "block";
+  document.getElementById("progWrap").classList.add("on");
+  initVoice(form);
+}
+
+function initVoice(formEl) {
+  formInputs = Array.from(formEl.querySelectorAll(
+    'input:not([type="file"]):not([type="checkbox"]):not([type="submit"]), textarea, select'
+  ));
+  currentIndex = 0;
+  updateProgress();
+  highlightCurrent();
+}
+
+/* ── HIGHLIGHT ─────────────────────────────────────────────────────── */
+function highlightCurrent() {
+  formInputs.forEach(el => {
+    el.classList.remove("v-active");
+    el.classList.toggle("v-filled", !!el.value.trim());
+  });
+  if (currentIndex >= 0 && currentIndex < formInputs.length) {
+    const el = formInputs[currentIndex];
+    el.classList.remove("v-filled");
+    el.classList.add("v-active");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.getElementById("vbarField").textContent =
+      el.getAttribute("placeholder") || el.id || "Field";
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const total  = formInputs.length;
+  const filled = formInputs.filter(e => e.value.trim() !== "").length;
+  const pct    = total ? Math.round(filled / total * 100) : 0;
+  document.getElementById("progFill").style.width  = pct + "%";
+  document.getElementById("progLabel").textContent =
+    `Field ${Math.min(currentIndex + 1, total)} of ${total}`;
+  document.getElementById("progPct").textContent   = pct + "% filled";
+}
+
+/* ── NAV BUTTONS ───────────────────────────────────────────────────── */
+document.getElementById("prevBtn").onclick = () => {
+  if (currentIndex > 0) { currentIndex--; highlightCurrent(); }
+};
+document.getElementById("nextBtn").onclick = () => {
+  if (currentIndex < formInputs.length - 1) { currentIndex++; highlightCurrent(); }
+};
+document.getElementById("clearBtn").onclick = () => {
+  formInputs.forEach(el => { el.value = ""; el.classList.remove("v-active", "v-filled"); });
+  currentIndex = 0;
+  highlightCurrent();
+  toast("Form cleared");
+};
+
+/* ── TOAST & TX ────────────────────────────────────────────────────── */
+function toast(msg, ms = 2400) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  setTimeout(() => t.classList.remove("on"), ms);
+}
+
+function tx(text, cls = "") {
+  const el = document.getElementById("vbarTx");
+  el.textContent = text;
+  el.className   = "vbar-tx" + (cls ? " " + cls : "");
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 7 — DATE HELPER  (IST-safe, unchanged logic, extended)
+══════════════════════════════════════════════════════════════════════ */
+function parseDateToYMD(raw) {
+  if (!raw) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw.trim())) return raw.trim();
+
+  // Strip ordinal suffixes
+  let s = raw.replace(/\b(\d{1,2})(st|nd|rd|th)\b/gi, "$1");
+
+  const MONTHS = {
+    january:1,  february:2,  march:3,    april:4,   may:5,     june:6,
+    july:7,     august:8,    september:9, october:10, november:11, december:12,
+    jan:1, feb:2, mar:3, apr:4, jun:6, jul:7, aug:8, sep:9, oct:10, nov:11, dec:12
+  };
+
+  // "15 March 2023" or "March 15 2023"
+  const wordy = s.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/i)
+             || s.match(/([a-z]+)\s+(\d{1,2})\s+(\d{4})/i);
+  if (wordy) {
+    let day, monthStr, year;
+    if (/^\d/.test(wordy[1])) { [, day, monthStr, year] = wordy; }
+    else                       { [, monthStr, day, year] = wordy; }
+    const month = MONTHS[monthStr.toLowerCase()];
+    if (month) return `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+  }
+
+  // "15/03/2023" or "15-03-2023"
+  const numeric = s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if (numeric) {
+    const [, d, m, y] = numeric;
+    return `${y}-${m.padStart(2,"0")}-${d.padStart(2,"0")}`;
+  }
+
+  // "2023/03/15" ISO-like
+  const isoLike = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  if (isoLike) {
+    const [, y, m, d] = isoLike;
+    return `${y}-${m.padStart(2,"0")}-${d.padStart(2,"0")}`;
+  }
+
+  // Spoken ordinal form: "thirteenth April two thousand and six" → handled by Claude
+  return null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 8 — SPEECH RECOGNITION  (en-IN, maxAlternatives = 5)
+══════════════════════════════════════════════════════════════════════ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SR) {
+  const btn = document.getElementById("voiceBtn");
+  btn.querySelector(".btn-text").textContent = "Not Supported";
+  btn.title    = "Use Chrome or Edge for voice support";
+  btn.disabled = true;
+  btn.style.opacity = ".5";
+} else {
+  buildRecognition();
+}
+
+function buildRecognition() {
+  recognition = new SR();
+  recognition.lang            = "en-IN";   // Indian English — best for Indian names/numbers
+  recognition.continuous      = true;
+  recognition.interimResults  = true;
+  recognition.maxAlternatives = 5;         // Maximum allowed — gives more raw material
+
+  /* ── onstart ────────────────────────────────────────────────────── */
+  recognition.onstart = () => {
+    const btn = document.getElementById("voiceBtn");
+    btn.classList.add("on");
+    btn.querySelector(".btn-mic").textContent  = "🛑";
+    btn.querySelector(".btn-text").textContent = "Stop";
+    document.getElementById("vbarWave").classList.add("on");
+    tx("Listening…");
+    highlightCurrent();
+  };
+
+  /* ── onend ──────────────────────────────────────────────────────── */
+  recognition.onend = () => {
+    if (isListening && !stoppingDeliberately) {
+      // Chrome kills continuous recognition mid-session — silently revive it
+      setTimeout(() => {
+        if (isListening) {
+          try { recognition.start(); } catch(e) { /* already running */ }
         }
-        updateProgress();
-      }
+      }, 200);
+    } else {
+      const btn = document.getElementById("voiceBtn");
+      btn.classList.remove("on");
+      btn.querySelector(".btn-mic").textContent  = "🎙️";
+      btn.querySelector(".btn-text").textContent = "Voice Fill";
+      document.getElementById("vbarWave").classList.remove("on");
+      tx("Tap \"Voice Fill\" to start speaking…");
+      stoppingDeliberately = false;
+    }
+  };
 
-      function updateProgress() {
-        const total = formInputs.length;
-        const filled = formInputs.filter((e) => e.value.trim() !== "").length;
-        const pct = total ? Math.round((filled / total) * 100) : 0;
-        document.getElementById("progFill").style.width = pct + "%";
-        document.getElementById("progLabel").textContent =
-          `Field ${Math.min(currentIndex + 1, total)} of ${total}`;
-        document.getElementById("progPct").textContent = pct + "% filled";
-      }
+  /* ── onerror ────────────────────────────────────────────────────── */
+  recognition.onerror = (e) => {
+    if (["no-speech", "aborted", "network"].includes(e.error)) return;
+    toast("Mic issue: " + e.error);
+  };
 
-      /* ────────────────────────────────────────────
-   NAV
-──────────────────────────────────────────── */
-      document.getElementById("prevBtn").onclick = () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          highlightCurrent();
+  /* ── onresult — core pipeline entry ────────────────────────────── */
+  recognition.onresult = (event) => {
+    let interim       = "";
+    let collectedAlts = [];
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const result = event.results[i];
+
+      if (result.isFinal) {
+        // Collect ALL alternatives (up to maxAlternatives)
+        collectedAlts = [];
+        for (let a = 0; a < result.length; a++) {
+          collectedAlts.push({
+            text:       result[a].transcript.trim(),
+            confidence: result[a].confidence || 0
+          });
         }
-      };
-      document.getElementById("nextBtn").onclick = () => {
-        if (currentIndex < formInputs.length - 1) {
-          currentIndex++;
-          highlightCurrent();
-        }
-      };
-      document.getElementById("clearBtn").onclick = () => {
-        formInputs.forEach((el) => {
-          el.value = "";
-          el.classList.remove("v-active", "v-filled");
-        });
-        currentIndex = 0;
-        highlightCurrent();
-        toast("Form cleared");
-      };
-
-      /* ────────────────────────────────────────────
-   TOAST
-──────────────────────────────────────────── */
-      function toast(msg, ms = 2400) {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.classList.add("on");
-        setTimeout(() => t.classList.remove("on"), ms);
-      }
-
-      /* ────────────────────────────────────────────
-   TX HELPER
-──────────────────────────────────────────── */
-      function tx(text, cls = "") {
-        const el = document.getElementById("vbarTx");
-        el.textContent = text;
-        el.className = "vbar-tx" + (cls ? " " + cls : "");
-      }
-
-      /* ────────────────────────────────────────────
-   DATE HELPER  ← FIXES THE OFF-BY-ONE BUG
-   Problem: new Date("15 March 2023") parses in UTC midnight,
-   then .toISOString() returns the *previous* day for IST (+5:30).
-   Fix: parse manually into local year/month/day, never go through UTC.
-──────────────────────────────────────────── */
-      function parseDateToYMD(raw) {
-        if (!raw) return null;
-
-        // Already in YYYY-MM-DD
-        if (/^\d{4}-\d{2}-\d{2}$/.test(raw.trim())) return raw.trim();
-
-        // Strip ordinal suffixes: 1st → 1, 22nd → 22
-        let s = raw.replace(/\b(\d{1,2})(st|nd|rd|th)\b/gi, "$1");
-
-        // Try common formats: "15 March 2023", "March 15 2023", "15/03/2023", "15-03-2023"
-        const MONTHS = {
-          january: 1,
-          february: 2,
-          march: 3,
-          april: 4,
-          may: 5,
-          june: 6,
-          july: 7,
-          august: 8,
-          september: 9,
-          october: 10,
-          november: 11,
-          december: 12,
-          jan: 1,
-          feb: 2,
-          mar: 3,
-          apr: 4,
-          jun: 6,
-          jul: 7,
-          aug: 8,
-          sep: 9,
-          oct: 10,
-          nov: 11,
-          dec: 12,
-        };
-
-        // "15 March 2023" or "March 15 2023"
-        const wordy =
-          s.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/i) ||
-          s.match(/([a-z]+)\s+(\d{1,2})\s+(\d{4})/i);
-        if (wordy) {
-          let day, monthStr, year;
-          if (/^\d/.test(wordy[1])) {
-            [, day, monthStr, year] = wordy;
-          } else {
-            [, monthStr, day, year] = wordy;
-          }
-          const month = MONTHS[monthStr.toLowerCase()];
-          if (month) {
-            return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-          }
-        }
-
-        // "15/03/2023" or "15-03-2023"
-        const numeric = s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-        if (numeric) {
-          const [, d, m, y] = numeric;
-          return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-        }
-
-        // "2023/03/15" or "2023-03-15"
-        const isoLike = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-        if (isoLike) {
-          const [, y, m, d] = isoLike;
-          return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
-        }
-
-        return null; // unparseable
-      }
-
-      /* ────────────────────────────────────────────
-   SPEECH RECOGNITION SETUP
-──────────────────────────────────────────── */
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-      if (!SR) {
-        const btn = document.getElementById("voiceBtn");
-        btn.querySelector(".btn-text").textContent = "Not Supported";
-        btn.title = "Use Chrome or Edge for voice support";
-        btn.disabled = true;
-        btn.style.opacity = ".5";
       } else {
-        buildRecognition();
+        interim = result[0].transcript.trim();
       }
+    }
 
-      function buildRecognition() {
-        recognition = new SR();
-        recognition.lang = "en-IN";
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.maxAlternatives = 3;
+    if (interim) tx("💬 " + interim, "live");
 
-        recognition.onstart = () => {
-          const btn = document.getElementById("voiceBtn");
-          btn.classList.add("on");
-          btn.querySelector(".btn-mic").textContent = "🛑";
-          btn.querySelector(".btn-text").textContent = "Stop";
-          document.getElementById("vbarWave").classList.add("on");
-          tx("Listening…");
-          highlightCurrent();
-        };
+    if (collectedAlts.length > 0) {
+      // Rank alternatives against the current field's semantic category
+      const fieldCtx = getFieldContext(formInputs[currentIndex]);
+      const ranked   = rankAlternativesForField(collectedAlts, fieldCtx);
+      lastAlternatives = ranked;
 
-        recognition.onend = () => {
-          if (isListening && !stoppingDeliberately) {
-            // Chrome auto-stops mid-session — silently restart
-            setTimeout(() => {
-              if (isListening) {
-                try {
-                  recognition.start();
-                } catch (e) {
-                  /* already started */
-                }
-              }
-            }, 200);
-          } else {
-            // Deliberate stop — reset UI
-            const btn = document.getElementById("voiceBtn");
-            btn.classList.remove("on");
-            btn.querySelector(".btn-mic").textContent = "🎙️";
-            btn.querySelector(".btn-text").textContent = "Voice Fill";
-            document.getElementById("vbarWave").classList.remove("on");
-            tx('Tap "Voice Fill" to start speaking…');
-            stoppingDeliberately = false;
-          }
-        };
+      // Best candidate drives the visible buffer
+      const bestText = ranked[0].processedText || ranked[0].text;
+      finalBuffer += (finalBuffer ? " " : "") + bestText;
+      tx("💬 " + finalBuffer, "live");
 
-        recognition.onerror = (e) => {
-          if (["no-speech", "aborted", "network"].includes(e.error)) return;
-          toast("Mic issue: " + e.error);
-        };
+      clearTimeout(silenceTimer);
+      const delay = getSilenceDelay(formInputs[currentIndex]);
+      silenceTimer = setTimeout(() => {
+        const utterance = finalBuffer.trim();
+        finalBuffer = "";
+        if (utterance) processWithAI(utterance, lastAlternatives);
+      }, delay);
+    }
+  };
+}
 
-        recognition.onresult = (event) => {
-          let interim = "";
-          let latestFinal = "";
+/* ── VOICE BUTTON TOGGLE ────────────────────────────────────────────── */
+document.getElementById("voiceBtn").addEventListener("click", () => {
+  if (!isListening) {
+    isListening = true;
+    stoppingDeliberately = false;
+    finalBuffer = "";
+    lastAlternatives = [];
+    try { recognition.start(); } catch(e) { isListening = false; }
+  } else {
+    isListening = false;
+    stoppingDeliberately = true;
+    clearTimeout(silenceTimer);
+    finalBuffer = "";
+    recognition.stop();
+  }
+});
 
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            // Pick the alternative with highest confidence
-            let best = event.results[i][0];
-            for (let a = 1; a < event.results[i].length; a++) {
-              if (
-                (event.results[i][a].confidence || 0) > (best.confidence || 0)
-              )
-                best = event.results[i][a];
-            }
-            const t = best.transcript.trim();
-            if (event.results[i].isFinal) latestFinal = t;
-            else interim = t;
-          }
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 9 — AI PROCESSING  (Claude claude-sonnet-4-20250514)
+   Sends entity-aware system prompt + up to 5 ranked SR alternatives.
+   Claude chooses the best alternative, extracts structured values,
+   and returns fills[].
+══════════════════════════════════════════════════════════════════════ */
+async function processWithAI(rawSpeech, alternatives = []) {
+  if (!formInputs.length) return;
 
-          if (interim) tx("💬 " + interim, "live");
+  /* ── Quick navigation shortcuts (no AI call needed) ─────────────── */
+  const lower = rawSpeech.toLowerCase();
+  if (/\b(next|skip|aage)\b/.test(lower) && rawSpeech.split(" ").length < 4) {
+    advance(); return;
+  }
+  if (/\b(back|previous|pichla|prev)\b/.test(lower) && rawSpeech.split(" ").length < 4) {
+    if (currentIndex > 0) { currentIndex--; highlightCurrent(); }
+    return;
+  }
+  if (/\b(reset|clear all|clear form)\b/.test(lower)) {
+    document.getElementById("clearBtn").click(); return;
+  }
 
-          if (latestFinal) {
-            finalBuffer += (finalBuffer ? " " : "") + latestFinal;
-            tx("💬 " + finalBuffer, "live");
+  tx("⏳ AI thinking…", "thinking");
 
-            clearTimeout(silenceTimer);
-            silenceTimer = setTimeout(() => {
-              const utterance = finalBuffer.trim();
-              finalBuffer = "";
-              if (utterance) processWithAI(utterance);
-            }, 900);
-          }
-        };
-      }
+  const currentEl  = formInputs[currentIndex];
+  const fieldCtx   = getFieldContext(currentEl);
+  const currentPh  = currentEl
+    ? (currentEl.getAttribute("placeholder") || currentEl.id)
+    : "unknown";
 
-      /* ── VOICE BUTTON TOGGLE ─────────────────── */
-      document.getElementById("voiceBtn").addEventListener("click", () => {
-        if (!isListening) {
-          isListening = true;
-          stoppingDeliberately = false;
-          finalBuffer = "";
-          try {
-            recognition.start();
-          } catch (e) {
-            isListening = false;
-          }
-        } else {
-          isListening = false;
-          stoppingDeliberately = true;
-          clearTimeout(silenceTimer);
-          finalBuffer = "";
-          recognition.stop();
-        }
-      });
+  /* ── Build rich field manifest ───────────────────────────────────── */
+  const manifest = formInputs.map((el, i) => {
+    const ph   = el.getAttribute("placeholder") || el.id || "field_" + i;
+    const type = el.tagName === "SELECT" ? "select" : (el.type || "text");
+    const ctx  = getFieldContext(el);
+    const opts = el.tagName === "SELECT"
+      ? " [options: " + Array.from(el.options).map(o => o.value).join("|") + "]"
+      : "";
+    return `${i}:${ph}:${type}[${ctx.category}]${opts}`;
+  }).join("\n");
 
-      /* ════════════════════════════════════════════════════════════
-   AI PROCESSING — Claude API
-   Sends speech + full field manifest → Claude extracts
-   exactly which fields to fill and what values to use.
-════════════════════════════════════════════════════════════ */
-      async function processWithAI(rawSpeech) {
-        if (!formInputs.length) return;
+  /* ── Build the user message: primary + ranked alternatives ─────── */
+  let speechPayload = `PRIMARY (highest ranked): "${rawSpeech}"`;
+  if (alternatives.length > 1) {
+    const altLines = alternatives.slice(1, 5).map((a, idx) =>
+      `ALTERNATIVE ${idx + 2}: "${a.text}"`
+    ).join("\n");
+    speechPayload += "\n" + altLines;
+  }
 
-        // Quick navigation shortcuts (no AI needed)
-        const lower = rawSpeech.toLowerCase();
-        if (
-          /\b(next|skip|aage)\b/.test(lower) &&
-          rawSpeech.split(" ").length < 3
-        ) {
-          advance();
-          return;
-        }
-        if (
-          /\b(back|previous|pichla|prev)\b/.test(lower) &&
-          rawSpeech.split(" ").length < 3
-        ) {
-          if (currentIndex > 0) {
-            currentIndex--;
-            highlightCurrent();
-          }
-          return;
-        }
-        if (/\b(reset|clear all|clear form)\b/.test(lower)) {
-          document.getElementById("clearBtn").click();
-          return;
-        }
+  /* ══════════════════════════════════════════════════════════════════
+     THE SYSTEM PROMPT — comprehensive entity-specific extraction rules
+  ════════════════════════════════════════════════════════════════════ */
+  const systemPrompt =
+`You are a precision voice-to-form AI for the Vision Based Contract Understanding Platform — an Indian legal document assistant.
+Users speak in English, Hindi, or Hinglish. Speech recognition (Web Speech API) may produce errors; multiple recognition hypotheses are provided — pick the best one for the active field.
 
-        tx("⏳ AI thinking…", "thinking");
-
-        // Build field manifest: index, placeholder, type, options
-        const manifest = formInputs
-          .map((el, i) => {
-            const ph = el.getAttribute("placeholder") || el.id || "field_" + i;
-            const type = el.tagName === "SELECT" ? "select" : el.type || "text";
-            const opts =
-              el.tagName === "SELECT"
-                ? " [options: " +
-                  Array.from(el.options)
-                    .map((o) => o.value)
-                    .join("|") +
-                  "]"
-                : "";
-            return `${i}:${ph}:${type}${opts}`;
-          })
-          .join("\n");
-
-        const currentPh = formInputs[currentIndex]
-          ? formInputs[currentIndex].getAttribute("placeholder") ||
-            formInputs[currentIndex].id
-          : "unknown";
-
-        const system = `You are an AI assistant for filling Indian legal document forms via voice input.
-The user speaks naturally in English, Hindi, or Hinglish. Your job: extract field values precisely.
-
-FORM FIELDS (format: index:placeholder:type):
+ALL FORM FIELDS  (format: index:placeholder:inputType[category]):
 ${manifest}
 
-CURRENTLY ACTIVE FIELD: index ${currentIndex} ("${currentPh}")
+ACTIVE FIELD: index ${currentIndex}  placeholder="${currentPh}"  category=${fieldCtx.category}
 
-EXTRACTION RULES:
-1. If speech clearly provides a value for the active field (e.g. user just says a name/number/address), fill it.
-2. If speech contains multiple entities (e.g. "My name is Rahul, age 35, Mumbai address"), fill all detected fields.
-3. For names/addresses: Proper case. Never invent — only extract what was spoken.
-4. For dates: output YYYY-MM-DD using LOCAL date parsing. Handle "15th March 2023", "March 15 2023", "15-03-2023", "15/3/2023". IMPORTANT: do NOT subtract any timezone offset.
-5. For PAN: AAAAA9999A format, uppercase letters only.
-6. For Aadhaar: exactly 12 digits, no spaces or hyphens.
-7. For phone/mobile: exactly 10 digits.
-8. For amount "words" fields: Convert numbers to Indian English words (e.g. 500000 → "Five Lakh").
-9. For select fields, pick the closest matching option from the provided list.
-10. "next"/"skip" alone → set advance:true, fills:[].
-11. If nothing could be extracted → fills:[], advance:false.
+═══════════════════════════════════════════════════════════════════════
+MANDATORY ENTITY-SPECIFIC EXTRACTION RULES
+═══════════════════════════════════════════════════════════════════════
 
-Respond ONLY with valid JSON. No markdown, no explanation, no code fences:
+▶▶ NAME  [category=name]
+   • Output in Title Case.
+   • Strip lead-ins: "my name is", "name is", "I am", "called", "it is", "here is".
+   • Preserve full Indian names (first + middle + last).
+   • Example: "my name is Rahul Kumar Sharma" → "Rahul Kumar Sharma"
+   • Example: "name Priya Anand" → "Priya Anand"
+   • NEVER invent or guess names — only extract what was spoken.
+
+▶▶ EMAIL  [category=email]
+   • Reconstruct from spoken form:
+       "at" / "at the rate" / "@" → @
+       "dot" → .
+       "underscore" / "under score" → _
+       "hyphen" / "dash" → -
+   • Final output: always lowercase, no spaces.
+   • "rahul dot sharma at gmail dot com"  → "rahul.sharma@gmail.com"
+   • "john underscore doe99 at yahoo dot in"  → "john_doe99@yahoo.in"
+   • "info at nyayasetu dot org"  → "info@nyayasetu.org"
+
+▶▶ PHONE / MOBILE  [category=phone]
+   • Output EXACTLY 10 digits. No spaces, dashes, or country codes.
+   • Spoken one-by-one: "nine eight two one three four five six seven eight" → "9821345678"
+   • Spoken in groups: "98213, 45678" → "9821345678"
+   • digit words: zero=0, oh=0, one=1, two=2, three=3, four=4, five=5, six=6, seven=7, eight=8, nine=9
+   • Strip leading +91 or 0 if present.
+   • If any alternative yields exactly 10 digits, prefer it over a non-10-digit alternative.
+
+▶▶ DATE  [category=date]  → OUTPUT FORMAT: YYYY-MM-DD  (mandatory)
+   • "13th April 2006"  → "2006-04-13"
+   • "April 13 2006"  → "2006-04-13"
+   • "13/4/2006" or "13-04-2006"  → "2006-04-13"
+   • "thirteenth April two thousand and six"  → "2006-04-13"
+   • "1st January 1990"  → "1990-01-01"
+   • Ordinal stripping: 1st→1, 2nd→2, 3rd→3, 4th→4 ... 21st→21, 22nd→22 etc.
+   • Month mapping (case-insensitive):
+       January/Jan=01, February/Feb=02, March/Mar=03, April/Apr=04,
+       May=05, June/Jun=06, July/Jul=07, August/Aug=08,
+       September/Sep=09, October/Oct=10, November/Nov=11, December/Dec=12
+   • DO NOT subtract any timezone offset — output the literal date spoken.
+   • If only day+month spoken, assume current year (2025).
+
+▶▶ ADDRESS / ADDR  [category=address]
+   • Use commas to separate address components. Capitalise each component.
+   • Detect and structure:
+       Flat/Room No  → "Flat X" or "Room X"
+       Floor         → "Floor X"
+       Building      → Building name as-is
+       Society/Colony → Society name as-is
+       Landmark      → "Near X" or "Opposite X"
+       Area/Locality → as-is, Title Case
+       City          → Title Case
+       State         → Title Case
+       Pincode       → append as " - NNNNNN"
+   • Speech: "flat 3B Shree Residency near railway station Pune Maharashtra 411001"
+     Output: "Flat 3B, Shree Residency, Near Railway Station, Pune, Maharashtra - 411001"
+   • Speech: "plot 12 sector 5 Vashi Navi Mumbai pin 400703"
+     Output: "Plot 12, Sector 5, Vashi, Navi Mumbai - 400703"
+   • If no pincode spoken, don't invent one.
+   • "pin code" / "pincode" / "pin" before 6 digits → pincode suffix.
+
+▶▶ AGE  [category=age]
+   • Extract the integer only.
+   • "35 years old" → "35"  |  "my age is 42" → "42"  |  "age forty" → "40"
+
+▶▶ PAN  [category=pan]
+   • Format: 5 uppercase letters + 4 digits + 1 uppercase letter = exactly 10 chars, no spaces.
+   • Letters may be spelled individually: "A B C D E 1 2 3 4 F" → "ABCDE1234F"
+   • Recognition may split or mishear letters — cross-check with the 5L+4D+1L pattern.
+   • "alpha bravo charlie delta echo 1 2 3 4 foxtrot" — use the NATO-equivalent letter.
+   • Always uppercase the result.
+
+▶▶ AADHAAR  [category=aadhaar]
+   • Exactly 12 digits, no spaces or dashes.
+   • Spoken in groups: "1234 5678 9012" → "123456789012"
+   • Digit words: zero=0, one=1, two=2, three=3, four=4, five=5, six=6, seven=7, eight=8, nine=9
+   • "one two three four five six seven eight nine zero one two" → "123456789012"
+   • Prefer the alternative that yields exactly 12 digits.
+
+▶▶ AMOUNT NUMERIC  [category=amount]
+   • Plain integer string — no commas, no ₹, no text.
+   • Indian units: lakh=100000, lac=100000, crore=10000000, thousand=1000
+   • "5 lakh"           → "500000"
+   • "25 lakh 50 thousand" → "2550000"
+   • "1 crore 25 lakh"  → "12500000"
+   • "50,000"           → "50000"
+
+▶▶ AMOUNT IN WORDS  [category=amount_words]
+   • Indian English, Title Case, end with "Only".
+   • "5 lakh" or "500000"                  → "Five Lakh Only"
+   • "25 lakh 50 thousand"                 → "Twenty Five Lakh Fifty Thousand Only"
+   • "1 crore 25 lakh"                     → "One Crore Twenty Five Lakh Only"
+   • If user says words already, clean casing and append "Only".
+   • Use Indian system (Lakh, Crore) — never use Million or Billion.
+
+▶▶ OCCUPATION  [category=occupation]
+   • Title Case output.
+   • Strip: "I work as", "occupation is", "I am a/an", "my occupation is", "working as"
+   • "I am a software engineer" → "Software Engineer"
+   • "occupation advocate"     → "Advocate"
+
+▶▶ CITY / PLACE / LOCATION  [category=generic, placeholder contains city/place/location]
+   • Title Case: "mumbai" → "Mumbai", "new delhi" → "New Delhi", "navi mumbai" → "Navi Mumbai"
+   • Strip: "the city is", "place is", "location is", "city", "place"
+
+▶▶ GENDER SELECT  [category=select, options Male|Female|Other]
+   • "male" / "man" / "purush" → "Male"
+   • "female" / "woman" / "mahila" → "Female"
+   • "other" / "others" → "Other"
+   • Match exactly to the provided option value.
+
+▶▶ SURVEY NO / CTS / GST / CODE  [category=code]
+   • Keep alphanumeric as-is, uppercase.
+   • "survey number 123 slash 2A" → "123/2A"
+   • "GST 27 ABCDE1234F1Z5"       → "27ABCDE1234F1Z5"
+
+▶▶ STATEMENT / PURPOSE / DECLARATION  [category=statement]
+   • Free text. Proper sentence case. "I" always capitalised.
+   • Sentences end with a period. Preserve natural phrasing.
+   • Do not truncate — capture the full spoken statement.
+
+▶▶ GENERIC / OTHER FIELDS
+   • Title Case for most text fields.
+   • Strip common lead-ins: "it is", "the value is", "enter".
+   • For numeric-only fields (flat no, floor, area), output digits only.
+
+═══════════════════════════════════════════════════════════════════════
+MULTI-FIELD DETECTION
+═══════════════════════════════════════════════════════════════════════
+If the utterance clearly contains values for multiple fields
+(e.g. "My name is Rahul, age 35, Mumbai"), fill all detected fields.
+For each field filled, set its index in the fills array.
+
+═══════════════════════════════════════════════════════════════════════
+ALTERNATIVE SELECTION STRATEGY
+═══════════════════════════════════════════════════════════════════════
+Multiple speech recognition hypotheses are provided (PRIMARY + ALTERNATIVEs).
+• For PHONE: prefer the alternative whose digits count equals 10.
+• For AADHAAR: prefer the alternative whose digits count equals 12.
+• For PAN: prefer the alternative matching 5L+4D+1L after cleanup.
+• For EMAIL: prefer the alternative containing "@" or "at".
+• For DATE: prefer the alternative with a recognisable date pattern.
+• Otherwise: use PRIMARY.
+You may combine information from different alternatives if needed.
+
+═══════════════════════════════════════════════════════════════════════
+NAVIGATION COMMANDS
+═══════════════════════════════════════════════════════════════════════
+• "next" / "skip" / "aage" alone → {"fills":[], "advance":true}
+• "back" / "previous" / "pichla" alone → {"fills":[], "advance":false}
+• If nothing detected → {"fills":[], "advance":false}
+
+═══════════════════════════════════════════════════════════════════════
+OUTPUT  — strict JSON, no markdown, no explanation, no code fences
+═══════════════════════════════════════════════════════════════════════
 {"fills":[{"index":<number>,"value":"<string>"}],"advance":<true|false>}`;
 
-        try {
-          const res = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              model: "claude-sonnet-4-20250514",
-              max_tokens: 600,
-              system: system,
-              messages: [{ role: "user", content: rawSpeech }],
-            }),
-          });
+  /* ── API call ───────────────────────────────────────────────────── */
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model:      "claude-sonnet-4-20250514",
+        max_tokens: 700,
+        system:     systemPrompt,
+        messages:   [{ role: "user", content: speechPayload }]
+      })
+    });
 
-          if (!res.ok) throw new Error("HTTP " + res.status);
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
-          const data = await res.json();
-          const rawTxt = (data.content || [])
-            .map((b) => b.text || "")
-            .join("")
-            .trim();
-          // Strip accidental code fences
-          const clean = rawTxt
-            .replace(/^```(?:json)?\s*/i, "")
-            .replace(/```\s*$/, "")
-            .trim();
-          const parsed = JSON.parse(clean);
+    const data   = await res.json();
+    const rawTxt = (data.content || []).map(b => b.text || "").join("").trim();
+    // Strip accidental code fences
+    const clean  = rawTxt.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
+    const parsed = JSON.parse(clean);
 
-          const fills = (parsed.fills || []).filter(
-            (f) =>
-              Number.isInteger(f.index) &&
-              f.index >= 0 &&
-              f.index < formInputs.length &&
-              f.value !== null &&
-              String(f.value).trim() !== "",
-          );
+    const fills = (parsed.fills || []).filter(f =>
+      Number.isInteger(f.index) &&
+      f.index >= 0 &&
+      f.index < formInputs.length &&
+      f.value !== null &&
+      String(f.value).trim() !== ""
+    );
 
-          if (fills.length === 0 && !parsed.advance) {
-            tx("🤔 Nothing detected — say it again", "error");
-            return;
-          }
+    if (fills.length === 0 && !parsed.advance) {
+      tx("🤔 Nothing detected — say it again", "error");
+      return;
+    }
 
-          for (const { index, value } of fills) {
-            let v = String(value).trim();
-            const el = formInputs[index];
+    /* ── Apply fills with post-processing ─────────────────────────── */
+    for (const { index, value } of fills) {
+      const el        = formInputs[index];
+      const finalVal  = postProcessValue(el, value);
+      fillAndMark(el, finalVal);
+    }
 
-            // ── DATE FIX: re-parse value Claude returns for date fields
-            //    Claude may return YYYY-MM-DD correctly, but run through our
-            //    local parser to make sure no UTC shift slips through.
-            if (el.type === "date") {
-              const fixed = parseDateToYMD(v);
-              if (fixed) v = fixed;
-            }
+    if (fills.length > 0) {
+      const names = fills
+        .map(f => '"' + (formInputs[f.index].getAttribute("placeholder") || ("field " + f.index)) + '"')
+        .join(", ");
+      tx("✅ Filled " + names, "filled");
+      setTimeout(() => { if (isListening) tx("Listening…"); }, 2400);
+    }
 
-            fillAndMark(el, v);
-          }
+    /* ── Advance cursor ────────────────────────────────────────────── */
+    const filledCurrent = fills.some(f => f.index === currentIndex);
+    if (parsed.advance) {
+      setTimeout(advance, 300);
+    } else if (filledCurrent) {
+      setTimeout(advance, 500);
+    }
 
-          if (fills.length > 0) {
-            const names = fills
-              .map(
-                (f) =>
-                  '"' +
-                  (formInputs[f.index].getAttribute("placeholder") ||
-                    "field " + f.index) +
-                  '"',
-              )
-              .join(", ");
-            tx("✅ Filled " + names, "filled");
-            setTimeout(() => {
-              if (isListening) tx("Listening…");
-            }, 2200);
-          }
+  } catch (err) {
+    /* ── Fallback when API is unavailable ─────────────────────────── */
+    console.warn("AI error — regex fallback:", err);
+    const val = fallbackExtract(formInputs[currentIndex], rawSpeech);
+    if (val !== null) {
+      const finalVal = postProcessValue(formInputs[currentIndex], val);
+      fillAndMark(formInputs[currentIndex], finalVal);
+      tx("✅ " + finalVal, "filled");
+      setTimeout(advance, 500);
+    } else {
+      tx("❌ Couldn't understand — please try again", "error");
+    }
+  }
+}
 
-          // Advance cursor: either AI asked for it, OR we just filled the current field
-          const filledCurrent = fills.some((f) => f.index === currentIndex);
-          if (parsed.advance) {
-            setTimeout(advance, 300);
-          } else if (filledCurrent) {
-            setTimeout(advance, 450);
-          }
-        } catch (err) {
-          console.warn("AI error, using regex fallback:", err);
-          const val = fallbackExtract(formInputs[currentIndex], lower);
-          if (val !== null) {
-            fillAndMark(formInputs[currentIndex], val);
-            tx("✅ " + val, "filled");
-            setTimeout(advance, 450);
-          } else {
-            tx("❌ Couldn't understand — please try again", "error");
-          }
-        }
-      }
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 10 — ENHANCED REGEX FALLBACK
+   Used when the Anthropic API is unreachable. Much more comprehensive
+   than the original version.
+══════════════════════════════════════════════════════════════════════ */
+function fallbackExtract(el, raw) {
+  if (!el) return null;
+  const { category } = getFieldContext(el);
+  const t = raw.toLowerCase();
 
-      /* ────────────────────────────────────────────
-   REGEX FALLBACK  (when API is unavailable)
-──────────────────────────────────────────── */
-      function fallbackExtract(el, raw) {
-        if (!el) return null;
-        const ph = (el.getAttribute("placeholder") || "").toLowerCase();
-        const t = raw.toLowerCase();
+  /* DATE ──────────────────────────────────────────────────────────── */
+  if (category === "date") return parseDateToYMD(raw);
 
-        // Date fields — use our local parser (no UTC)
-        if (el.type === "date") {
-          return parseDateToYMD(raw);
-        }
+  /* SELECT ─────────────────────────────────────────────────────────── */
+  if (category === "select" || el.tagName === "SELECT") {
+    for (const o of el.options) {
+      if (t.includes(o.value.toLowerCase()) || t.includes(o.text.toLowerCase())) return o.value;
+    }
+    // Gender words
+    if (/\b(male|man|purush)\b/.test(t))           return "Male";
+    if (/\b(female|woman|mahila|stri)\b/.test(t))  return "Female";
+    if (/\bother\b/.test(t))                        return "Other";
+    return null;
+  }
 
-        if (el.tagName === "SELECT") {
-          for (const o of el.options) {
-            if (t.includes(o.value.toLowerCase())) return o.value;
-          }
-          return null;
-        }
+  /* EMAIL ─────────────────────────────────────────────────────────── */
+  if (category === "email") {
+    // Try direct email pattern first
+    const direct = raw.match(/[\w.+\-]+@[\w\-]+\.[a-z]{2,}/i);
+    if (direct) return direct[0].toLowerCase();
+    // Reconstruct from spoken form
+    const reconstructed = raw
+      .replace(/\bat the rate\b/gi, "@")
+      .replace(/\bat\b/gi, "@")
+      .replace(/\bdot\b/gi, ".")
+      .replace(/\bunderscore\b|\bunder score\b/gi, "_")
+      .replace(/\bhyphen\b|\bdash\b/gi, "-")
+      .replace(/\s+/g, "")
+      .toLowerCase();
+    if (reconstructed.includes("@")) return reconstructed;
+    return null;
+  }
 
-        if (ph.includes("email")) {
-          const m = raw.match(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
-          return m ? m[0] : null;
-        }
-        if (ph.includes("phone") || ph.includes("mobile")) {
-          const m = raw.match(/\b\d{10}\b/);
-          return m ? m[0] : null;
-        }
-        if (ph.includes("pin") && !ph.includes("pan")) {
-          const m = raw.match(/\b\d{6}\b/);
-          return m ? m[0] : null;
-        }
-        if (ph.includes("pan")) {
-          const m = raw.match(/\b[a-zA-Z]{5}\d{4}[a-zA-Z]\b/);
-          return m ? m[0].toUpperCase() : null;
-        }
-        if (ph.includes("aadhaar")) {
-          const m = raw.match(/\b\d{12}\b/);
-          return m ? m[0] : null;
-        }
-        if (ph.includes("age")) {
-          const m = raw.match(/\b(\d{1,3})\b/);
-          return m ? m[1] : null;
-        }
-        if (
-          (ph.includes("amount") || ph.includes("rent")) &&
-          !ph.includes("word")
-        ) {
-          const m = raw.match(/[\d,]+/);
-          return m ? m[0].replace(/,/g, "") : null;
-        }
+  /* PHONE ─────────────────────────────────────────────────────────── */
+  if (category === "phone") {
+    // Try pre-processing digit words first
+    const digitized = spokenDigitsToString(raw).replace(/\D/g, "");
+    if (digitized.length >= 10) {
+      const d = digitized.startsWith("91") && digitized.length === 12 ? digitized.slice(2) : digitized;
+      return d.slice(-10);
+    }
+    const m = raw.match(/\b\d{10}\b/);
+    return m ? m[0] : null;
+  }
 
-        // Free-text: strip common lead-in phrases
-        const cleaned = raw
-          .replace(
-            /^(my name is|name is|i am called|it is|the city is|city is|location is|address is|i live (?:at|in)|occupation is|i work as)\s*/i,
-            "",
-          )
-          .trim();
-        return cleaned.length > 1 ? titleCase(cleaned) : null;
-      }
+  /* AADHAAR ───────────────────────────────────────────────────────── */
+  if (category === "aadhaar") {
+    const digitized = spokenDigitsToString(raw).replace(/\D/g, "");
+    if (digitized.length >= 12) return digitized.slice(-12);
+    const m = raw.match(/\b\d{12}\b/);
+    return m ? m[0] : null;
+  }
 
-      /* ────────────────────────────────────────────
-   HELPERS
-──────────────────────────────────────────── */
-      function fillAndMark(el, value) {
-        el.value = value;
-        el.classList.remove("v-active");
-        el.classList.add("v-filled");
-        updateProgress();
-      }
+  /* PAN ───────────────────────────────────────────────────────────── */
+  if (category === "pan") {
+    const cleaned = spokenDigitsToString(raw).replace(/\s+/g, "").toUpperCase();
+    const m = cleaned.match(/[A-Z]{5}\d{4}[A-Z]/);
+    if (m) return m[0];
+    const m2 = raw.match(/\b[a-zA-Z]{5}\d{4}[a-zA-Z]\b/);
+    return m2 ? m2[0].toUpperCase() : null;
+  }
 
-      function advance() {
-        if (currentIndex < formInputs.length - 1) {
-          currentIndex++;
-          highlightCurrent();
-        } else {
-          toast("🎉 All fields complete!");
-          tx("🎉 Form complete — great job!", "filled");
-        }
-      }
+  /* AGE ───────────────────────────────────────────────────────────── */
+  if (category === "age") {
+    const m = raw.match(/\b(\d{1,3})\b/);
+    return m ? m[1] : null;
+  }
 
-      function titleCase(str) {
-        return str.replace(/\b\w/g, (c) => c.toUpperCase());
-      }
-    </script>
-  </body>
+  /* AMOUNT ────────────────────────────────────────────────────────── */
+  if (category === "amount") {
+    // Parse Indian units
+    const lakh  = (t.match(/(\d[\d,.]*)\s*lakh/i)   || [])[1];
+    const crore = (t.match(/(\d[\d,.]*)\s*crore/i)  || [])[1];
+    const thou  = (t.match(/(\d[\d,.]*)\s*thousand/i)|| [])[1];
+    if (crore || lakh || thou) {
+      let total = 0;
+      if (crore)  total += parseFloat(crore.replace(/,/g,""))  * 10000000;
+      if (lakh)   total += parseFloat(lakh.replace(/,/g,""))   * 100000;
+      if (thou)   total += parseFloat(thou.replace(/,/g,""))   * 1000;
+      return String(Math.round(total));
+    }
+    const m = raw.match(/[\d,]+/);
+    return m ? m[0].replace(/,/g, "") : null;
+  }
+
+  /* AMOUNT IN WORDS ───────────────────────────────────────────────── */
+  if (category === "amount_words") {
+    const clean = raw.replace(/^(amount in words is|in words|amount words)\s*/i, "").trim();
+    if (!/\bonly\b/i.test(clean)) return titleCase(clean) + " Only";
+    return titleCase(clean);
+  }
+
+  /* ADDRESS ───────────────────────────────────────────────────────── */
+  if (category === "address") {
+    const cleaned = raw
+      .replace(/^(my address is|address is|i live at|i live in|located at)\s*/i, "")
+      .trim();
+    // Basic component detection
+    let parts = [];
+    const flatM   = cleaned.match(/(?:flat|room|shop)\s*([\w\-\/]+)/i);
+    const floorM  = cleaned.match(/(?:floor|fl\.?)\s*(\w+)/i);
+    const pinM    = cleaned.match(/(?:pin\s*(?:code)?|pincode)\s*(\d{6})/i) || cleaned.match(/\b(\d{6})\b/);
+    if (flatM)  parts.push("Flat " + flatM[1]);
+    if (floorM) parts.push("Floor " + floorM[1]);
+    // Remaining text after removing known patterns
+    let rest = cleaned
+      .replace(/(?:flat|room|shop)\s*[\w\-\/]+/i, "")
+      .replace(/(?:floor|fl\.?)\s*\w+/i, "")
+      .replace(/(?:pin\s*(?:code)?|pincode)\s*\d{6}/i, "")
+      .replace(/\b\d{6}\b/, "")
+      .trim();
+    if (rest.length > 2) parts.push(titleCase(rest));
+    if (pinM) parts.push("- " + pinM[1]);
+    return parts.length ? parts.join(", ") : titleCase(cleaned);
+  }
+
+  /* OCCUPATION ────────────────────────────────────────────────────── */
+  if (category === "occupation") {
+    const cleaned = raw
+      .replace(/^(i work as|occupation is|i am an?|my occupation is|working as)\s*/i, "")
+      .trim();
+    return titleCase(cleaned);
+  }
+
+  /* STATEMENT / PURPOSE ───────────────────────────────────────────── */
+  if (category === "statement") {
+    // Capitalise first letter, ensure period at end
+    let s = raw.charAt(0).toUpperCase() + raw.slice(1);
+    if (!/[.!?]$/.test(s)) s += ".";
+    return s;
+  }
+
+  /* GENERIC free-text ─────────────────────────────────────────────── */
+  const stripped = raw
+    .replace(/^(my name is|name is|i am called|it is|the city is|city is|location is|place is|address is|i live(?:\s+at|\s+in)?|occupation is|i work as)\s*/i, "")
+    .trim();
+  return stripped.length > 1 ? titleCase(stripped) : null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION 11 — SHARED HELPERS
+══════════════════════════════════════════════════════════════════════ */
+function fillAndMark(el, value) {
+  el.value = value;
+  el.classList.remove("v-active");
+  el.classList.add("v-filled");
+  updateProgress();
+}
+
+function advance() {
+  if (currentIndex < formInputs.length - 1) {
+    currentIndex++;
+    highlightCurrent();
+  } else {
+    toast("🎉 All fields complete!");
+    tx("🎉 Form complete — great job!", "filled");
+  }
+}
+
+function titleCase(str) {
+  return str.replace(/\b\w/g, c => c.toUpperCase());
+}
+</script>
+
+</body>
 </html>

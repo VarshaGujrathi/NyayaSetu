@@ -236,8 +236,7 @@
         </form>
       </div>
 
-      <!-- RESULTS -->
-      {% if changes %}
+     {% if changes %}
       <div class="result-box">
         <div class="version">{{ version }}</div>
 
@@ -252,42 +251,61 @@
         </div>
 
         {% if changes.modified %}
-        <div class="diff-container">
-          <div class="diff-column">
-            <h3>Old Version</h3>
-            {% for m in changes.modified %}
-            <p><span class="remove">{{ m.from }}</span></p>
-            {% endfor %}
+        <div class="diff-column" style="margin-top: 20px;">
+          <h3>🟡 Modified Clauses (Word-by-Word Analysis)</h3>
+          
+          <div style="margin-bottom: 20px; padding: 10px 15px; background: white; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13.5px; color: #475569; display: flex; gap: 20px; align-items: center;">
+              <strong>Legend:</strong>
+              <span><span class="remove" style="text-decoration: line-through; padding: 2px 6px;">Red Strikethrough</span> = Removed from Old Version</span>
+              <span><span class="add" style="padding: 2px 6px;">Green Highlight</span> = Added to New Version</span>
           </div>
 
-          <div class="diff-column">
-            <h3>New Version</h3>
-            {% for m in changes.modified %}
-            <p><span class="add">{{ m.to }}</span></p>
-            {% endfor %}
+          {% for m in changes.modified %}
+          <div style="background: white; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 20px; border-radius: 12px; border-left: 5px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+            <p style="line-height: 1.8; font-size: 15px; color: var(--navy);">
+              {{ m.inline_html|safe }}
+            </p>
+            
+            {% if m.details %}
+            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
+              <strong style="font-size: 14.5px; color: #0f172a;">📝 Exact Changes:</strong>
+              <ul style="font-size: 14px; color: #475569; margin-left: 22px; margin-top: 10px; line-height: 1.7;">
+                {% for detail in m.details %}
+                  <li>{{ detail }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
           </div>
+          {% endfor %}
         </div>
-        {% endif %} {% if changes.added %}
+        {% endif %} 
+
+        {% if changes.added %}
         <div class="diff-column" style="margin-top: 20px">
           <h3>🟢 Added</h3>
           {% for a in changes.added %}
           <p><span class="add">{{ a }}</span></p>
           {% endfor %}
         </div>
-        {% endif %} {% if changes.removed %}
+        {% endif %} 
+        
+        {% if changes.removed %}
         <div class="diff-column" style="margin-top: 20px">
           <h3>🔴 Removed</h3>
           {% for r in changes.removed %}
           <p><span class="remove">{{ r }}</span></p>
           {% endfor %}
         </div>
-        {% endif %} {% if not changes.added and not changes.removed and not changes.modified %}
+        {% endif %} 
+        
+        {% if not changes.added and not changes.removed and not changes.modified %}
         <div class="safe-box">
           ✅ No differences detected (Documents are identical)
         </div>
         {% endif %}
-      </div>
-      {% endif %}
+
+      </div> {% endif %} ```
     </div>
     <script>
       document.getElementById("doc1").addEventListener("change", function () {

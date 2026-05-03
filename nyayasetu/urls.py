@@ -24,6 +24,7 @@ from nyayasetu import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('translator/', include('translator.urls')),
 ]
 
 if settings.DEBUG:
