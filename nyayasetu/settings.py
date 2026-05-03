@@ -104,6 +104,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']  # project-level static folder
 
 # Use signed cookie sessions in development to avoid database session table needs
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # For production: optional static root
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -118,3 +119,5 @@ import os
 GOOGLE_API_KEY = "AIzaSyDhbQKXE04BBcnO62XqitihpkNJYlPyMyE"
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

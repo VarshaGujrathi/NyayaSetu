@@ -3,190 +3,304 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Document Comparison</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Document Comparison | NyayaSetu</title>
 
     <style>
-      /* ================= BASE ================= */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+      :root {
+        --gold: #c7a34b;
+        --navy: #0f172a;
+        --added: #10b981;
+        --removed: #ef4444;
+        --bg: #f8fafc;
+      }
+
       * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
+        font-family: Inter, sans-serif;
       }
 
       body {
-        margin: 0;
-        background: #f6f7fb;
-        font-family: "Georgia", serif;
-        color: #333;
-      }
-
-      /* ============== CENTER PAGE ============== */
-      .outer-wrapper {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        background: linear-gradient(to bottom, #f8fafc, #eef2f7);
         padding: 40px 20px;
       }
 
-      /* ============== MAIN CARD ============== */
-      .main-card {
-        background: #ffffff;
-        width: 100%;
-        max-width: 900px;
-        padding: 60px 50px;
-        border-radius: 30px;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+      .wrapper {
+        max-width: 1100px;
+        margin: auto;
+      }
+
+      /* HEADER */
+      .hero {
+        background: white;
+        padding: 50px 40px;
+        border-radius: 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
         text-align: center;
-      }
-
-      /* ============== TITLE ============== */
-      .main-card h1 {
-        margin: 0;
-        font-size: 36px;
-        color: #b5943c;
-      }
-
-      .subtitle {
-        margin-top: 10px;
-        font-style: italic;
-        color: #555;
-        font-size: 15px;
-      }
-
-      /* ============== DOTTED BOX ============== */
-      .inner-box {
-        margin-top: 35px;
-        padding: 35px;
-        border: 2px dashed #caa24d;
-        border-radius: 22px;
-      }
-
-      /* ============== INPUTS ============== */
-      .input-group {
-        margin-bottom: 22px;
-      }
-
-      .input-group input[type="file"] {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #caa24d;
-        border-radius: 12px;
-        font-family: inherit;
-      }
-
-      /* ============== BUTTON ============== */
-      .action-btn {
-        background: #b5943c;
-        color: white;
-        border: none;
-        padding: 12px 36px;
-        border-radius: 30px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      .action-btn:hover {
-        background: #9f7f2c;
-      }
-
-      /* ============== RESULTS ============== */
-      .results {
-        margin-top: 45px;
-        text-align: left;
-      }
-
-      .version {
-        text-align: center;
-        font-weight: bold;
         margin-bottom: 30px;
       }
 
-      /* ============== DIFF BLOCKS ============== */
-      .diff {
-        padding: 20px;
+      .hero h1 {
+        font-size: 40px;
+        font-weight: 800;
+        color: var(--navy);
+      }
+
+      .hero span {
+        color: var(--gold);
+      }
+
+      .hero p {
+        color: #64748b;
+        margin: 15px 0 30px;
+        font-size: 16px;
+      }
+
+      /* UPLOAD BOX */
+      .upload-box {
+        border: 2px dashed var(--gold);
+        padding: 30px;
         border-radius: 18px;
-        margin-bottom: 20px;
+        background: #fffdf8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
       }
 
-      .diff h4 {
-        margin-top: 0;
+      /* CUSTOM FILE INPUT */
+      .file-input {
+        position: relative;
+        width: 260px;
       }
 
-      .added {
-        background: #e9fff2;
-        border-left: 6px solid #2ecc71;
+      .file-input input {
+        opacity: 0;
+        width: 100%;
+        height: 40px;
+        position: absolute;
+        cursor: pointer;
       }
 
-      .removed {
-        background: #ffecec;
-        border-left: 6px solid #e74c3c;
-      }
-
-      .modified {
-        background: #fff6db;
-        border-left: 6px solid #f1c40f;
-      }
-
-      .diff p {
-        margin: 8px 0;
+      .file-label {
+        display: block;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
         font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .file-label:hover {
+        border-color: var(--gold);
+      }
+
+      /* BUTTON */
+      button {
+        background: linear-gradient(135deg, var(--gold), #aa8131);
+        color: white;
+        padding: 12px 35px;
+        border-radius: 30px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      /* RESULT BOX */
+      .result-box {
+        background: white;
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      /* VERSION */
+      .version {
+        text-align: center;
+        font-weight: 700;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+
+      /* CONFIDENCE */
+      .confidence {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .confidence-bar {
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+
+      .confidence-fill {
+        height: 100%;
+        background: var(--gold);
+      }
+
+      /* SIDE BY SIDE */
+      .diff-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-height: 450px;
+        overflow-y: auto;
+      }
+
+      .diff-column {
+        background: #f9fafb;
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .diff-column h3 {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: var(--navy);
+      }
+
+      /* TEXT HIGHLIGHT */
+      .add {
+        background: #d1fae5;
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+
+      .remove {
+        background: #fee2e2;
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+
+      /* SAFE */
+      .safe-box {
+        background: #ecfff4;
+        padding: 15px;
+        border-left: 5px solid #10b981;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      /* MOBILE */
+      @media (max-width: 768px) {
+        .diff-container {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
 
   <body>
-    <div class="outer-wrapper">
-      <div class="main-card">
-        <h1>Document Comparison</h1>
-        <p class="subtitle">
-          Upload two versions of a legal document — we’ll highlight every
-          change.
-        </p>
+    <div class="wrapper">
+      <!-- HEADER -->
+      <div class="hero">
+        <h1>📄 <span>Document</span> Comparison</h1>
+        <p>Upload two documents and instantly detect all differences.</p>
 
-        <form method="POST" enctype="multipart/form-data" class="inner-box">
+        <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
-          <div class="input-group">
-            <input type="file" name="doc1" required />
-          </div>
+          <div class="upload-box">
+            <div class="file-input">
+              <input type="file" id="doc1" name="doc1" required />
+              <label for="doc1" class="file-label">
+                📄 <span id="label1">Upload Old Document</span>
+              </label>
+            </div>
 
-          <div class="input-group">
-            <input type="file" name="doc2" required />
-          </div>
+            <div class="file-input">
+              <input type="file" id="doc2" name="doc2" required />
+              <label for="doc2" class="file-label">
+                📄 <span id="label2">Upload New Document</span>
+              </label>
+            </div>
 
-          <button type="submit" class="action-btn">🔍 Show Changes</button>
+            <button type="submit">🔍 Compare Documents</button>
+          </div>
         </form>
+      </div>
 
-        {% if changes %}
-        <div class="results">
-          <div class="version">{{ version }}</div>
+      <!-- RESULTS -->
+      {% if changes %}
+      <div class="result-box">
+        <div class="version">{{ version }}</div>
 
-          {% if changes.added %}
-          <div class="diff added">
-            <h4>Added</h4>
-            {% for a in changes.added %}
-            <p>{{ a }}</p>
-            {% endfor %}
+        <div class="confidence">
+          <p>Confidence Score: {{ confidence }}</p>
+          <div class="confidence-bar">
+            <div
+              class="confidence-fill"
+              style="width: {{ confidence|floatformat:2 }}%;"
+            ></div>
           </div>
-          {% endif %} {% if changes.removed %}
-          <div class="diff removed">
-            <h4>Removed</h4>
-            {% for r in changes.removed %}
-            <p>{{ r }}</p>
-            {% endfor %}
-          </div>
-          {% endif %} {% if changes.modified %}
-          <div class="diff modified">
-            <h4>Modified</h4>
+        </div>
+
+        {% if changes.modified %}
+        <div class="diff-container">
+          <div class="diff-column">
+            <h3>Old Version</h3>
             {% for m in changes.modified %}
-            <p><strong>Old:</strong> {{ m.from }}</p>
-            <p><strong>New:</strong> {{ m.to }}</p>
+            <p><span class="remove">{{ m.from }}</span></p>
             {% endfor %}
           </div>
-          {% endif %}
+
+          <div class="diff-column">
+            <h3>New Version</h3>
+            {% for m in changes.modified %}
+            <p><span class="add">{{ m.to }}</span></p>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %} {% if changes.added %}
+        <div class="diff-column" style="margin-top: 20px">
+          <h3>🟢 Added</h3>
+          {% for a in changes.added %}
+          <p><span class="add">{{ a }}</span></p>
+          {% endfor %}
+        </div>
+        {% endif %} {% if changes.removed %}
+        <div class="diff-column" style="margin-top: 20px">
+          <h3>🔴 Removed</h3>
+          {% for r in changes.removed %}
+          <p><span class="remove">{{ r }}</span></p>
+          {% endfor %}
+        </div>
+        {% endif %} {% if not changes.added and not changes.removed and not changes.modified %}
+        <div class="safe-box">
+          ✅ No differences detected (Documents are identical)
         </div>
         {% endif %}
       </div>
+      {% endif %}
     </div>
+    <script>
+      document.getElementById("doc1").addEventListener("change", function () {
+        if (this.files.length > 0) {
+          document.getElementById("label1").innerText = this.files[0].name;
+        }
+      });
+
+      document.getElementById("doc2").addEventListener("change", function () {
+        if (this.files.length > 0) {
+          document.getElementById("label2").innerText = this.files[0].name;
+        }
+      });
+    </script>
   </body>
 </html>
