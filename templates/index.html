@@ -11,17 +11,21 @@
     <!-- Navbar -->
     <div class="container">
       <nav class="navbar">
+        <!-- 1. Move the Logo FIRST -->
+        <div class="logo">
+          <img src="{% static 'images/logo.png' %}" alt="NyayaSetu Logo" />
+        </div>
+
+        <!-- 2. Navigation Links SECOND -->
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#features">Features</a></li>
         </ul>
 
+        <!-- (This is hidden by our CSS now, but you can leave it here) -->
         <div class="login-icon">
           <img src="{% static 'images/login.png' %}" alt="Login Icon" />
-        </div>
-        <div class="logo">
-          <img src="{% static 'images/logo.png' %}" alt="NyayaSetu Logo" />
         </div>
       </nav>
 

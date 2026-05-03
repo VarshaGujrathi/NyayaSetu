@@ -116,9 +116,12 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
+from dotenv import load_dotenv
 
-GOOGLE_API_KEY = "YourAPIKey"
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
 
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY', 'YourAPIKey')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -1,418 +1,230 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Clause Risk Indicator | NyayaSetu</title>
-
+    <title>Risk Audit | NyayaSetu</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
-      :root {
-        --gold: #c7a34b;
-        --navy: #0f172a;
-        --bg: #f4f7fb;
-
-        --high: #ef4444;
-        --medium: #f59e0b;
-        --low: #10b981;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Inter, sans-serif;
-      }
-
-      body {
-        background: linear-gradient(to bottom, #f6f8fc, #edf2f7);
-        padding: 50px 20px;
-        color: #1e293b;
-      }
-
-      .wrapper {
-        max-width: 1100px;
-        margin: auto;
-      }
-
-      /* header */
-      .hero {
-        background: white;
-        padding: 55px 70px;
-        border-radius: 30px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-        margin-bottom: 35px;
-        text-align: center;
-      }
-
-      .hero h1 {
-        font-size: 52px;
-        font-weight: 800;
-        margin-bottom: 18px;
-        color: var(--navy);
-      }
-
-      .hero span {
-        color: var(--gold);
-      }
-
-      .hero p {
-        font-size: 18px;
-        line-height: 1.8;
-        color: #64748b;
-        margin-bottom: 35px;
-      }
-
-      /* upload */
-      .upload-box {
-        border: 2px dashed var(--gold);
-        border-radius: 25px;
-        padding: 55px;
-        background: #fffdf8;
-      }
-
-      .upload-box h3 {
-        font-size: 28px;
-        margin-bottom: 10px;
-      }
-
-      .upload-box p {
-        color: #64748b;
-        margin-bottom: 25px;
-      }
-
-      input[type="file"] {
-        font-size: 16px;
-        margin-bottom: 25px;
-      }
-
-      button {
-        background: linear-gradient(135deg, var(--gold), #aa8131);
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 15px;
-        font-size: 17px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      button:hover {
-        transform: translateY(-3px);
-      }
-
-      /* metrics */
-      .metrics {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 22px;
-        margin: 35px 0;
-      }
-
-      .metric {
-        background: white;
-        padding: 25px;
-        border-radius: 22px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-        text-align: center;
-      }
-
-      .metric-number {
-        font-size: 34px;
-        font-weight: 800;
-        color: var(--gold);
-      }
-
-      .metric-label {
-        margin-top: 8px;
-        color: #64748b;
-        font-size: 14px;
-      }
-
-      /* result card */
-      .result-box {
-        background: white;
-        padding: 35px 40px;
-        border-radius: 28px;
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
-      }
-
-      .file-name {
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--gold);
-        margin-bottom: 25px;
-        word-break: break-word;
-      }
-
-      .section-title {
-        font-size: 32px;
-        font-weight: 800;
-        margin-bottom: 25px;
-      }
-
-      /* Risk cards */
-      .risk-grid {
-        display: grid;
-        gap: 20px;
-      }
-
-      .risk-card {
-        background: #fff;
-        border-radius: 22px;
-        padding: 28px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        border-left: 8px solid;
-      }
-
-      .tts-button {
-        background: #0f172a;
-        color: #ffffff;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 18px;
-        font-size: 14px;
-        cursor: pointer;
-        margin-top: 12px;
-      }
-
-      .tts-button:hover {
-        background: #1e293b;
-      }
-
-      .risk-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
-
-      .badge {
-        padding: 8px 15px;
-        border-radius: 30px;
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .high {
-        border-color: var(--high);
-        background: #fff4f4;
-      }
-
-      .high .badge {
-        background: #ffdada;
-        color: #b91c1c;
-      }
-
-      .medium {
-        border-color: var(--medium);
-        background: #fffaf0;
-      }
-
-      .medium .badge {
-        background: #ffedc2;
-        color: #92400e;
-      }
-
-      .low {
-        border-color: var(--low);
-        background: #effdf6;
-      }
-
-      .low .badge {
-        background: #d8fff0;
-        color: #047857;
-      }
-
-      .risk-card p {
-        line-height: 1.75;
-        color: #334155;
-      }
-
-      .safe-box {
-        background: #ecfff4;
-        border-left: 7px solid #10b981;
-        padding: 24px;
-        border-radius: 18px;
-        font-weight: 600;
-      }
-
-      /* hover */
-      .metric:hover,
-      .risk-card:hover {
-        transform: translateY(-4px);
-        transition: 0.3s;
-      }
-
-      /* mobile */
-      @media (max-width: 900px) {
-        .metrics {
-          grid-template-columns: repeat(2, 1fr);
+        :root {
+            --gold: #c7a34b;
+            --navy: #0f172a;
+            --high: #ef4444;
+            --medium: #f59e0b;
+            --low: #10b981;
+            --bg: #f8fafc;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        .hero {
-          padding: 40px 30px;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: #1e293b; padding-bottom: 60px; }
+
+        .container { max-width: 1000px; margin: auto; padding: 40px 20px; }
+
+        /* Hero & Header */
+        .header-card {
+            background: white;
+            padding: 50px;
+            border-radius: 32px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            margin-bottom: 30px;
+            border: 1px solid #eef2f7;
         }
 
-        .hero h1 {
-          font-size: 40px;
-        }
-      }
+        .header-card h1 { font-size: 42px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 12px; }
+        .header-card h1 span { color: var(--gold); }
+        .header-card p { color: #64748b; font-size: 18px; margin-bottom: 35px; }
 
-      @media (max-width: 700px) {
-        .metrics {
-          grid-template-columns: 1fr;
+        /* Professional Upload Area */
+        .upload-zone {
+            border: 2px dashed #cbd5e1;
+            background: #fdfdfd;
+            border-radius: 20px;
+            padding: 40px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .upload-zone:hover { border-color: var(--gold); background: #fffcf5; }
+        
+        .btn-analyze {
+            background: var(--navy);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
         }
 
-        .hero h1 {
-          font-size: 32px;
+        /* Metrics Bar */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
         }
 
-        .result-box {
-          padding: 28px 22px;
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
         }
-      }
+
+        .metric-value { font-size: 32px; font-weight: 800; color: var(--navy); display: block; }
+        .metric-label { font-size: 13px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Risk Cards */
+        .risk-section { background: white; padding: 40px; border-radius: 32px; box-shadow: var(--card-shadow); }
+        .risk-item {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 10px solid;
+            transition: transform 0.2s;
+        }
+        .risk-item:hover { transform: scale(1.01); }
+
+        .risk-item.high { border-color: var(--high); background: #fffafb; }
+        .risk-item.medium { border-color: var(--medium); background: #fffcf5; }
+        .risk-item.low { border-color: var(--low); background: #f6fff9; }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .badge-high { background: #fee2e2; color: var(--high); }
+        .badge-medium { background: #fef3c7; color: var(--medium); }
+        .badge-low { background: #dcfce7; color: var(--low); }
+
+        .clause-text { font-style: italic; color: #475569; margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid #e2e8f0; }
+
+        .category-tag { font-weight: 700; color: var(--navy); font-size: 14px; }
+        
+        .action-row {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn-action {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        select { padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; }
     </style>
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="hero">
-        <h1>⚖ <span>Clause Risk</span> Indicator</h1>
+</head>
+<body>
 
-        <p>
-          Upload agreements or contracts and let our custom AI model identify
-          unfair, high-risk and suspicious clauses automatically.
-        </p>
-
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-
-          <div class="upload-box">
-            <h3>Analyze Legal Clauses</h3>
-            <p>Supports PDF, DOCX and TXT</p>
-
-            <input type="file" name="file" accept=".pdf,.docx,.txt" required />
-
-            <br /><br />
-
-            <button type="submit">Analyze Document</button>
-          </div>
-        </form>
-      </div>
-
-      {% if filename %}
-
-      <div class="metrics">
-        <div class="metric">
-          <div class="metric-number">{{ risk_data|length }}</div>
-          <div class="metric-label">Total Flags</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-number">AI</div>
-          <div class="metric-label">Custom Model</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-number">AI</div>
-          <div class="metric-label">Clause Detection</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-number">87%</div>
-          <div class="metric-label">Risk Score</div>
-        </div>
-      </div>
-
-      <div class="result-box">
-        <div class="file-name">📄 {{ filename }}</div>
-
-        <h2 class="section-title">Detected Clause Risks</h2>
-
-        {% if risk_data %}
-
-        <div class="risk-grid">
-          {% for item in risk_data %}
-
-          <div
-            class="risk-card {% if item.risk_level == 'High' %} high {% elif item.risk_level == 'Medium' %} medium {% else %} low {% endif %}"
-          >
-            <div class="risk-header">
-              <strong> Clause {{ forloop.counter }} </strong>
-
-              <span class="badge"> {{ item.risk_level }} Risk </span>
-            </div>
-
-            <p>
-              <strong>Clause Text:</strong> {{
-              item.translation|default:item.clause }}
-            </p>
-            <p><strong>Category:</strong> {{ item.risk_category }}</p>
-            <p><strong>Explanation:</strong> {{ item.explanation }}</p>
-
-            <form method="POST" class="translation-form">
-              {% csrf_token %}
-              <input type="hidden" name="translate_action" value="clause" />
-              <input
-                type="hidden"
-                name="clause_index"
-                value="{{ forloop.counter0 }}"
-              />
-              <label for="language-{{ forloop.counter0 }}">Language</label>
-              <select
-                name="language"
-                id="language-{{ forloop.counter0 }}"
-                required
-              >
-                {% for name, code in languages.items %}
-                <option
-                  value="{{ code }}"
-                  {%
-                  if
-                  selected_language=""
-                  ="code"
-                  %}selected{%
-                  endif
-                  %}
-                >
-                  {{ name }}
-                </option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="tts-button">
-                Translate & Listen
-              </button>
+    <div class="container">
+        <div class="header-card">
+            <h1>⚖ <span>Audit</span> Your Document</h1>
+            <p>Predictive risk scoring for legal contracts and agreements.</p>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                    <div style="font-size: 40px; margin-bottom: 10px;">📤</div>
+                    <h3 style="margin-bottom: 10px;">Select Legal File</h3>
+                    <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">PDF, DOCX, or Plain Text</p>
+                    <input type="file" id="file-input" name="file" style="display:none;" required onchange="this.form.submit()">
+                    <button type="submit" class="btn-analyze" onclick="event.stopPropagation()">Begin AI Scan</button>
+                </div>
             </form>
-
-            {% if item.audio %}
-            <button
-              type="button"
-              class="tts-button"
-              onclick="document.getElementById('clause-audio-{{ forloop.counter }}').play()"
-            >
-              🔊 Listen to Clause
-            </button>
-            <audio
-              id="clause-audio-{{ forloop.counter }}"
-              src="{{ item.audio }}"
-            ></audio>
-            {% endif %}
-          </div>
-
-          {% endfor %}
         </div>
 
-        {% else %}
+        {% if filename %}
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-value">{{ risk_data|length }}</span>
+                <span class="metric-label">Alerts Flagged</span>
+            </div>
+            <div class="metric-card" style="border-bottom-color: var(--high);">
+                <span class="metric-value">
+                    {% with high_count=0 %}
+                        {% for item in risk_data %}{% if item.risk_level == 'High' %}!{% endif %}{% endfor %}
+                    {% endwith %}
+                    Active
+                </span>
+                <span class="metric-label">High Priority</span>
+            </div>
+            <div class="metric-card" style="border-bottom-color: var(--low);">
+                <span class="metric-value">Verified</span>
+                <span class="metric-label">AI Analysis Status</span>
+            </div>
+        </div>
 
-        <div class="safe-box">✅ No risky clauses detected.</div>
+        <div class="risk-section">
+            <h2 style="font-size: 24px; margin-bottom: 30px;">Identified Risk Clusters</h2>
+            
+            {% for item in risk_data %}
+            <div class="risk-item {% if item.risk_level == 'High' %}high{% elif item.risk_level == 'Medium' %}medium{% else %}low{% endif %}">
+                <span class="risk-badge {% if item.risk_level == 'High' %}badge-high{% elif item.risk_level == 'Medium' %}badge-medium{% else %}badge-low{% endif %}">
+                    {{ item.risk_level }} Priority
+                </span>
+                
+                <p><span class="category-tag">Risk Type:</span> {{ item.risk_category }}</p>
+                
+                <div class="clause-text">
+                    "{{ item.translation|default:item.clause }}"
+                </div>
 
+                <p><strong>Impact Analysis:</strong> {{ item.explanation }}</p>
+
+                <div class="action-row">
+                    <form method="POST" style="display: flex; align-items: center; gap: 10px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="translate_action" value="clause" />
+                        <input type="hidden" name="clause_index" value="{{ forloop.counter0 }}" />
+                        <select name="language">
+                            {% for name, code in languages.items %}
+                            <option value="{{ code }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn-action">Translate & Analyze</button>
+                    </form>
+
+                    {% if item.audio %}
+                    <button class="btn-action" style="background: var(--gold);" onclick="document.getElementById('audio-{{ forloop.counter }}').play()">
+                        🔊 Play Explanation
+                    </button>
+                    <audio id="audio-{{ forloop.counter }}" src="{{ item.audio }}"></audio>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 40px;">
+                <div style="font-size: 50px; margin-bottom: 15px;">🛡️</div>
+                <h3>Clean Report</h3>
+                <p style="color: #64748b;">No high-risk clauses were identified in this document.</p>
+            </div>
+            {% endfor %}
+        </div>
         {% endif %}
-      </div>
-
-      {% endif %}
     </div>
-  </body>
+
+</body>
 </html>
