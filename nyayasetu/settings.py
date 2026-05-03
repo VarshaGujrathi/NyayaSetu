@@ -116,7 +116,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
 
-GOOGLE_API_KEY = "AIzaSyDhbQKXE04BBcnO62XqitihpkNJYlPyMyE"
+GOOGLE_API_KEY = "YourAPIKey"
 
 
 MEDIA_URL = '/media/'
