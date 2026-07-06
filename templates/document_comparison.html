@@ -5,212 +5,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Document Comparison | NyayaSetu</title>
-
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
-      :root {
-        --gold: #c7a34b;
-        --navy: #0f172a;
-        --added: #10b981;
-        --removed: #ef4444;
-        --bg: #f8fafc;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Inter, sans-serif;
-      }
-
-      body {
-        background: linear-gradient(to bottom, #f8fafc, #eef2f7);
-        padding: 40px 20px;
-      }
-
-      .wrapper {
-        max-width: 1100px;
-        margin: auto;
-      }
-
-      /* HEADER */
-      .hero {
-        background: white;
-        padding: 50px 40px;
-        border-radius: 25px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-        text-align: center;
-        margin-bottom: 30px;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-        font-weight: 800;
-        color: var(--navy);
-      }
-
-      .hero span {
-        color: var(--gold);
-      }
-
-      .hero p {
-        color: #64748b;
-        margin: 15px 0 30px;
-        font-size: 16px;
-      }
-
-      /* UPLOAD BOX */
-      .upload-box {
-        border: 2px dashed var(--gold);
-        padding: 30px;
-        border-radius: 18px;
-        background: #fffdf8;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
-
-      /* CUSTOM FILE INPUT */
-      .file-input {
-        position: relative;
-        width: 260px;
-      }
-
-      .file-input input {
-        opacity: 0;
-        width: 100%;
-        height: 40px;
-        position: absolute;
-        cursor: pointer;
-      }
-
-      .file-label {
-        display: block;
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 10px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 14px;
-        transition: 0.3s;
-      }
-
-      .file-label:hover {
-        border-color: var(--gold);
-      }
-
-      /* BUTTON */
-      button {
-        background: linear-gradient(135deg, var(--gold), #aa8131);
-        color: white;
-        padding: 12px 35px;
-        border-radius: 30px;
-        border: none;
-        font-size: 15px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      button:hover {
-        transform: translateY(-2px);
-      }
-
-      /* RESULT BOX */
-      .result-box {
-        background: white;
-        padding: 30px;
-        border-radius: 25px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-      }
-
-      /* VERSION */
-      .version {
-        text-align: center;
-        font-weight: 700;
-        color: var(--gold);
-        margin-bottom: 10px;
-      }
-
-      /* CONFIDENCE */
-      .confidence {
-        text-align: center;
-        margin-bottom: 25px;
-      }
-
-      .confidence-bar {
-        height: 8px;
-        background: #e5e7eb;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: 8px;
-      }
-
-      .confidence-fill {
-        height: 100%;
-        background: var(--gold);
-      }
-
-      /* SIDE BY SIDE */
-      .diff-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        max-height: 450px;
-        overflow-y: auto;
-      }
-
-      .diff-column {
-        background: #f9fafb;
-        padding: 18px;
-        border-radius: 12px;
-      }
-
-      .diff-column h3 {
-        margin-bottom: 10px;
-        font-size: 16px;
-        color: var(--navy);
-      }
-
-      /* TEXT HIGHLIGHT */
-      .add {
-        background: #d1fae5;
-        padding: 2px 4px;
-        border-radius: 4px;
-      }
-
-      .remove {
-        background: #fee2e2;
-        padding: 2px 4px;
-        border-radius: 4px;
-      }
-
-      /* SAFE */
-      .safe-box {
-        background: #ecfff4;
-        padding: 15px;
-        border-left: 5px solid #10b981;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: center;
-      }
-
-      /* MOBILE */
-      @media (max-width: 768px) {
-        .diff-container {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
 
-  <body>
-    <div class="wrapper">
-      <!-- HEADER -->
-      <div class="hero">
-        <h1>📄 <span>Document</span> Comparison</h1>
+  <body class="tool-page">
+    <header class="tool-shell-header">
+      <div class="tool-shell-header__inner">
+        <a href="{% url 'index' %}" class="tool-shell-header__brand">
+          <img src="{% static 'images/logo.png' %}" alt="NyayaSetu" />
+          <span>NyayaSetu</span>
+        </a>
+        <span class="tool-shell-header__badge">Document Comparison</span>
+      </div>
+    </header>
+
+    <main class="tool-main">
+      <div class="tool-hero-card">
+        <div class="tool-hero-card__icon">📄</div>
+        <h1><span>Document</span> Comparison</h1>
         <p>Upload two documents and instantly detect all differences.</p>
 
         <form method="POST" enctype="multipart/form-data">
@@ -231,7 +46,7 @@
               </label>
             </div>
 
-            <button type="submit">🔍 Compare Documents</button>
+            <button type="submit" class="btn-primary">🔍 Compare Documents</button>
           </div>
         </form>
       </div>
@@ -253,23 +68,23 @@
         {% if changes.modified %}
         <div class="diff-column" style="margin-top: 20px;">
           <h3>🟡 Modified Clauses (Word-by-Word Analysis)</h3>
-          
-          <div style="margin-bottom: 20px; padding: 10px 15px; background: white; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13.5px; color: #475569; display: flex; gap: 20px; align-items: center;">
+
+          <div class="diff-legend">
               <strong>Legend:</strong>
-              <span><span class="remove" style="text-decoration: line-through; padding: 2px 6px;">Red Strikethrough</span> = Removed from Old Version</span>
-              <span><span class="add" style="padding: 2px 6px;">Green Highlight</span> = Added to New Version</span>
+              <span><span class="remove">Red Strikethrough</span> = Removed from Old Version</span>
+              <span><span class="add">Green Highlight</span> = Added to New Version</span>
           </div>
 
           {% for m in changes.modified %}
-          <div style="background: white; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 20px; border-radius: 12px; border-left: 5px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-            <p style="line-height: 1.8; font-size: 15px; color: var(--navy);">
+          <div class="diff-modified-block">
+            <p style="line-height: 1.8; font-size: 15px; color: var(--color-brand-900);">
               {{ m.inline_html|safe }}
             </p>
-            
+
             {% if m.details %}
-            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px solid #f1f5f9;">
-              <strong style="font-size: 14.5px; color: #0f172a;">📝 Exact Changes:</strong>
-              <ul style="font-size: 14px; color: #475569; margin-left: 22px; margin-top: 10px; line-height: 1.7;">
+            <div style="margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--color-border);">
+              <strong style="font-size: 14.5px; color: var(--color-brand-900);">📝 Exact Changes:</strong>
+              <ul style="font-size: 14px; color: var(--color-text-secondary); margin-left: 22px; margin-top: 10px; line-height: 1.7;">
                 {% for detail in m.details %}
                   <li>{{ detail }}</li>
                 {% endfor %}
@@ -279,7 +94,7 @@
           </div>
           {% endfor %}
         </div>
-        {% endif %} 
+        {% endif %}
 
         {% if changes.added %}
         <div class="diff-column" style="margin-top: 20px">
@@ -288,8 +103,8 @@
           <p><span class="add">{{ a }}</span></p>
           {% endfor %}
         </div>
-        {% endif %} 
-        
+        {% endif %}
+
         {% if changes.removed %}
         <div class="diff-column" style="margin-top: 20px">
           <h3>🔴 Removed</h3>
@@ -297,16 +112,16 @@
           <p><span class="remove">{{ r }}</span></p>
           {% endfor %}
         </div>
-        {% endif %} 
-        
+        {% endif %}
+
         {% if not changes.added and not changes.removed and not changes.modified %}
         <div class="safe-box">
           ✅ No differences detected (Documents are identical)
         </div>
         {% endif %}
 
-      </div> {% endif %} ```
-    </div>
+      </div> {% endif %}
+    </main>
     <script>
       document.getElementById("doc1").addEventListener("change", function () {
         if (this.files.length > 0) {

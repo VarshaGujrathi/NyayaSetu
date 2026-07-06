@@ -38,13 +38,25 @@ from django.core.files.storage import FileSystemStorage
 
 def normalize_summary(summary):
     if not summary:
-        return "No summary generated."
+        return ""
 
-    # catches accidental literal template text
+    # Catches accidental literal template text
     if str(summary).strip() in ["{{ summary }}", "{ summary }"]:
-        return "Summary generation failed."
+        return ""
 
-    return str(summary).strip()
+    # If it is a list or tuple from previous modifications, stitch it into a single clean string
+    if isinstance(summary, (list, tuple)):
+        # Strip trailing newlines/quotes from individual elements before joining
+        summary = " ".join([str(item).strip(" '\",\n\r") for item in summary])
+
+    raw_text = str(summary).strip()
+    
+    # Standardise text anomalies
+    raw_text = raw_text.replace(" paid oil every first week ", " paid on every first week ")
+    
+    return raw_text
+
+
 
 
 def normalize_risks(risks):
@@ -131,172 +143,46 @@ def smart_form_autofill(request):
 # LEGAL SIMPLIFIER
 # ==========================================
 
-# def legal_simplifier(request):
-
-#     from services.language_service import (
-#         translate_text_pipeline,
-#         text_to_speech_pipeline
-#     )
-
-#     session_data = request.session.get(
-#         "legal_simplifier_data",
-#         {}
-#     )
-
-#     context = {
-#         "languages": AVAILABLE_TTS_LANGUAGES,
-#         "selected_summary_language": session_data.get(
-#             "selected_summary_language", "en"
-#         ),
-#         "selected_clause_language": session_data.get(
-#             "selected_clause_language", "en"
-#         )
-#     }
-
-#     if request.method == "POST":
-
-#         # ==========================================
-#         # FILE UPLOAD + INITIAL PROCESSING
-#         # ==========================================
-#         if request.FILES.get("file"):
-
-#             uploaded_file = request.FILES["file"]
-
-#             text = extract_text_from_file(uploaded_file)
-
-#             summary = normalize_summary(
-#                 summarize_text(text)
-#             )
-
-#             risky = normalize_risks(
-#                 analyze_risks(text)
-#             )
-
-#             session_data = {
-#                 "filename": uploaded_file.name,
-#                 "summary": summary,
-#                 "summary_translated": None,
-#                 "summary_audio": None,
-#                 "selected_summary_language": "en",
-#                 "selected_clause_language": "en",
-#                 "risky": risky
-#             }
-
-#             request.session["legal_simplifier_data"] = session_data
-#             request.session.modified = True
-
-#         # ==========================================
-#         # TRANSLATION + AUDIO
-#         # ==========================================
-#         elif request.POST.get("translate_action"):
-
-#             action = request.POST.get("translate_action")
-#             language = request.POST.get("language", "en")
-
-#             session_data = request.session.get(
-#                 "legal_simplifier_data", {}
-#             )
-
-#             if not session_data:
-#                 return render(
-#                     request,
-#                     "legal_simplifier.html",
-#                     context
-#                 )
-
-#             # ======================================
-#             # SUMMARY TRANSLATION + AUDIO
-#             # ======================================
-#             if action == "summary":
-
-#                 session_data["selected_summary_language"] = language
-
-#                 base_summary = (
-#                     session_data.get("summary")
-#                     or "No summary available"
-#                 )
-
-#                 # ✅ Translation using M2M100
-#                 translated = translate_text_pipeline(
-#                     base_summary,
-#                     language
-#                 )
-
-#                 session_data["summary_translated"] = translated
-
-#                 # ✅ TTS using gTTS
-#                 session_data["summary_audio"] = text_to_speech_pipeline(
-#                     translated,
-#                     language
-#                 )
-
-#             # ======================================
-#             # CLAUSE TRANSLATION + AUDIO
-#             # ======================================
-#             elif action == "clause":
-
-#                 session_data["selected_clause_language"] = language
-
-#                 idx = int(
-#                     request.POST.get("clause_index", -1)
-#                 )
-
-#                 risky = session_data.get("risky", [])
-
-#                 if 0 <= idx < len(risky):
-
-#                     item = risky[idx]
-
-#                     clause_text = item["clause"]
-
-#                     # ✅ Translation
-#                     translated = translate_text_pipeline(
-#                         clause_text,
-#                         language
-#                     )
-
-#                     item["translation"] = translated
-
-#                     # ✅ TTS
-#                     item["audio"] = text_to_speech_pipeline(
-#                         translated,
-#                         language
-#                     )
-
-#             request.session["legal_simplifier_data"] = session_data
-#             request.session.modified = True
-
-#     # ==========================================
-#     # FINAL CONTEXT RENDER
-#     # ==========================================
-#     context.update(
-#         request.session.get(
-#             "legal_simplifier_data", {}
-#         )
-#     )
-
-#     return render(
-#         request,
-#         "legal_simplifier.html",
-#         context
-#     )
-
-
 def legal_simplifier(request):
-    from services.language_service import translate_text_pipeline, text_to_speech_pipeline
 
-    session_data = request.session.get("legal_simplifier_data", {})
+    from services.language_service import (
+        translate_text_pipeline,
+        text_to_speech_pipeline
+    )
+
+    session_data = request.session.get(
+        "legal_simplifier_data",
+        {}
+    )
+
     context = {
         "languages": AVAILABLE_TTS_LANGUAGES,
-        "selected_summary_language": session_data.get("selected_summary_language", "en"),
+        "selected_summary_language": session_data.get(
+            "selected_summary_language", "en"
+        ),
+        "selected_clause_language": session_data.get(
+            "selected_clause_language", "en"
+        )
     }
 
     if request.method == "POST":
-        # FILE UPLOAD: Only generate summary
+
+        # ==========================================
+        # FILE UPLOAD + INITIAL PROCESSING
+        # ==========================================
         if request.FILES.get("file"):
+
             uploaded_file = request.FILES["file"]
+
             text = extract_text_from_file(uploaded_file)
-            summary = normalize_summary(summarize_text(text))
+
+            summary = normalize_summary(
+                summarize_text(text)
+            )
+
+            risky = normalize_risks(
+                analyze_risks(text)
+            )
 
             session_data = {
                 "filename": uploaded_file.name,
@@ -304,164 +190,204 @@ def legal_simplifier(request):
                 "summary_translated": None,
                 "summary_audio": None,
                 "selected_summary_language": "en",
+                "selected_clause_language": "en",
+                "risky": risky
             }
+
             request.session["legal_simplifier_data"] = session_data
             request.session.modified = True
 
-        # TRANSLATION: Only for summary
-        elif request.POST.get("translate_action") == "summary":
+        # ==========================================
+        # TRANSLATION + AUDIO
+        # ==========================================
+        elif request.POST.get("translate_action"):
+
+            action = request.POST.get("translate_action")
             language = request.POST.get("language", "en")
-            session_data = request.session.get("legal_simplifier_data", {})
 
-            if session_data:
+            session_data = request.session.get(
+                "legal_simplifier_data", {}
+            )
+
+            if not session_data:
+                return render(
+                    request,
+                    "legal_simplifier.html",
+                    context
+                )
+
+            # ======================================
+            # SUMMARY TRANSLATION + AUDIO
+            # ======================================
+            if action == "summary":
+
                 session_data["selected_summary_language"] = language
-                base_summary = session_data.get("summary") or "No summary available"
-                
+
+                base_summary = (
+                    session_data.get("summary")
+                    or "No summary available"
+                )
+
+                # ✅ Translation using M2M100
+             
                 translated = translate_text_pipeline(base_summary, language)
-                session_data["summary_translated"] = translated
-                session_data["summary_audio"] = text_to_speech_pipeline(translated, language)
 
-                request.session["legal_simplifier_data"] = session_data
-                request.session.modified = True
+                # Force the translated text to split into bullet items as well if it returns a string
+                if isinstance(translated, str):
+                    translated_points = [p.strip() + "." for p in translated.replace(" .", ".").split(". ") if p.strip()]
+                    session_data["summary_translated"] = translated_points
+                else:
+                    session_data["summary_translated"] = translated
 
-    context.update(request.session.get("legal_simplifier_data", {}))
-    return render(request, "legal_simplifier.html", context)
+
+                # ✅ TTS using gTTS
+                session_data["summary_audio"] = text_to_speech_pipeline(
+                    translated,
+                    language
+                )
+
+            # ======================================
+            # CLAUSE TRANSLATION + AUDIO
+            # ======================================
+            elif action == "clause":
+
+                session_data["selected_clause_language"] = language
+
+                idx = int(
+                    request.POST.get("clause_index", -1)
+                )
+
+                risky = session_data.get("risky", [])
+
+                if 0 <= idx < len(risky):
+
+                    item = risky[idx]
+
+                    clause_text = item["clause"]
+
+                    # ✅ Translation
+                    translated = translate_text_pipeline(
+                        clause_text,
+                        language
+                    )
+
+                    item["translation"] = translated
+
+                    # ✅ TTS
+                    item["audio"] = text_to_speech_pipeline(
+                        translated,
+                        language
+                    )
+
+            request.session["legal_simplifier_data"] = session_data
+            request.session.modified = True
+
+    # ==========================================
+    # FINAL CONTEXT RENDER
+    # ==========================================
+    context.update(
+        request.session.get(
+            "legal_simplifier_data", {}
+        )
+    )
+
+    return render(
+        request,
+        "legal_simplifier.html",
+        context
+    )
 
 
 # ==========================================
 # CLAUSE RISK INDICATOR
 # ==========================================
 
-# def clause_risk_indicator(request):
-
-#     from services.language_service import (
-#         translate_text_pipeline,
-#         text_to_speech_pipeline
-#     )
-
-#     context = {
-#         "languages": AVAILABLE_TTS_LANGUAGES,
-#         "selected_language": "en"
-#     }
-
-#     session_data = request.session.get(
-#         "clause_risk_data",
-#         {}
-#     )
-
-#     if request.method == "POST":
-
-#         # ==========================================
-#         # FILE UPLOAD
-#         # ==========================================
-#         if request.FILES.get("file"):
-
-#             uploaded_file = request.FILES["file"]
-
-#             text = extract_text_from_file(
-#                 uploaded_file
-#             )
-
-#             risk_data = normalize_risks(
-#                 analyze_risks(text)
-#             )
-
-#             session_data = {
-#                 "filename": uploaded_file.name,
-#                 "risk_data": risk_data
-#             }
-
-#             request.session["clause_risk_data"] = session_data
-#             request.session.modified = True
-
-#         # ==========================================
-#         # TRANSLATION + AUDIO
-#         # ==========================================
-#         elif request.POST.get("translate_action"):
-
-#             language = request.POST.get("language", "en")
-
-#             clause_index = int(
-#                 request.POST.get("clause_index", -1)
-#             )
-
-#             if (
-#                 0 <= clause_index <
-#                 len(session_data.get("risk_data", []))
-#             ):
-
-#                 item = session_data["risk_data"][clause_index]
-
-#                 clause_text = item.get("clause", "")
-
-#                 # ✅ Translation (M2M100)
-#                 translated = translate_text_pipeline(
-#                     clause_text,
-#                     language
-#                 )
-
-#                 item["translation"] = translated
-
-#                 # ✅ TTS (gTTS)
-#                 item["audio"] = text_to_speech_pipeline(
-#                     translated,
-#                     language
-#                 )
-
-#                 request.session["clause_risk_data"] = session_data
-#                 request.session.modified = True
-
-#     context.update(session_data)
-
-#     return render(
-#         request,
-#         "clause_risk_indicator.html",
-#         context
-#     )
-
-
 def clause_risk_indicator(request):
-    from services.language_service import translate_text_pipeline, text_to_speech_pipeline
 
-    session_data = request.session.get("clause_risk_data", {})
+    from services.language_service import (
+        translate_text_pipeline,
+        text_to_speech_pipeline
+    )
+
     context = {
         "languages": AVAILABLE_TTS_LANGUAGES,
-        "selected_language": session_data.get("selected_language", "en")
+        "selected_language": "en"
     }
 
+    session_data = request.session.get(
+        "clause_risk_data",
+        {}
+    )
+
     if request.method == "POST":
-        # FILE UPLOAD: Only analyze risks
+
+        # ==========================================
+        # FILE UPLOAD
+        # ==========================================
         if request.FILES.get("file"):
+
             uploaded_file = request.FILES["file"]
-            text = extract_text_from_file(uploaded_file)
-            risk_data = normalize_risks(analyze_risks(text))
+
+            text = extract_text_from_file(
+                uploaded_file
+            )
+
+            risk_data = normalize_risks(
+                analyze_risks(text)
+            )
 
             session_data = {
                 "filename": uploaded_file.name,
-                "risk_data": risk_data,
-                "selected_language": "en"
+                "risk_data": risk_data
             }
+
             request.session["clause_risk_data"] = session_data
             request.session.modified = True
 
-        # TRANSLATION: Only for specific clauses
-        elif request.POST.get("translate_action") == "clause":
-            language = request.POST.get("language", "en")
-            idx = int(request.POST.get("clause_index", -1))
-            session_data = request.session.get("clause_risk_data", {})
+        # ==========================================
+        # TRANSLATION + AUDIO
+        # ==========================================
+        elif request.POST.get("translate_action"):
 
-            if session_data and 0 <= idx < len(session_data.get("risk_data", [])):
-                item = session_data["risk_data"][idx]
-                translated = translate_text_pipeline(item["clause"], language)
+            language = request.POST.get("language", "en")
+
+            clause_index = int(
+                request.POST.get("clause_index", -1)
+            )
+
+            if (
+                0 <= clause_index <
+                len(session_data.get("risk_data", []))
+            ):
+
+                item = session_data["risk_data"][clause_index]
+
+                clause_text = item.get("clause", "")
+
+                # ✅ Translation (M2M100)
+                translated = translate_text_pipeline(
+                    clause_text,
+                    language
+                )
+
                 item["translation"] = translated
-                item["audio"] = text_to_speech_pipeline(translated, language)
-                
-                session_data["selected_language"] = language
+
+                # ✅ TTS (gTTS)
+                item["audio"] = text_to_speech_pipeline(
+                    translated,
+                    language
+                )
+
                 request.session["clause_risk_data"] = session_data
                 request.session.modified = True
 
-    context.update(request.session.get("clause_risk_data", {}))
-    return render(request, "clause_risk_indicator.html", context)
+    context.update(session_data)
+
+    return render(
+        request,
+        "clause_risk_indicator.html",
+        context
+    )
 
     
 # ============================================================
@@ -684,6 +610,5 @@ def document_comparison(request):
     )
 
 #Smart Form Autofill
-
 def smart_form_autofill(request):
     return render(request, 'smart_form_autofill.html')

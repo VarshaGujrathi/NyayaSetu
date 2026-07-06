@@ -1,54 +1,86 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NyayaSetu - Legal Empowerment</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  </head>
-  <body>
-    <!-- Navbar -->
-    <div class="container">
-      <nav class="navbar">
-        <!-- 1. Move the Logo FIRST -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NyayaSetu - Legal Empowerment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <div class="navbar__brand">
         <div class="logo">
           <img src="{% static 'images/logo.png' %}" alt="NyayaSetu Logo" />
         </div>
+        <span class="navbar__title">NyayaSetu</span>
+      </div>
 
-        <!-- 2. Navigation Links SECOND -->
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#features">Features</a></li>
-        </ul>
+      <ul class="navbar__links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
 
-        <!-- (This is hidden by our CSS now, but you can leave it here) -->
-        <div class="login-icon">
-          <img src="{% static 'images/login.png' %}" alt="Login Icon" />
-        </div>
-      </nav>
+      <div class="login-icon">
+        <img src="{% static 'images/login.png' %}" alt="Login Icon" />
+      </div>
+    </nav>
+  </header>
 
-      <!-- Home Content -->
-      <div class="content" id="home">
+  <main class="app-main">
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="hero__content">
+        <span class="hero__badge">Legal Tech Platform</span>
         <p class="quote">
           “Where <span>law</span> meets <span>clarity</span>,<br />
           and citizens meet <span>empowerment.</span>”
         </p>
+        <p class="hero__subtitle">
+          Simplify legal documents, assess clause risks, and access tools built
+          for informed decision-making.
+        </p>
         <button class="explore-btn" onclick="scrollToSection('about')">
-          Explore
+          Explore Platform
         </button>
       </div>
-    </div>
+      <div class="hero__stats">
+        <div class="stat-card">
+          <span class="stat-card__value">6+</span>
+          <span class="stat-card__label">Legal Tools</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">AI</span>
+          <span class="stat-card__label">Powered Analysis</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">24/7</span>
+          <span class="stat-card__label">Access</span>
+        </div>
+      </div>
+    </section>
 
-    <!-- About Section -->
+    <!-- About -->
     <section id="about" class="about-section">
+      <div class="section-header">
+        <span class="section-label">About Us</span>
+        <h2 class="section-title">About <span>NyayaSetu</span></h2>
+      </div>
       <div class="about-container">
         <div class="about-image">
           <img src="{% static 'images/about.jpg' %}" alt="About NyayaSetu" />
         </div>
         <div class="about-text">
-          <h2>About <span>NyayaSetu</span>:</h2>
           <p>
             Many legal documents are complex and hard to understand, especially
             for rural citizens. NyayaSetu simplifies these documents into plain
@@ -60,161 +92,162 @@
       </div>
     </section>
 
-    <!-- FEATURES -->
-    <div class="features-grid">
-      <!-- 🌟 Row 1 (3 cards) -->
-      <div class="features-row">
-        <!-- Legal Simplifier -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'legal_simplifier' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/auction.png' %}" />
-              <h3>Legal Simplification</h3>
-              <p>“Turning legal jargon into simple, everyday language.”</p>
+    <!-- Features / Tools Dashboard -->
+    <section id="features" class="features-section">
+      <div class="section-header section-header--center">
+        <span class="section-label">Platform Tools</span>
+        <h2 class="section-title">Your Legal Toolkit</h2>
+        <p class="section-description">
+          Choose a tool below to simplify, analyze, and manage your legal documents.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Row 1 -->
+        <div class="features-row">
+          <!-- Legal Simplifier -->
+          <div class="tool-card" onclick="window.location.href='{% url 'legal_simplifier' %}'" role="link" tabindex="0"
+            onkeydown="if(event.key==='Enter')window.location.href='{% url 'legal_simplifier' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/auction.png' %}" alt="" />
             </div>
-            <div class="flip-card-back">
-              <p>
+            <div class="tool-card__body">
+              <h3>Legal Simplification</h3>
+              <p class="tool-card__tagline">“Turning legal jargon into simple, everyday language.”</p>
+              <p class="tool-card__description">
                 Complex legal terms are automatically simplified into clear,
                 easy-to-understand sentences.
               </p>
-              <button class="learn-more-btn">Explore</button>
             </div>
+            <button class="learn-more-btn">Explore</button>
           </div>
-        </div>
 
-        <!-- Clause Risk -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'clause_risk_indicator' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/complaints.png' %}" />
+          <!-- Clause Risk -->
+          <div class="tool-card" onclick="window.location.href='{% url 'clause_risk_indicator' %}'" role="link"
+            tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='{% url 'clause_risk_indicator' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/complaints.png' %}" alt="" />
+            </div>
+            <div class="tool-card__body">
               <h3>Clause Risk Indicator</h3>
-              <p>“Know the risks before you sign.”</p>
+              <p class="tool-card__tagline">“Know the risks before you sign.”</p>
+              <p class="tool-card__description">
+                AI highlights risky clauses using color codes.
+              </p>
             </div>
-            <div class="flip-card-back">
-              <p>AI highlights risky clauses using color codes.</p>
-              <button class="learn-more-btn">Explore</button>
+            <button class="learn-more-btn">Explore</button>
+          </div>
+
+          <!-- Voice Interaction -->
+          <div class="tool-card" onclick="window.location.href='{% url 'translator:index' %}'" role="link" tabindex="0"
+            onkeydown="if(event.key==='Enter')window.location.href='{% url 'translator:index' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/court.png' %}" alt="" />
             </div>
+            <div class="tool-card__body">
+              <h3>Voice & Text Interaction</h3>
+              <p class="tool-card__tagline">“Talk or type — we understand.”</p>
+              <p class="tool-card__description">
+                Ask legal queries via voice or text instantly.
+              </p>
+            </div>
+            <button class="learn-more-btn">Explore</button>
           </div>
         </div>
 
-        <!-- Voice Interaction -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'translator:index' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/court.png' %}" />
-              <h3>Voice & Text Interaction</h3>
-              <p>“Talk or type — we understand.”</p>
+        <!-- Row 2 -->
+        <div class="features-row">
+          <!-- Compliance -->
+          <div class="tool-card" onclick="window.location.href='{% url 'compliance_alerts' %}'" role="link" tabindex="0"
+            onkeydown="if(event.key==='Enter')window.location.href='{% url 'compliance_alerts' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/justice.png' %}" alt="" />
             </div>
-            <div class="flip-card-back">
-              <p>Ask legal queries via voice or text instantly.</p>
-              <button class="learn-more-btn">Explore</button>
+            <div class="tool-card__body">
+              <h3>Compliance Alerts</h3>
+              <p class="tool-card__tagline">“Never miss important details.”</p>
+              <p class="tool-card__description">
+                Flags missing signatures, dates, and stamps.
+              </p>
             </div>
+            <button class="learn-more-btn">Explore</button>
+          </div>
+
+          <!-- Auto Fill -->
+          <div class="tool-card" onclick="window.location.href='{% url 'smart_form_autofill' %}'" role="link"
+            tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='{% url 'smart_form_autofill' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/page.png' %}" alt="" />
+            </div>
+            <div class="tool-card__body">
+              <h3>Smart Form Auto-Fill</h3>
+              <p class="tool-card__tagline">“Your details, auto-filled.”</p>
+              <p class="tool-card__description">
+                Extracts data and fills forms automatically.
+              </p>
+            </div>
+            <button class="learn-more-btn">Explore</button>
+          </div>
+
+          <!-- Comparison -->
+          <div class="tool-card" onclick="window.location.href='{% url 'document_comparison' %}'" role="link"
+            tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='{% url 'document_comparison' %}'">
+            <div class="tool-card__icon">
+              <img src="{% static 'images/legal-document.png' %}" alt="" />
+            </div>
+            <div class="tool-card__body">
+              <h3>Document Comparison</h3>
+              <p class="tool-card__tagline">“Spot every change.”</p>
+              <p class="tool-card__description">
+                Detects added, removed, or modified clauses.
+              </p>
+            </div>
+            <button class="learn-more-btn">Explore</button>
           </div>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- 🌟 Row 2 (3 cards) -->
-      <div class="features-row">
-        <!-- Compliance -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'compliance_alerts' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/justice.png' %}" />
-              <h3>Compliance Alerts</h3>
-              <p>“Never miss important details.”</p>
-            </div>
-            <div class="flip-card-back">
-              <p>Flags missing signatures, dates, and stamps.</p>
-              <button class="learn-more-btn">Explore</button>
-            </div>
-          </div>
+  <!-- Footer -->
+  <footer class="footer-section">
+    <div class="footer-overlay">
+      <div class="footer-header">
+        <h2>Reach Out for Support</h2>
+        <p class="footer-header__text">
+          Have a question? Our team is here to help you navigate the platform.
+        </p>
+      </div>
+      <div class="footer-content">
+        <div class="footer-left">
+          <p>
+            📍 <b>Address:</b><br />
+            NyayaSetu Project, Department of AI & DS, K J Somaiya Institute of
+            Technology, Mumbai.
+          </p>
+          <p>📞 <b>Phone:</b><br />+91 7718922046</p>
+          <p>
+            📧 <b>Email:</b><br />
+            contact@nyayasetu.in
+          </p>
         </div>
 
-        <!-- Auto Fill -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'smart_form_autofill' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/page.png' %}" />
-              <h3>Smart Form Auto-Fill</h3>
-              <p>“Your details, auto-filled.”</p>
-            </div>
-            <div class="flip-card-back">
-              <p>Extracts data and fills forms automatically.</p>
-              <button class="learn-more-btn">Explore</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Comparison -->
-        <div
-          class="flip-card"
-          onclick="window.location.href='{% url 'document_comparison' %}'"
-        >
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{% static 'images/legal-document.png' %}" />
-              <h3>Document Comparison</h3>
-              <p>“Spot every change.”</p>
-            </div>
-            <div class="flip-card-back">
-              <p>Detects added, removed, or modified clauses.</p>
-              <button class="learn-more-btn">Explore</button>
-            </div>
-          </div>
+        <div class="footer-right">
+          <textarea placeholder="Enter your query here..." rows="6" aria-label="Support query"></textarea>
+          <button class="query-btn">Submit Your Query</button>
         </div>
       </div>
     </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="footer-section">
-      <div class="footer-overlay">
-        <h2>Reach Out for Support</h2>
-        <div class="footer-content">
-          <div class="footer-left">
-            <p>
-              📍 <b>Address:</b><br />
-              NyayaSetu Project, Department of AI & DS, K J Somaiya Institute of
-              Technology, Mumbai.
-            </p>
-            <p>📞 <b>Phone:</b><br />+91 XXXXXXXX</p>
-            <p>
-              📧 <b>Email:</b><br />
-              contact@nyayasetu.in
-            </p>
-          </div>
-
-          <div class="footer-right">
-            <textarea
-              placeholder="Enter your query here..."
-              rows="6"
-            ></textarea>
-            <button class="query-btn">Submit Your Query</button>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script>
-      function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          section.scrollIntoView({ behavior: "smooth" });
-        }
+  <script>
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>

@@ -5,174 +5,27 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Compliance Alerts | NyayaSetu</title>
-
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
-
-:root {
-  --gold: #c7a34b;
-  --navy: #0f172a;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Inter, sans-serif;
-}
-
-body {
-  background: linear-gradient(to bottom, #f6f8fc, #edf2f7);
-  padding: 50px 20px;
-}
-
-.wrapper {
-  max-width: 1100px;
-  margin: auto;
-}
-
-/* HERO */
-.hero {
-  background: white;
-  padding: 50px;
-  border-radius: 25px;
-  text-align: center;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.05);
-  margin-bottom: 30px;
-}
-
-.hero h1 {
-  font-size: 42px;
-  font-weight: 800;
-}
-
-.hero span {
-  color: var(--gold);
-}
-
-.hero p {
-  margin: 15px 0 30px;
-  color: #64748b;
-}
-
-/* UPLOAD BOX */
-.upload-box {
-  border: 2px dashed var(--gold);
-  border-radius: 20px;
-  padding: 40px;
-  background: #fffdf8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-/* DROPDOWN */
-select {
-  width: 280px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-/* FILE INPUT CUSTOM */
-.file-input {
-  position: relative;
-  width: 260px;
-}
-
-.file-input input {
-  display: none;
-}
-
-.file-label {
-  display: block;
-  background: #f8fafc;
-  border: 1px solid #ddd;
-  padding: 12px;
-  border-radius: 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.file-label:hover {
-  border-color: var(--gold);
-}
-
-.file-name {
-  font-size: 13px;
-  color: #555;
-  margin-top: 5px;
-  text-align: center;
-}
-
-/* BUTTON */
-button {
-  background: linear-gradient(135deg, var(--gold), #aa8131);
-  color: white;
-  border: none;
-  padding: 12px 35px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-/* RESULT BOX */
-.result-box {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  margin-top: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-}
-
-/* RISK */
-.risk {
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.LOW { background: #e6ffed; color: #047857; }
-.MEDIUM { background: #fff4cc; color: #92400e; }
-.HIGH { background: #ffe6e6; color: #b91c1c; }
-
-/* ALERT */
-.alert {
-  padding: 15px;
-  border-radius: 12px;
-  margin: 10px 0;
-}
-
-.Critical {
-  background: #ffe6e6;
-  border-left: 6px solid red;
-}
-
-.Info {
-  background: #f3f4f6;
-  border-left: 6px solid #888;
-}
-
-.pass-box {
-  background: #ecfff4;
-  border-left: 6px solid #10b981;
-  padding: 15px;
-  border-radius: 12px;
-  font-weight: 600;
-}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 
-<body>
-<div class="wrapper">
+<body class="tool-page">
+<header class="tool-shell-header">
+  <div class="tool-shell-header__inner">
+    <a href="{% url 'index' %}" class="tool-shell-header__brand">
+      <img src="{% static 'images/logo.png' %}" alt="NyayaSetu" />
+      <span>NyayaSetu</span>
+    </a>
+    <span class="tool-shell-header__badge">Compliance Alerts</span>
+  </div>
+</header>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>⚖ <span>Compliance</span> Alerts</h1>
+<main class="tool-main">
+<div class="tool-hero-card">
+  <div class="tool-hero-card__icon">⚖</div>
+  <h1><span>Compliance</span> Alerts</h1>
   <p>Upload legal documents and detect compliance issues instantly.</p>
 
   <form method="POST" enctype="multipart/form-data">
@@ -198,7 +51,7 @@ button {
         <div class="file-name" id="fileName"></div>
       </div>
 
-      <button type="submit">Analyze Document</button>
+      <button type="submit" class="btn-primary">Analyze Document</button>
 
     </div>
   </form>
@@ -215,8 +68,8 @@ button {
   {% endif %}
 
   <div>
-    <h3>📄 Document Summary</h3>
-    <ul>
+    <h3 style="font-size: var(--font-lg); font-weight: var(--weight-semibold); margin-bottom: var(--space-4);">📄 Document Summary</h3>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary);">
       <li><strong>Date:</strong> {{ extracted.execution.date|default:"Not Found" }}</li>
       <li><strong>Place:</strong> {{ extracted.execution.place|default:"Not Found" }}</li>
       <li><strong>Licensor:</strong> {{ extracted.licensor.names|join:", "|default:"Not Found" }}</li>
@@ -240,7 +93,7 @@ button {
 </div>
 {% endif %}
 
-</div>
+</main>
 
 <!-- ✅ FILE NAME SCRIPT -->
 <script>
