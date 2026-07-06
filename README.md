@@ -200,7 +200,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Institution:** Department of AI & DS, K J Somaiya Institute of Technology, Mumbai
 - **Email:** contact@nyayasetu.in
-- **Phone:** +91 7718922046
+- **Phone:** +91 XXXXXXXXXX
 
 ## 🙏 Acknowledgments
 
